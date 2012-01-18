@@ -1,0 +1,4 @@
+{% extends 'base.html' %}
+{% head_links %}
+
+{% end head_links %}

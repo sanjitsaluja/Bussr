@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block head_links %}
+<link type="text/css" rel="stylesheet" href="/static/navbase.css" />
+{% endblock %}
+{% block bodycontent %}
+<div id="header">
+	<div class="header_tab"><a href='/'>Map</a></div>
+	<div class="header_tab"><a href='/Favorites/'>Favorites</a></div>
+	<div class="header_tab"><a href='/Recents/'>Recents</a></div>
+	<div class="header_tab"><a href='/Search/'>Search</a></div>
+</div>
+{% block content %} {% endblock %}
+{% endblock %}

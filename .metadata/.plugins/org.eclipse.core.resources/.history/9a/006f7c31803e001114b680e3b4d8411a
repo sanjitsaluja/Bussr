@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block head_links %}
+<link type="text/css" rel="stylesheet" href="/static/navbase.css" />
+{% endblock %}
+{% block content %}
+<div id="header">
+	</div>
+{% endblock %}

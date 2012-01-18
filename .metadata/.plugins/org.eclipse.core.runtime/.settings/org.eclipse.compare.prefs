@@ -1,0 +1,11 @@
+#Mon Jan 16 19:07:48 PST 2012
+AbstractTextEditor.Color.Background.SystemDefault=false
+AbstractTextEditor.Color.Foreground.SystemDefault=false
+AbstractTextEditor.Color.Foreground=189,174,157
+AbstractTextEditor.Color.SelectionBackground=195,220,255
+currentLineColor=58,49,44
+AbstractTextEditor.Color.SelectionForeground.SystemDefault=false
+AbstractTextEditor.Color.Background=42,33,28
+AbstractTextEditor.Color.SelectionBackground.SystemDefault=false
+eclipse.preferences.version=1
+AbstractTextEditor.Color.SelectionForeground=189,174,157

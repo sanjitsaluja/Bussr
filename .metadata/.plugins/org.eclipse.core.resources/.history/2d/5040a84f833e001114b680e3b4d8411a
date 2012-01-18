@@ -1,0 +1,19 @@
+.left
+{
+	float: left;
+}
+
+.right
+{
+	float: right;
+}
+
+.clearfix
+{
+	clear:both;
+}
+
+body
+{
+	font-family: sans-serif;
+}

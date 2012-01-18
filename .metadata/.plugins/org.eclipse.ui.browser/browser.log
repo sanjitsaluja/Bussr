@@ -1,0 +1,13 @@
+
+Jan 13, 2012 23:09:14.45 NEW SESSION
+Jan 13, 2012 23:09:14.46 Error: No running window found
+Jan 13, 2012 23:09:14.83 
+Jan 13, 2012 23:09:14.83 (firefox:13033): Gtk-WARNING **: Unable to locate theme engine in module_path: "pixmap",
+Jan 13, 2012 23:09:14.83 
+Jan 13, 2012 23:09:14.83 (firefox:13033): Gtk-WARNING **: Unable to locate theme engine in module_path: "pixmap",
+Jan 13, 2012 23:09:14.83 
+Jan 13, 2012 23:09:14.83 (firefox:13033): Gtk-WARNING **: Unable to locate theme engine in module_path: "pixmap",
+Jan 13, 2012 23:09:14.83 
+Jan 13, 2012 23:09:14.83 (firefox:13033): Gtk-WARNING **: Unable to locate theme engine in module_path: "pixmap",
+Jan 13, 2012 23:09:35.57 
+Jan 13, 2012 23:09:35.57 (firefox:13033): LIBDBUSMENU-GTK-CRITICAL **: dbusmenu_menuitem_property_set_shortcut: assertion `gtk_accelerator_valid(key, modifier)' failed

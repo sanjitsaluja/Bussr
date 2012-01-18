@@ -1,0 +1,36 @@
+body
+{
+	font-size: 13px;
+	font-weight: normal;
+	margin:0px;
+	padding:0px;
+}
+
+#main-nav
+{
+	background: -webkit-gradient(linear, 0 0, 0 100%, from(rgb(255, 255, 255)), color-stop(0.85, rgb(241, 241, 241)), to(rgb(229, 229, 229)));
+}
+
+.nav-content
+{
+	border: 1px solid red;
+}
+
+/* container of the top tabs */
+.top-tabs
+{
+}
+
+/* individual tabs in the header */
+.top-tabs .tab
+{
+	border: 1px solid #999;
+	width: 90px;
+}
+
+.top-tabs a.tab
+{
+	text-decoration:none;
+	color: #777;
+}
+

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block head_links %}
+<link type="text/css" rel="stylesheet" href="/static/mobilenavbase.css" />
+{% endblock %}
+{% block bodycontent %}
+<div id="main-nav" class="clearfix">
+	<div class="nav-content">
+	<div class="top-tabs">
+		<a class="tab" href='/'>Map</a>
+		<a class="tab" href='/Favorites/'>Favorites</a>
+		<a class="tab" href='/Recents/'>Recents</a>
+		<a class="tab" href='/Search/'>Search</a>
+	</div>
+	</div>
+</div>
+{% block content %} {% endblock %}
+{% endblock %}

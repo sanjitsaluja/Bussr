@@ -1,0 +1,330 @@
+{% extends 'mobilenavbase.html' %}
+{% block meta %}
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+{% endblock %}
+{% block head_scripts %}
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false">
+    </script>
+    <script type="text/javascript" src="/static/ctamap.js">
+    </script>
+{% endblock %}
+{% block content %}
+    <div id="map_canvas"></div>
+	
+    <div id="map_canvas" style="width: 100%; position: relative; background-color: rgb(229, 227, 223); overflow-x: hidden; overflow-y: hidden; height: 597px; ">
+        <div style="position: absolute; left: 0px; top: 0px; overflow-x: hidden; overflow-y: hidden; width: 100%; height: 100%; z-index: 0; ">
+            <div style="position: absolute; left: 0px; top: 0px; overflow-x: hidden; overflow-y: hidden; width: 100%; height: 100%; ">
+                <div style="position: absolute; left: 0px; top: 0px; z-index: 1; -webkit-transform: translate(0px, 0px) scale(1); cursor: url(http://maps.gstatic.com/mapfiles/openhand_8_8.cur), default; ">
+                    <div style="z-index: 100; position: absolute; left: 0px; top: 0px; ">
+                        <div style="position: absolute; left: 0px; top: 0px; z-index: 0; ">
+                            <div style="position: absolute; left: 0px; top: 0px; z-index: 1; ">
+                                <div style="width: 256px; height: 256px; position: absolute; left: 199px; top: 58px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; position: absolute; left: 199px; top: 314px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; position: absolute; left: -57px; top: 58px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; position: absolute; left: -57px; top: 314px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; position: absolute; left: 455px; top: 58px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; position: absolute; left: 455px; top: 314px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; position: absolute; left: 199px; top: -198px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; position: absolute; left: 199px; top: 570px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; position: absolute; left: -57px; top: 570px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; position: absolute; left: -57px; top: -198px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; position: absolute; left: 455px; top: -198px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; position: absolute; left: 455px; top: 570px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; position: absolute; left: -313px; top: 314px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; position: absolute; left: 711px; top: 314px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; position: absolute; left: 711px; top: 58px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; position: absolute; left: -313px; top: 58px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; position: absolute; left: 711px; top: -198px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; position: absolute; left: -313px; top: -198px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; position: absolute; left: -313px; top: 570px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; position: absolute; left: 711px; top: 570px; ">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="z-index: 101; position: absolute; left: 0px; top: 0px; ">
+                        <div style="border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-width: initial; border-color: initial; border-image: initial; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; position: absolute; width: auto; left: 440.28554311111156px; top: 298.89592271862887px; " class=" marker-label">
+                            $365K
+                        </div>
+                        <div style="border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-width: initial; border-color: initial; border-image: initial; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; position: absolute; width: auto; left: 514.1880896000002px; top: 327.2355361998623px; " class=" marker-label">
+                            $110K
+                        </div>
+                        <div style="border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-width: initial; border-color: initial; border-image: initial; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; position: absolute; width: auto; left: 252.79790720000028px; top: 256.5860889958142px; " class=" marker-label">
+                            $399K
+                        </div>
+                        <div style="border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-width: initial; border-color: initial; border-image: initial; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; position: absolute; width: auto; left: 537.1442168888889px; top: 315.619553831904px; " class=" marker-label">
+                            $98K
+                        </div>
+                        <div style="border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-width: initial; border-color: initial; border-image: initial; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; position: absolute; width: auto; left: 493.2416803555557px; top: 416.8617817219307px; " class=" marker-label">
+                            $110K
+                        </div>
+                        <div style="border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-width: initial; border-color: initial; border-image: initial; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; position: absolute; width: auto; left: 293.67720462222223px; top: 350.2156895927791px; " class=" marker-label">
+                            $163K
+                        </div>
+                        <div style="border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-width: initial; border-color: initial; border-image: initial; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; position: absolute; width: auto; left: 440.755394133334px; top: 299.2710124637473px; " class=" marker-label">
+                            $245K
+                        </div>
+                        <div style="border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-width: initial; border-color: initial; border-image: initial; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; position: absolute; width: auto; left: 253.9112967111114px; top: 264.75032190259674px; " class=" marker-label">
+                            $185K
+                        </div>
+                        <div style="border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-width: initial; border-color: initial; border-image: initial; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; position: absolute; width: auto; left: 486.0876238222222px; top: 389.351892301161px; " class=" marker-label">
+                            $470K
+                        </div>
+                        <div style="border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-width: initial; border-color: initial; border-image: initial; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; position: absolute; width: auto; left: 440.1341048888894px; top: 298.5563184448649px; " class=" marker-label">
+                            $135K
+                        </div>
+                        <div style="border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-width: initial; border-color: initial; border-image: initial; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; position: absolute; width: auto; left: 346.79248284444475px; top: 379.70351872417245px; " class=" marker-label">
+                            $215K
+                        </div>
+                        <div style="border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-width: initial; border-color: initial; border-image: initial; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; position: absolute; width: auto; left: 294.5705607111113px; top: 349.26035915072055px; " class=" marker-label">
+                            $1.3M
+                        </div>
+                        <div style="border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-width: initial; border-color: initial; border-image: initial; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; position: absolute; width: auto; left: 293.59814613333356px; top: 349.2656490121517px; " class=" marker-label">
+                            $399K
+                        </div>
+                        <div style="border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-width: initial; border-color: initial; border-image: initial; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; position: absolute; width: auto; left: 316.9359295999998px; top: 372.3515449455209px; " class=" marker-label">
+                            $95K
+                        </div>
+                        <div style="border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-width: initial; border-color: initial; border-image: initial; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; position: absolute; width: auto; left: 352.3523363555555px; top: 325.3020774156239px; " class=" marker-label">
+                            $440K
+                        </div>
+                        <div style="border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-width: initial; border-color: initial; border-image: initial; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; position: absolute; width: auto; left: 459.4571214222224px; top: 376.0392262882275px; " class=" marker-label">
+                            $179K
+                        </div>
+                        <div style="border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-width: initial; border-color: initial; border-image: initial; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; position: absolute; width: auto; left: 434.8879936000003px; top: 333.28945674847387px; " class=" marker-label">
+                            $120K
+                        </div>
+                    </div>
+                    <div style="z-index: 102; position: absolute; left: 0px; top: 0px; ">
+                        <div style="position: absolute; left: 0px; top: 0px; z-index: 1; ">
+                            <div style="position: absolute; left: 0px; top: 0px; z-index: 1; ">
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: 199px; top: 58px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: 199px; top: 314px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: -57px; top: 58px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: -57px; top: 314px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: 455px; top: 58px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: 455px; top: 314px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: 199px; top: -198px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: 199px; top: 570px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: -57px; top: 570px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: -57px; top: -198px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: 455px; top: -198px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: 455px; top: 570px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: -313px; top: 314px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: 711px; top: 314px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: 711px; top: 58px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: -313px; top: 58px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: 711px; top: -198px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: -313px; top: -198px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: -313px; top: 570px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: 711px; top: 570px; ">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="z-index: 103; position: absolute; left: 0px; top: 0px; ">
+                        <div style="position: absolute; left: 0px; top: 0px; z-index: -1; ">
+                            <div style="position: absolute; left: 0px; top: 0px; z-index: 1; ">
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: 199px; top: 58px; ">
+                                    <canvas style="position: absolute; left: 0px; top: 0px; " height="256" width="256">
+                                    </canvas>
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: 199px; top: 314px; ">
+                                    <canvas style="position: absolute; left: 0px; top: 0px; " height="256" width="256">
+                                    </canvas>
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: -57px; top: 58px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: -57px; top: 314px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: 455px; top: 58px; ">
+                                    <canvas style="position: absolute; left: 0px; top: 0px; " height="256" width="256">
+                                    </canvas>
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: 455px; top: 314px; ">
+                                    <canvas style="position: absolute; left: 0px; top: 0px; " height="256" width="256">
+                                    </canvas>
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: 199px; top: -198px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: 199px; top: 570px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: -57px; top: 570px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: -57px; top: -198px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: 455px; top: -198px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: 455px; top: 570px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: -313px; top: 314px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: 711px; top: 314px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: 711px; top: 58px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: -313px; top: 58px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: 711px; top: -198px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: -313px; top: -198px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: -313px; top: 570px; ">
+                                </div>
+                                <div style="width: 256px; height: 256px; overflow-x: hidden; overflow-y: hidden; position: absolute; left: 711px; top: 570px; ">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="z-index: 104; position: absolute; left: 0px; top: 0px; ">
+                    </div>
+                    <div style="z-index: 105; position: absolute; left: 0px; top: 0px; ">
+                    </div>
+                    <div style="z-index: 106; position: absolute; left: 0px; top: 0px; ">
+                    </div>
+                    <div style="position: absolute; left: 0px; top: 0px; z-index: 1; ">
+                        <div style="position: absolute; left: 0px; top: 0px; z-index: 1; ">
+                            <div style="width: 256px; height: 256px; position: absolute; left: 199px; top: 58px; ">
+                                <img style="-webkit-user-select: none; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; width: 256px; height: 256px; " src="http://mt1.googleapis.com/vt?lyrs=m@169000000&amp;src=apiv3&amp;hl=en-US&amp;x=1&amp;y=2&amp;z=3&amp;apistyle=s.t%3A33%7Cs.e%3Al%7Cp.v%3Aoff&amp;s=Galil">
+                            </div>
+                            <div style="width: 256px; height: 256px; position: absolute; left: 199px; top: 314px; ">
+                                <img style="-webkit-user-select: none; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; width: 256px; height: 256px; " src="http://mt1.googleapis.com/vt?lyrs=m@169000000&amp;src=apiv3&amp;hl=en-US&amp;x=1&amp;y=3&amp;z=3&amp;apistyle=s.t%3A33%7Cs.e%3Al%7Cp.v%3Aoff&amp;s=Galile">
+                            </div>
+                            <div style="width: 256px; height: 256px; position: absolute; left: -57px; top: 58px; ">
+                                <img style="-webkit-user-select: none; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; width: 256px; height: 256px; " src="http://mt0.googleapis.com/vt?lyrs=m@169000000&amp;src=apiv3&amp;hl=en-US&amp;x=0&amp;y=2&amp;z=3&amp;apistyle=s.t%3A33%7Cs.e%3Al%7Cp.v%3Aoff&amp;s=Ga">
+                            </div>
+                            <div style="width: 256px; height: 256px; position: absolute; left: -57px; top: 314px; ">
+                                <img style="-webkit-user-select: none; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; width: 256px; height: 256px; " src="http://mt0.googleapis.com/vt?lyrs=m@169000000&amp;src=apiv3&amp;hl=en-US&amp;x=0&amp;y=3&amp;z=3&amp;apistyle=s.t%3A33%7Cs.e%3Al%7Cp.v%3Aoff&amp;s=Gal">
+                            </div>
+                            <div style="width: 256px; height: 256px; position: absolute; left: 455px; top: 58px; ">
+                                <img style="-webkit-user-select: none; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; width: 256px; height: 256px; " src="http://mt0.googleapis.com/vt?lyrs=m@169000000&amp;src=apiv3&amp;hl=en-US&amp;x=2&amp;y=2&amp;z=3&amp;apistyle=s.t%3A33%7Cs.e%3Al%7Cp.v%3Aoff&amp;s=">
+                            </div>
+                            <div style="width: 256px; height: 256px; position: absolute; left: 455px; top: 314px; ">
+                                <img style="-webkit-user-select: none; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; width: 256px; height: 256px; " src="http://mt0.googleapis.com/vt?lyrs=m@169000000&amp;src=apiv3&amp;hl=en-US&amp;x=2&amp;y=3&amp;z=3&amp;apistyle=s.t%3A33%7Cs.e%3Al%7Cp.v%3Aoff&amp;s=G">
+                            </div>
+                            <div style="width: 256px; height: 256px; position: absolute; left: 199px; top: -198px; ">
+                                <img style="-webkit-user-select: none; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; width: 256px; height: 256px; " src="http://mt1.googleapis.com/vt?lyrs=m@169000000&amp;src=apiv3&amp;hl=en-US&amp;x=1&amp;y=1&amp;z=3&amp;apistyle=s.t%3A33%7Cs.e%3Al%7Cp.v%3Aoff&amp;s=Gali">
+                            </div>
+                            <div style="width: 256px; height: 256px; position: absolute; left: 199px; top: 570px; ">
+                                <img style="-webkit-user-select: none; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; width: 256px; height: 256px; " src="http://mt1.googleapis.com/vt?lyrs=m@169000000&amp;src=apiv3&amp;hl=en-US&amp;x=1&amp;y=4&amp;z=3&amp;apistyle=s.t%3A33%7Cs.e%3Al%7Cp.v%3Aoff&amp;s=Galileo">
+                            </div>
+                            <div style="width: 256px; height: 256px; position: absolute; left: -57px; top: 570px; ">
+                                <img style="-webkit-user-select: none; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; width: 256px; height: 256px; " src="http://mt0.googleapis.com/vt?lyrs=m@169000000&amp;src=apiv3&amp;hl=en-US&amp;x=0&amp;y=4&amp;z=3&amp;apistyle=s.t%3A33%7Cs.e%3Al%7Cp.v%3Aoff&amp;s=Gali">
+                            </div>
+                            <div style="width: 256px; height: 256px; position: absolute; left: -57px; top: -198px; ">
+                                <img style="-webkit-user-select: none; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; width: 256px; height: 256px; " src="http://mt0.googleapis.com/vt?lyrs=m@169000000&amp;src=apiv3&amp;hl=en-US&amp;x=0&amp;y=1&amp;z=3&amp;apistyle=s.t%3A33%7Cs.e%3Al%7Cp.v%3Aoff&amp;s=G">
+                            </div>
+                            <div style="width: 256px; height: 256px; position: absolute; left: 455px; top: -198px; ">
+                                <img style="-webkit-user-select: none; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; width: 256px; height: 256px; " src="http://mt0.googleapis.com/vt?lyrs=m@169000000&amp;src=apiv3&amp;hl=en-US&amp;x=2&amp;y=1&amp;z=3&amp;apistyle=s.t%3A33%7Cs.e%3Al%7Cp.v%3Aoff&amp;s=Galileo">
+                            </div>
+                            <div style="width: 256px; height: 256px; position: absolute; left: 455px; top: 570px; ">
+                                <img style="-webkit-user-select: none; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; width: 256px; height: 256px; " src="http://mt0.googleapis.com/vt?lyrs=m@169000000&amp;src=apiv3&amp;hl=en-US&amp;x=2&amp;y=4&amp;z=3&amp;apistyle=s.t%3A33%7Cs.e%3Al%7Cp.v%3Aoff&amp;s=Ga">
+                            </div>
+                            <div style="width: 256px; height: 256px; position: absolute; left: -313px; top: 314px; ">
+                                <img style="-webkit-user-select: none; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; width: 256px; height: 256px; " src="http://mt1.googleapis.com/vt?lyrs=m@169000000&amp;src=apiv3&amp;hl=en-US&amp;x=7&amp;y=3&amp;z=3&amp;apistyle=s.t%3A33%7Cs.e%3Al%7Cp.v%3Aoff&amp;s=">
+                            </div>
+                            <div style="width: 256px; height: 256px; position: absolute; left: 711px; top: 314px; ">
+                                <img style="-webkit-user-select: none; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; width: 256px; height: 256px; " src="http://mt1.googleapis.com/vt?lyrs=m@169000000&amp;src=apiv3&amp;hl=en-US&amp;x=3&amp;y=3&amp;z=3&amp;apistyle=s.t%3A33%7Cs.e%3Al%7Cp.v%3Aoff&amp;s=Gali">
+                            </div>
+                            <div style="width: 256px; height: 256px; position: absolute; left: 711px; top: 58px; ">
+                                <img style="-webkit-user-select: none; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; width: 256px; height: 256px; " src="http://mt1.googleapis.com/vt?lyrs=m@169000000&amp;src=apiv3&amp;hl=en-US&amp;x=3&amp;y=2&amp;z=3&amp;apistyle=s.t%3A33%7Cs.e%3Al%7Cp.v%3Aoff&amp;s=Gal">
+                            </div>
+                            <div style="width: 256px; height: 256px; position: absolute; left: -313px; top: 58px; ">
+                                <img style="-webkit-user-select: none; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; width: 256px; height: 256px; " src="http://mt1.googleapis.com/vt?lyrs=m@169000000&amp;src=apiv3&amp;hl=en-US&amp;x=7&amp;y=2&amp;z=3&amp;apistyle=s.t%3A33%7Cs.e%3Al%7Cp.v%3Aoff&amp;s=Galileo">
+                            </div>
+                            <div style="width: 256px; height: 256px; position: absolute; left: 711px; top: -198px; ">
+                                <img style="-webkit-user-select: none; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; width: 256px; height: 256px; " src="http://mt1.googleapis.com/vt?lyrs=m@169000000&amp;src=apiv3&amp;hl=en-US&amp;x=3&amp;y=1&amp;z=3&amp;apistyle=s.t%3A33%7Cs.e%3Al%7Cp.v%3Aoff&amp;s=Ga">
+                            </div>
+                            <div style="width: 256px; height: 256px; position: absolute; left: -313px; top: -198px; ">
+                                <img style="-webkit-user-select: none; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; width: 256px; height: 256px; " src="http://mt1.googleapis.com/vt?lyrs=m@169000000&amp;src=apiv3&amp;hl=en-US&amp;x=7&amp;y=1&amp;z=3&amp;apistyle=s.t%3A33%7Cs.e%3Al%7Cp.v%3Aoff&amp;s=Galile">
+                            </div>
+                            <div style="width: 256px; height: 256px; position: absolute; left: -313px; top: 570px; ">
+                                <img style="-webkit-user-select: none; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; width: 256px; height: 256px; " src="http://mt1.googleapis.com/vt?lyrs=m@169000000&amp;src=apiv3&amp;hl=en-US&amp;x=7&amp;y=4&amp;z=3&amp;apistyle=s.t%3A33%7Cs.e%3Al%7Cp.v%3Aoff&amp;s=G">
+                            </div>
+                            <div style="width: 256px; height: 256px; position: absolute; left: 711px; top: 570px; ">
+                                <img style="-webkit-user-select: none; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; width: 256px; height: 256px; " src="http://mt1.googleapis.com/vt?lyrs=m@169000000&amp;src=apiv3&amp;hl=en-US&amp;x=3&amp;y=4&amp;z=3&amp;apistyle=s.t%3A33%7Cs.e%3Al%7Cp.v%3Aoff&amp;s=Galil">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 2px; margin-bottom: 2px; margin-left: 2px; margin-right: 5px; z-index: 12; position: absolute; left: 0px; bottom: 0px; ">
+                <a style="position: static; overflow-x: visible; overflow-y: visible; float: none; display: inline; " title="Click to see this area on Google Maps" target="_blank" href="http://maps.google.com/maps?ll=42.96796,-96.85&amp;z=3&amp;t=m">
+                    <div style="width: 62px; height: 24px; cursor: pointer; ">
+                        <img style="position: absolute; left: 0px; top: 0px; -webkit-user-select: none; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; width: 62px; height: 24px; " src="http://maps.gstatic.com/mapfiles/google_white.png">
+                    </div>
+                </a>
+            </div>
+            <div style="z-index: 1000; position: absolute; right: 0px; bottom: 0px; ">
+                <div style="position: static; overflow-x: visible; overflow-y: visible; float: none; color: black; font-family: Arial, sans-serif; -webkit-user-select: none; display: block; font-size: 11px; white-space: nowrap; text-align: right; padding-top: 2px; padding-right: 2px; padding-bottom: 2px; padding-left: 2px; direction: ltr; ">
+                    <span style="text-decoration: underline; cursor: pointer; color: rgb(119, 119, 204); display: none; ">Map Data</span>
+                    <span style="color: rgb(0, 0, 0); ">Map data ©2012 Tele Atlas</span>
+                    <span style="color: rgb(0, 0, 0); "> - </span>
+                    <a href="http://www.google.com/intl/en-US_US/help/terms_maps.html" target="_blank" style="color: rgb(119, 119, 204); ">Terms of Use</a>
+                </div>
+            </div>
+            <div style="position: absolute; font-family: Arial, sans-serif; z-index: 1000; overflow-x: visible; overflow-y: visible; -webkit-user-select: none; cursor: default; display: none; width: 300px; height: 180px; ">
+                <img style="-webkit-user-select: none; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; position: relative; opacity: 0.9; width: 300px; height: 180px; " src="http://maps.gstatic.com/mapfiles/android-dialog-bg.png">
+                <div style="font-weight: bold; color: white; text-align: center; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; position: absolute; left: 0px; top: 0px; font-size: 16px; width: 290px; ">
+                    Map Data
+                </div>
+                <div style="position: absolute; font-family: inherit; bottom: 15px; cursor: pointer; background-color: transparent; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; font-size: 14px; left: 90px; width: 120px; height: 40px; ">
+                    <img style="position: absolute; left: 0px; top: 0px; -webkit-user-select: none; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; width: 120px; height: 40px; " src="http://maps.gstatic.com/mapfiles/android-dialog-button.png"><span style="color: black; text-align: center; width: 100%; height: 100%; background-color: transparent; position: absolute; left: 0px; top: 0px; padding-top: 10px; ">Close</span>
+                </div>
+                <div style="color: white; text-align: center; position: absolute; left: 25px; top: 45px; font-size: 14px; width: 250px; ">
+                    Map data ©2012 Tele Atlas
+                </div>
+            </div>
+            <div class="gmnoprint" style="z-index: 10; margin-top: 5px; margin-right: 5px; margin-bottom: 5px; margin-left: 5px; -webkit-user-select: none; position: absolute; bottom: 75px; left: 0px; " controlwidth="19" controlheight="47">
+                <div class="gmnoprint" controlwidth="0" controlheight="0" style="display: none; position: absolute; ">
+                    <img src="http://maps.gstatic.com/mapfiles/rotate.png" style="-webkit-user-select: none; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; cursor: pointer; width: 20px; height: 20px; " title="Rotate map 90 degrees">
+                </div>
+                <div class="gmnoprint" controlwidth="19" controlheight="42" style="position: absolute; left: 0px; top: 5px; ">
+                    <img style="-webkit-user-select: none; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; width: 19px; height: 42px; " src="http://maps.gstatic.com/mapfiles/szc3d.png">
+                    <div style="position: absolute; left: 0px; top: 0px; width: 19px; height: 21px; cursor: pointer; background-color: white; opacity: 0.01; " title="Zoom in">
+                    </div>
+                    <div style="position: absolute; left: 0px; top: 21px; width: 19px; height: 21px; cursor: pointer; background-color: white; opacity: 0.01; " title="Zoom out">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

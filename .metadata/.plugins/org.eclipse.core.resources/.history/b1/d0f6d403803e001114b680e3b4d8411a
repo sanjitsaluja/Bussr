@@ -1,0 +1,4 @@
+{% extends 'base.html' %}
+{% block head_links %}
+<link type="text/css" rel="stylesheet" href="/static/base.css" />
+{% end block %}

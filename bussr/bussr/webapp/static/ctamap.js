@@ -7,9 +7,10 @@ var BusStopFetcher = function (resultHandler) {
             return '/ws/stops/' + lat + ',' + lng + '/';
         },
 
+		// abort the pending ajax operation
         abortAjax : function() {
             if (this.ajaxObj) {
-                this.ajaxObj.abort();
+				this.ajaxObj.abort();
             }
         },
 
@@ -40,7 +41,8 @@ var BusStopFetcher = function (resultHandler) {
 var earthQuakeMap = {
     map : null,
     markers : [],
-    stopFetcher : null,
+    busStopFetcher : null,
+	searchDelay : null,
 
     stopFetcherGotStops : function(stops) {
 		this.clearAllMarkers();
@@ -55,12 +57,10 @@ var earthQuakeMap = {
 	},
     
     searchForStopsAroundCenter : function(center) {
-		this.stopFetcher.getStopsForLatLng(center.lat(), center.lng());
+		this.busStopFetcher.getStopsForLatLng(center.lat(), center.lng());
 	},
-
-    initializeMap : function() {
-		this.stopFetcher = BusStopFetcher(earthQuakeMap);
-		
+	
+	initializeGoogleMapHelper : function() {
 		var initialMapCenter = new google.maps.LatLng(41.87811, -87.62980);
         var myOptions = {
             zoom: 15,
@@ -72,12 +72,22 @@ var earthQuakeMap = {
                     myOptions
                    );
         var that = this;
+		
         google.maps.event.addListener(this.map, 'bounds_changed', 
 			function() {
-				that.searchAroundMapCenter();
+				that.handleBoundsChanged();
+			});	
+			
+		google.maps.event.addListener(this.map, 'dragstart', 
+			function() {
+				that.handleDragStart();
 			});
-        
-		this.searchForStopsAroundCenter(initialMapCenter);
+	},
+
+    initializeMap : function() {
+		// Create the bus stop fetcher with ourselves as the delegate
+		this.busStopFetcher = BusStopFetcher(earthQuakeMap);
+		this.initializeGoogleMapHelper();
     },
 
 	clearAllMarkers  : function() {
@@ -87,18 +97,71 @@ var earthQuakeMap = {
 			}
 		}
 	},
+	
+	//+-----------------------------------------------------------
+	// marker managing
+	//------------------------------------------------------------
+//    hideMarkers : function() {
+//		for (var i = 0; i < this.markers.length; i++) {
+//			if(this.markers[i].markerObj) {
+//				this.markers[i].markerObj.setVisible(false);
+//			}
+//		}
+//	},
 
+	displayBubble : function(marker)
+	{
+		console.log(marker)
+	},
+	
     addMarker : function(lat, lng) {
+		var that = this;
         position = new google.maps.LatLng(lat, lng);
-        this.markers.push(new google.maps.Marker({
+        marker = new google.maps.Marker({
             position: position, 
             map: this.map,
             draggable: false
-        }));
+        });
+		google.maps.event.addListener(marker, 'click', function() { 
+	    	that.displayBubble(marker); 
+	    });
+		this.markers.push(marker);
         return this.markers[this.markers.length-1];
     },
+	
+	// Private methods
+	// Abort the pending ajax fetch
+	abortPendingFetch : function() {
+		if(this.busStopFetcher) {
+	        this.busStopFetcher.abortAjax();
+	    }
+	},
+	
+	//+-----------------------------------------------------------
+	// event handlers
+	//------------------------------------------------------------
+	// Prevent overzealous firing
+	handleBoundsChanged : function() {
+		if (this.searchTimeout) {
+			clearTimeout(this.searchTimeout);
+		}	
+		var that = this;
+		this.searchTimeout = setTimeout(
+								function() { that.searchAroundMapCenter(); },
+								500);
+	},
+	
+	// Handle the dragging of the map
+	handleDragStart : function () {
+		this.abortPendingFetch();
+//		this.abortResultHandler();
+//		this.hideMarkers();
+//		this.hideBubble();
+//		this.changeStatus( "Loading...", true );
+	},
 };
 
+// When the document is ready initialize the map.
 $(document).ready(function() {
     earthQuakeMap.initializeMap();
 });
