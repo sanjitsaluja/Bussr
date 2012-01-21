@@ -60,12 +60,7 @@ var earthQuakeMap = {
     },
 	
 	stopFetcherGotStops: function(stops) {
-    	var stop;
-		this.clearAllMarkers();
-		for (var j = 0; j < stops.length; j++) {
-			stop = stops[j];
-			this.addMarker(stop);
-		}
+    	this.plotStops(stops);
 	},
 	
 	searchAroundMapCenter: function() {
@@ -78,7 +73,7 @@ var earthQuakeMap = {
 	
 	
 	
-	initializeGoogleMapHelper: function() {
+	initializeGoogleMapHelper : function() {
 		var that = this;
 		var initialMapCenter = new google.maps.LatLng(41.87811, -87.62980);
 		var myOptions = {
@@ -98,50 +93,42 @@ var earthQuakeMap = {
 		});
 	},
 	
-	initializeMap: function() {
+	initializeMap : function() {
 		// Create the bus stop fetcher with ourselves as the delegate
 		this.busStopFetcher = BusStopFetcher(earthQuakeMap);
 		this.initializeGoogleMapHelper();
 	},
 	
-	clearAllMarkers: function() {
+	plotStops : function(stops) {
+		this.deleteAllMarkers();
+		for (var j = 0; j < stops.length; j++) {
+			stop = stops[j];
+			console.log(stop);
+			this.addMarker(stop);
+		}
+	},
+
+	//+----------------------------------------------------------------
+	// Delete all marker from the map and our local set
+	//-----------------------------------------------------------------		
+	deleteAllMarkers : function() {
 		if (this.activeMarkers) {
-			for (var i = 0; i < this.activeMarkers.length; i++) {
+			for (var i in this.activeMarkers) {
 				if (this.activeMarkers[i]) {
-					this.activeMarkers[i].marker.setMap(null);
+					this.deleteMarker(i);
 				}
 			}
 		}
 	},
 	
-	//+-----------------------------------------------------------
-	// marker managing
-	//------------------------------------------------------------
-	//    hideMarkers : function() {
-	//		for (var i = 0; i < this.markers.length; i++) {
-	//			if(this.markers[i].markerObj) {
-	//				this.markers[i].markerObj.setVisible(false);
-	//			}
-	//		}
-	//	},
-	
 	displayBubble: function(marker) {
 		console.log(marker)
 	},
-
-	//+----------------------------------------------------------------
-	// Delete all marker from the map and our local set
-	//-----------------------------------------------------------------	
-	deleteAllMarkers: function() {
-		for (var i = 0; i < this.activeMarkers.length; i++) {
-			this.deleteMarker(this.activeMarkers[i].stopId);
-		}
-	},
-	
 	//+----------------------------------------------------------------
 	// Delete a marker from the map and our local set
 	//-----------------------------------------------------------------
 	deleteMarker: function(stopId){
+		console.log(this.activeMarkers.length);
 		if (this.activeMarkers[stopId]) {
 			if(this.activeMarkers[stopId].marker) {
 	    		this.activeMarkers[stopId].marker.setMap(null);
@@ -150,6 +137,7 @@ var earthQuakeMap = {
 	        this.activeMarkers[stopId] = null;
 	        delete this.activeMarkers[stopId];
 		}
+		console.log(this.activeMarkers.length);
 	},
 	
 	//+----------------------------------------------------------------

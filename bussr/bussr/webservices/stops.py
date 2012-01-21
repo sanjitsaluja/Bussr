@@ -22,4 +22,7 @@ class GetStops(BaseRequestHandler):
         dataSource = GFDataSource()
         parsedRows = dataSource.parsedResultsNear(lat, lng)
         jsonOut = json.dumps({'stops':parsedRows})
-        return HttpResponse(jsonOut)
+        return HttpResponse(
+            jsonOut,
+            content_type = 'application/javascript; charset=utf8'
+        )
