@@ -1,2 +1,0 @@
-{% extends 'base.html' %}
-{% head_links 'navbase.css' %}
