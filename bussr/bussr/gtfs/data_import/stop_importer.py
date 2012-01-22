@@ -2,8 +2,6 @@
 Created on Jan 21, 2012
 @author: sanjits
 '''
-import sys
-import os
 import csv
 from bussr.gtfs.models import Stop
 
@@ -23,8 +21,6 @@ class StopImporter(object):
         Parse the stops.txt gtfs file
         '''
         reader = csv.DictReader(open(self.filename, 'r'))
-        # Skip the header line
-        next(reader)
         for row in reader:
             stop = Stop()
             stop.stopId = row['stop_id']
@@ -39,12 +35,4 @@ class StopImporter(object):
             stop.parentStation = 'parent_station' in row and row['parent_station'] or None
             stop.wheelchairAccessible = 'wheelchair_boarding' in row and row['wheelchair_boarding'] or True
             stop.save()
-        
-        
-def importCTA():
-    filePath = os.path.dirname(__file__)
-    ctaFilename = os.path.join(filePath, 'cta/stops.txt')
-    print ctaFilename
-    stopImporter = StopImporter(ctaFilename)
-    stopImporter.parse()
     
