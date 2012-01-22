@@ -1,0 +1,9 @@
+Another option, not requiring additional apps, is to run:
+
+python manage.py reset <your_app>
+This will update the database tables for your app, but will completely destroy any data that existed in those tables. If the changes you made to your app model do not break your old schema (for instance, you added a new, optional field) you can simply dump the data before and reload it afterwards, like so:
+
+python manage.py dumpdata <your_app> > temp_data.json
+python manage.py reset <your_app>
+python manage.py loaddata temp_data.json
+If your changes break your old schema this won't work - in which case tools like south or django evolution are great.

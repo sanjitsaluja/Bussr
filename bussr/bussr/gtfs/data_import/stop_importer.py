@@ -1,0 +1,50 @@
+'''
+Created on Jan 21, 2012
+@author: sanjits
+'''
+import sys
+import os
+import csv
+from bussr.gtfs.models import Stop
+
+class StopImporter(object):
+    '''
+    Import stops.txt gtfs file
+    '''
+
+    def __init__(self, filename):
+        '''
+        Constructor
+        '''
+        self.filename = filename
+        
+    def parse(self):
+        '''
+        Parse the stops.txt gtfs file
+        '''
+        reader = csv.DictReader(open(self.filename, 'r'))
+        # Skip the header line
+        next(reader)
+        for row in reader:
+            stop = Stop()
+            stop.stopId = row['stop_id']
+            stop.stopCode = 'stop_code' in row and row['stop_code'] or None
+            stop.stopName = row['stop_name']
+            stop.stopDesc = 'stop_desc' in row and row['stop_desc'] or None
+            stop.lat = float(row['stop_lat'])
+            stop.lng = float(row['stop_lon'])
+            stop.zoneId = 'zone_id' in row and row['zone_id'] or None
+            stop.stopUrl = 'stop_url' in row and row['stop_url'] or None
+            stop.locationType = 'location_type' in row and int(row['location_type']) or 0
+            stop.parentStation = 'parent_station' in row and row['parent_station'] or None
+            stop.wheelchairAccessible = 'wheelchair_boarding' in row and row['wheelchair_boarding'] or True
+            stop.save()
+        
+        
+def importCTA():
+    filePath = os.path.dirname(__file__)
+    ctaFilename = os.path.join(filePath, 'cta/stops.txt')
+    print ctaFilename
+    stopImporter = StopImporter(ctaFilename)
+    stopImporter.parse()
+    
