@@ -1,0 +1,6 @@
+#!/home/sanjits/Projects/bussr/bin/python
+
+from dotcloud.cli import cli
+
+if __name__ == '__main__':
+    cli.main()
