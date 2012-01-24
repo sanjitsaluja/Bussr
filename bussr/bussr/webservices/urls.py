@@ -4,6 +4,7 @@ from django.conf.urls.defaults import patterns, include, url
 # from django.contrib import admin
 # admin.autodiscover()
 import stops
+import stopsrect
 
 urlpatterns = patterns('',
     # Examples:
@@ -16,6 +17,8 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
 
-    # Get stops in view port
+    # Get stops in view port using fixed distance
     url(r'^stops/([-+]?[0-9]*\.?[0-9]*),([-+]?[0-9]*\.?[0-9]*)/$', stops.service),
+    
+    url(r'^stopsrect/([-+]?[0-9]*\.?[0-9]*),([-+]?[0-9]*\.?[0-9]*)/([-+]?[0-9]*\.?[0-9]*),([-+]?[0-9]*\.?[0-9]*)/$', stopsrect.service),
 )

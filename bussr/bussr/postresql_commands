@@ -4,3 +4,11 @@ createlang plpgsql template_postgis
 psql -f /usr/share/postgresql/9.1/contrib/postgis-1.5/postgis.sql template_postgis
 psql -f /usr/share/postgresql/9.1/contrib/postgis-1.5/spatial_ref_sys.sql template_postgis
 
+# create a user named sanjits
+sudo -u postgres -- createuser --createdb sanjits
+
+psql -f /usr/local/pgsql-9.1/share/contrib/postgis-1.5/postgis.sql template_postgis
+psql -f /usr/local/pgsql-9.1/share/contrib/postgis-1.5/spatial_ref_sys.sql template_postgis
+createdb -T template_postgis bussr
+
+sudo su postgres -c '/usr/local/pgsql/bin/pg_ctl -D /usr/local/pgsql/data restart'

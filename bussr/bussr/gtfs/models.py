@@ -35,6 +35,7 @@ class Stop(models.Model):
     parentStation = models.CharField(max_length=20, blank=True, null=True)
     wheelchairAccessible = models.BooleanField(blank=True)
     objects = models.GeoManager()
+
     def __unicode__(self):
         return u'%s, %s' % (self.stopId, self.stopName)
 
@@ -131,5 +132,13 @@ class StopTimes(models.Model):
     dropOffType = models.IntegerField(null=True, blank=True)
     distanceTraveled = models.FloatField(null=True, blank=True)
 
-
+def encode_bussr_model(obj):
+    if isinstance(obj, Stop):
+        return [obj.stopId,
+            obj.stopName,
+            obj.lat,
+            obj.lng]
+    # and/or whatever else
+    else:
+        raise TypeError(repr(obj) + " is not JSON serializable")
 
