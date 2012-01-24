@@ -1,0 +1,6 @@
+psql -l
+createdb template_postgis
+createlang plpgsql template_postgis
+psql -f /usr/share/postgresql/9.1/contrib/postgis-1.5/postgis.sql template_postgis
+psql -f /usr/share/postgresql/9.1/contrib/postgis-1.5/spatial_ref_sys.sql template_postgis
+

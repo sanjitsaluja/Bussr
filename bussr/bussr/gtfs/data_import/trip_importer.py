@@ -37,14 +37,14 @@ class TripImporter(object):
     
     def routeForRow(self, row):
         routeId = row['route_id']
-        routes = Route.objects.filter('routeId = %s' % routeId)
+        routes = Route.objects.filter(routeId = routeId)
         assert len(routes) == 1
         return routes[0]
     
     
     def calendarForRow(self, row):
         serviceId = row['service_id']
-        services = Calendar.objects.filter('serviceId = %s' % serviceId)
+        services = Calendar.objects.filter(serviceId = serviceId)
         assert len(services) == 1
         return services[0]
     

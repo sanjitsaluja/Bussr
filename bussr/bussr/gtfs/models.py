@@ -1,4 +1,4 @@
-from django.db import models
+from django.contrib.gis.db import models
 
 # Create your models here.
 
@@ -13,10 +13,10 @@ class Agency(models.Model):
     agencyLang = models.CharField(max_length=2, null=True, blank=True)
     agencyPhone = models.CharField(max_length=20, null=True, blank=True)
     agencyFareUrl = models.URLField(null=True, blank=True)
-    
+
     def __unicode__(self):
         return self.agencyName
-    
+
 
 class Stop(models.Model):
     '''
@@ -28,12 +28,13 @@ class Stop(models.Model):
     stopDesc = models.CharField(max_length=100, blank=True, null=True)
     lat = models.FloatField()
     lng = models.FloatField()
+    point = models.PointField()
     zoneId = models.CharField(max_length=20, blank=True, null=True)
     stopUrl = models.URLField(blank=True, null=True)
     locationType = models.IntegerField()
     parentStation = models.CharField(max_length=20, blank=True, null=True)
-    wheelchairAccessible = models.BooleanField(blank=True) 
-    
+    wheelchairAccessible = models.BooleanField(blank=True)
+
     def __unicode__(self):
         return u'%s, %s' % (self.stopId, self.stopName)
 
@@ -47,7 +48,7 @@ ROUTETYPES = (
     (6, 'Gondola'),
     (7, 'Funicular'),
 )
-    
+
 class Route(models.Model):
     routeId = models.CharField(max_length=20, primary_key=True)
     agencyId = models.CharField(max_length=20, blank=True, null=True)
@@ -59,11 +60,11 @@ class Route(models.Model):
     routeUrl = models.URLField(blank=True, null=True)
     routeColor = models.CharField(max_length=10, blank=True, null=True)
     routeTextColor = models.CharField(max_length=10, blank=True, null=True)
-    
+
     def __unicode__(self):
         return u'%s, %s' % (self.routeId, self.routeLongName)
-    
-    
+
+
 class Calendar(models.Model):
     '''
     Model object representing a service entry (calendar.txt)
@@ -78,11 +79,11 @@ class Calendar(models.Model):
     sunday = models.BooleanField()
     startDate = models.DateField()
     endDate = models.DateField()
-    
+
     def __unicode__(self):
         return self.serviceId
 
-    
+
 class Shape(models.Model):
     '''
     Model object represeting a Shape (shapes.txt)
@@ -90,9 +91,10 @@ class Shape(models.Model):
     shapeId = models.CharField(max_length=20)
     lat = models.FloatField()
     lng = models.FloatField()
+    point = models.PointField()
     sequence = models.IntegerField()
     distanceTraveled = models.FloatField(null=True, blank=True)
-    
+
     def __unicode__(self):
         return u"%s %d" % (self.shapeId, self.sequence)
 
@@ -100,8 +102,8 @@ class Shape(models.Model):
 DIRECTIONID = (
     (0, 'DIR-0'),
     (1, 'DIR-1'),
-)    
-    
+)
+
 class Trip(models.Model):
     '''
     Model object representing a Trip (trips.txt)
@@ -114,4 +116,20 @@ class Trip(models.Model):
     directionId = models.IntegerField(choices=DIRECTIONID, null=True, blank=True)
     blockId = models.CharField(max_length=20, null=True, blank=True)
     shapeId = models.CharField(max_length=20, null=True, blank=True)
-    
+
+class StopTimes(models.Model):
+    '''
+    Model object representing stop_times.txt
+    '''
+    tripId = models.ForeignKey(Trip)
+    arrivalTime = models.TimeField()
+    departureTime = models.TimeField()
+    stopId = models.ForeignKey(Stop)
+    stopSequence = models.IntegerField()
+    headSign = models.CharField(max_length=50, null=True, blank=True)
+    pickType = models.IntegerField(null=True, blank=True)
+    dropOffType = models.IntegerField(null=True, blank=True)
+    distanceTraveled = models.FloatField(null=True, blank=True)
+
+
+
