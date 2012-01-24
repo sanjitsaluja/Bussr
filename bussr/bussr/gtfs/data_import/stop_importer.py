@@ -4,6 +4,7 @@ Created on Jan 21, 2012
 '''
 import csv
 from bussr.gtfs.models import Stop
+from django.contrib.gis.geos import Point
 
 class StopImporter(object):
     '''
@@ -29,6 +30,7 @@ class StopImporter(object):
             stop.stopDesc = 'stop_desc' in row and row['stop_desc'] or None
             stop.lat = float(row['stop_lat'])
             stop.lng = float(row['stop_lon'])
+            stop.point = Point(y=stop.lat, x=stop.lng)
             stop.zoneId = 'zone_id' in row and row['zone_id'] or None
             stop.stopUrl = 'stop_url' in row and row['stop_url'] or None
             stop.locationType = 'location_type' in row and int(row['location_type']) or 0

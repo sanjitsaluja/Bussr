@@ -34,7 +34,7 @@ class Stop(models.Model):
     locationType = models.IntegerField()
     parentStation = models.CharField(max_length=20, blank=True, null=True)
     wheelchairAccessible = models.BooleanField(blank=True)
-
+    objects = models.GeoManager()
     def __unicode__(self):
         return u'%s, %s' % (self.stopId, self.stopName)
 
@@ -94,7 +94,7 @@ class Shape(models.Model):
     point = models.PointField()
     sequence = models.IntegerField()
     distanceTraveled = models.FloatField(null=True, blank=True)
-
+    objects = models.GeoManager()
     def __unicode__(self):
         return u"%s %d" % (self.shapeId, self.sequence)
 
