@@ -9,7 +9,7 @@ import json
 
 # bussr
 from BaseRequestHandler import BaseRequestHandler
-from bussr.gtfs.models import Stop, encode_bussr_model
+from bussr.gtfs.models import Stop, ModelJSONEncoder
 
 logger = logging.getLogger(__name__)
 
@@ -24,8 +24,9 @@ def service(request,neLatParam,neLngParam, swLatParam, swLngParam):
 class GetStopsInRectangle(BaseRequestHandler):
     def service(self, request, nelat, nelng, swlat, swlng):
         boundsRect = Polygon.from_bbox((min(nelng, swlng), min(nelat,swlat), max(nelng, swlng), max(nelat, swlat)))
-        stops = Stop.objects.filter(point__within=boundsRect)
-        jsonOut = serializers.serialize('json', stops)
+        stopGeoQuerySet = Stop.objects.filter(point__within=boundsRect)
+        # jsonOut = serializers.serialize('json', stops)
+        jsonOut = json.dumps({'stops' : list(stopGeoQuerySet)}, cls=ModelJSONEncoder)
         return HttpResponse(
             jsonOut,
             content_type = 'application/javascript; charset=utf8'

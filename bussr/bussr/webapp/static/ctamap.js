@@ -6,6 +6,10 @@ var BusStopFetcher = function (resultHandler) {
         getStopUrl : function (lat, lng) {
             return '/ws/stops/' + lat + ',' + lng + '/';
         },
+        
+        getStopUrlForRect : function(lat1, lng1, lat2, lng2) {
+        	return '/ws/stopsrect/' + Math.min(lat1,lat2) + ',' + Math.min(lng1, lng2) + '/' + Math.max(lat1, lat2) + ',' + Math.max(lng1, lng2) + '/';
+        },
 
 		// abort the pending ajax operation
         abortAjax : function() {
@@ -16,6 +20,27 @@ var BusStopFetcher = function (resultHandler) {
 
         getStopsForLatLng : function(lat, lng) {
             var url = this.getStopUrl(lat, lng);
+            this.abortAjax();
+            this.ajaxObj = $.ajax({
+                url: url,
+                type: "GET",
+                dataType: "json"
+            });
+
+            this.ajaxObj.done(function(msg) {
+                if (resultHandler && resultHandler.stopFetcherGotStops) {
+                    resultHandler.stopFetcherGotStops(msg["stops"]);
+                }
+            });
+
+            this.ajaxObj.fail(function(jqXHR, textStatus) {
+                // TODO: handle error
+                console.log('ajax failed', jqXHR, textStatus);
+            });
+        },
+        
+        getStopsForRect : function(lat1, lng1, lat2, lng2) {
+            var url = this.getStopUrlForRect(lat1, lng1, lat2, lng2);
             this.abortAjax();
             this.ajaxObj = $.ajax({
                 url: url,
@@ -67,11 +92,18 @@ var earthQuakeMap = {
 		this.searchForStopsAroundCenter(this.map.getCenter());
 	},
 	
+	searchMapBounds : function() {
+		bounds = this.map.getBounds();
+		this.searchMapBoundsHelper(bounds.getNorthEast(), bounds.getSouthWest());
+	},
+	
+	searchMapBoundsHelper : function(corner1, corner2) {
+		this.busStopFetcher.getStopsForRect(corner1.lat(), corner1.lng(), corner2.lat(), corner2.lng());
+	},
+	
 	searchForStopsAroundCenter: function(center) {
 		this.busStopFetcher.getStopsForLatLng(center.lat(), center.lng());
 	},
-	
-	
 	
 	initializeGoogleMapHelper : function() {
 		var that = this;
@@ -198,7 +230,7 @@ var earthQuakeMap = {
 		}	
 		var that = this;
 		this.searchTimeout = setTimeout(
-								function() { that.searchAroundMapCenter(); },
+								function() { that.searchMapBounds(); },
 								500);
 	},
 	

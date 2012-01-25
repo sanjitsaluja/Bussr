@@ -1,4 +1,6 @@
 from django.contrib.gis.db import models
+import json
+from django.contrib.gis.db.models.query import GeoQuerySet
 
 # Create your models here.
 
@@ -132,13 +134,20 @@ class StopTimes(models.Model):
     dropOffType = models.IntegerField(null=True, blank=True)
     distanceTraveled = models.FloatField(null=True, blank=True)
 
-def encode_bussr_model(obj):
-    if isinstance(obj, Stop):
-        return [obj.stopId,
-            obj.stopName,
-            obj.lat,
-            obj.lng]
-    # and/or whatever else
-    else:
-        raise TypeError(repr(obj) + " is not JSON serializable")
+
+SIMPLE_TYPES = (int, long, float, bool, dict, basestring, list)
+class ModelJSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Stop):
+            return {
+                'stopId' : obj.stopId,
+                'stopName' : obj.stopName,
+                'lat' : obj.lat,
+                'lng' : obj.lng
+                }
+        elif obj is None or isinstance(obj, SIMPLE_TYPES):
+            return json.JSONEncoder.default(self, obj)
+        else:
+            print obj.__class__
+            return ''
 
