@@ -1,5 +1,7 @@
-from django.http import HttpResponse
+from django.views.generic.simple import direct_to_template
 
 def service(request,stopIdParam):
     stopId = int(stopIdParam)
-    return HttpResponse(stopId)
+    return direct_to_template(request,
+                              'stopdetails.html',
+                              None)
