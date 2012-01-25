@@ -1,4 +1,6 @@
 from django.contrib.gis.db import models
+import json
+from django.contrib.gis.db.models.query import GeoQuerySet
 
 # Create your models here.
 
@@ -35,6 +37,7 @@ class Stop(models.Model):
     parentStation = models.CharField(max_length=20, blank=True, null=True)
     wheelchairAccessible = models.BooleanField(blank=True)
     objects = models.GeoManager()
+
     def __unicode__(self):
         return u'%s, %s' % (self.stopId, self.stopName)
 
@@ -132,4 +135,19 @@ class StopTimes(models.Model):
     distanceTraveled = models.FloatField(null=True, blank=True)
 
 
+SIMPLE_TYPES = (int, long, float, bool, dict, basestring, list)
+class ModelJSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Stop):
+            return {
+                'stopId' : obj.stopId,
+                'stopName' : obj.stopName,
+                'lat' : obj.lat,
+                'lng' : obj.lng
+                }
+        elif obj is None or isinstance(obj, SIMPLE_TYPES):
+            return json.JSONEncoder.default(self, obj)
+        else:
+            print obj.__class__
+            return ''
 
