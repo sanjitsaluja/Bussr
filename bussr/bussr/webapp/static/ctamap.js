@@ -72,16 +72,18 @@ var earthQuakeMap = {
 	
     // resizes map div and triggers the Google Map API's resize event 
     resizeMap : function (mapDivId) {
-        var that = this;
+    	$("#" + mapDivId).css('height', 300);
+    	
+        /*var that = this;
         $(document).ready(function () {
     		console.log('resizeMap');
     		var oldVP = jQuery.extend(true, {}, that.viewport);
     		var h = $(window).height();
     	    var w = $(window).width();
-    	    var top = $("#"+mapDivId).position().top
+    	    var top = $("#"+mapDivId).position().top;
     	    $("#"+mapDivId).css('height',h-top);
     	    google.maps.event.trigger(that.mapObj, 'resize');
-    	});
+    	});*/
     },
 	
 	stopFetcherGotStops: function(stops) {

@@ -1,17 +1,18 @@
 {% extends 'base.html' %}
+{% block meta %}
+{{ block.super }}
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+{% endblock %}
 {% block head_links %}
-<link type="text/css" rel="stylesheet" href="/static/mobilesite.css" />
+	{{block.super}}
+	<link type="text/css" rel="stylesheet" href="/static/mobilesite.css" />
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
+{% endblock %}
+{% block head_scripts %}
+	{{block.super}}
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
 {% endblock %}
 {% block bodycontent %}
-<div id="main-nav" class="clearfix">
-	<div class="nav-content">
-		<div class="top-tabs">
-			<a class="tab" href='/'>Map</a>
-			<a class="tab" href='/Favorites/'>Favorites</a>
-			<a class="tab" href='/Recents/'>Recents</a>
-			<a class="tab" href='/Search/'>Search</a>
-		</div>
-	</div>
-</div>
 {% block content %} {% endblock %}
 {% endblock %}
