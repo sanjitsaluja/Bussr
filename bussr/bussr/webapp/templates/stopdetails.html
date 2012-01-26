@@ -1,10 +1,25 @@
 {% extends 'mobilenavbase.html' %}
-{% block meta %}
-{% endblock %}
-{% block head_scripts %}
-{% endblock %}
 {% block content %}
-    <div id="stop_details">
-    	This is the stop details page
-    </div>
+<div data-role="page" id="details_page" data-title"Stop">
+
+	<div data-role="header" class="page_header">
+		<a data-rel="back" href="#">Back</a>
+		<h1>Stop</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" class="page_content">
+		<p>astop asdf asdf</p>
+	</div><!-- /content -->
+
+	<div data-role="footer" class="page_footer" data-position="fixed" data-id="footer">
+		<div data-role="navbar">
+			<ul>
+				<li><a class="ui-btn-active" href="#">Map</a></li>
+				<li><a href="#">Favorites</a></li>
+				<li><a href="#">Recent</a></li>
+				<li><a href="#">Search</a></li>
+			</ul>
+		</div>
+	</div><!-- /footer -->
+</div><!-- /page -->
 {% endblock %}

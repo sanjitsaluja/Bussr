@@ -11,36 +11,28 @@
     </script>
 {% endblock %}
 {% block content %}
-<!-- Start of first page -->
-<div data-role="page" id="foo">
 
-	<div data-role="header">
-		<h1>Foo</h1>
-	</div><!-- /header -->
+<div data-role="page" id="map_page" data-title"Map">
 
-	<div data-role="content">	
-		<p>Thia app is under construction.</p>		
-		<p>Still interested? Go here <a href="/">bar</a></p>	
-	</div><!-- /content -->
-
-	<div data-role="footer">
-		<h4>Page Footer</h4>
-	</div><!-- /footer -->
-</div><!-- /page -->
-
-
-<div data-role="page" id="map" data-title"Map">
-
-	<div data-role="header">
+	<div data-role="header" class="page_header">
+		<a href="">GPS</a>
 		<h1>Map</h1>
 	</div><!-- /header -->
 
-	<div data-role="content" id="map_canvas">
-		<p>Page content goes here.</p>		
+	<div data-role="content" class="page_content">
+		<div id="map_canvas">
+		</div>
 	</div><!-- /content -->
 
-	<div data-role="footer">
-		<h4>Page Footer</h4>
+	<div data-role="footer" class="page_footer" data-position="fixed" data-id="footer">
+		<div data-role="navbar">
+			<ul>
+				<li><a class="ui-btn-active" href="#">Map</a></li>
+				<li><a href="#">Favorites</a></li>
+				<li><a href="#">Recent</a></li>
+				<li><a href="#">Search</a></li>
+			</ul>
+		</div>
 	</div><!-- /footer -->
 </div><!-- /page -->
 {% endblock %}
