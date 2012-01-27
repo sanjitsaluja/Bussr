@@ -160,21 +160,8 @@ var earthQuakeMap = {
 	
     // resizes map div and triggers the Google Map API's resize event 
     resizeMap : function (mapDivId) {
-    	//$("#" + mapDivId).css('height', 300);
-    	
-        var that = this;
-        $(document).ready(function () {
-    		console.log('resizeMap');
-    		var oldVP = jQuery.extend(true, {}, that.viewport);
-    		var h = $(window).height();
-    	    var w = $(window).width();
-    	    var top = $("#"+mapDivId).position().top;
-    	    var footerHeight = $('.page_footer').height();
-    	    var headerHeight = $('.page_header').height()
-    	    console.log(h, top, footerHeight, headerHeight);
-    	    $("#"+mapDivId).css('height',h-footerHeight-headerHeight-4);
-    	    google.maps.event.trigger(that.mapObj, 'resize');
-    	});
+    	var that = this;
+		google.maps.event.trigger(that.mapObj, 'resize');
     },
 	
 	stopFetcherGotStops: function(stops) {
@@ -263,13 +250,14 @@ var earthQuakeMap = {
 
 // When the document is ready initialize the map.
 $(document).ready(function() {
+	console.log("Initializeing page")
     earthQuakeMap.initializeMap();
     var mapDivId = 'map_canvas';
     earthQuakeMap.resizeMap(mapDivId);
     
     $(window).resize(function() {
         var mapDivId = 'map_canvas';
-        earthQuakeMap.resizeMap(mapDivId);
+        // earthQuakeMap.resizeMap(mapDivId);
     });
 });
 

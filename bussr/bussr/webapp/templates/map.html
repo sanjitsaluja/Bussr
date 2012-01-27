@@ -1,38 +1,43 @@
-{% extends 'mobilenavbase.html' %}
-{% block meta %}
-	<title>Map</title>
-    {{block.super}}
-{% endblock %}
-{% block head_scripts %}
-	{{block.super}}
-    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false">
-    </script>
+<!DOCTYPE html> 
+<html lang="en"> 
+	<head>
+    	<meta charset="utf-8">
+      <!-- JQM -->
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<link rel="stylesheet" type="text/css" href="http://code.jquery.com/mobile/1.0rc1/jquery.mobile-1.0rc1.min.css" />
+	<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/mobile/1.0rc1/jquery.mobile-1.0rc1.min.js"></script>
+     <!-- END OF JQM -->
+    <!-- Google Api V3 Declaration -->    
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/geocode/output?parameters"></script>
     <script type="text/javascript" src="/static/ctamap.js">
     </script>
-{% endblock %}
-{% block content %}
-
-<div data-role="page" id="map_page" data-title"Map">
-
-	<div data-role="header" class="page_header">
-		<a href="">GPS</a>
-		<h1>Map</h1>
-	</div><!-- /header -->
-
-	<div data-role="content" class="page_content">
-		<div id="map_canvas">
-		</div>
-	</div><!-- /content -->
-
-	<div data-role="footer" class="page_footer" data-position="fixed" data-id="footer">
-		<div data-role="navbar">
-			<ul>
-				<li><a class="ui-btn-active" href="#">Map</a></li>
-				<li><a href="#">Favorites</a></li>
-				<li><a href="#">Recent</a></li>
-				<li><a href="#">Search</a></li>
-			</ul>
-		</div>
-	</div><!-- /footer -->
-</div><!-- /page -->
-{% endblock %}
+    <!-- End of Google Api V3 Declaration -->  
+<style>
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+#map_result{width:100%; height:100%;}
+#map_canvas{width:100%; height:84%;padding:0;}
+  </style>
+</head>
+<body>
+	<div data-role="page" id="map_result">
+    	<div data-role="header">
+        	<h1>MAP V3 Sample</h1>
+        </div>
+		<div id="map_canvas"></div>
+		<div data-role="footer" class="page_footer" data-id="footer">
+			<div data-role="navbar">
+				<ul>
+					<li><a class="ui-btn-active" href="#">Map</a></li>
+					<li><a href="#">Favorites</a></li>
+					<li><a href="#">Recent</a></li>
+					<li><a href="#">Search</a></li>
+				</ul>
+			</div>
+		</div><!-- /footer -->	
+    </div>
+</body>
+</html>
