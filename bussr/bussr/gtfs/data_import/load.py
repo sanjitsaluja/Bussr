@@ -6,6 +6,7 @@ from bussr.gtfs.data_import.agency_importer import AgencyImporter
 from bussr.gtfs.data_import.calendar_importer import CalendarImporter
 from bussr.gtfs.data_import.shape_importer import ShapeImporter
 from bussr.gtfs.data_import.trip_importer import TripImporter
+from bussr.gtfs.data_import.stoptime_importer import StopTimeImporter
 
 def importAgencies():
     filePath = os.path.dirname(__file__)
@@ -52,6 +53,13 @@ def importTrips():
     print 'Importing trips from ', ctaFilename
     importer = TripImporter(ctaFilename)
     importer.parse()
+    
+def importStopTimes():
+    filePath = os.path.dirname(__file__)
+    ctaFilename = os.path.join(filePath, 'cta/stop_times.txt')
+    print 'Importing stop times from ', ctaFilename
+    stopImporter = StopTimeImporter(ctaFilename)
+    stopImporter.parse()
 
 def importall():
     agency = importAgencies()
@@ -60,3 +68,4 @@ def importall():
     importCalendar()
     importShapes()
     importTrips()
+    importStopTimes()

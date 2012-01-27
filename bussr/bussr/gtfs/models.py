@@ -120,17 +120,33 @@ class Trip(models.Model):
     blockId = models.CharField(max_length=20, null=True, blank=True)
     shapeId = models.CharField(max_length=20, null=True, blank=True)
 
-class StopTimes(models.Model):
+class StopTime(models.Model):
     '''
     Model object representing stop_times.txt
     '''
-    tripId = models.ForeignKey(Trip)
-    arrivalTime = models.TimeField()
-    departureTime = models.TimeField()
-    stopId = models.ForeignKey(Stop)
+    
+    # Trip object that identifies the vehicle stop time
+    trip = models.ForeignKey(Trip)
+    
+    # The arrival_time specifies the arrival time at a 
+    # specific stop for a specific trip on a route.
+    # The time is measured from "noon minus 12h
+    arrivalSeconds = models.IntegerField()
+    
+    # The arrival_time specifies the dep time at a 
+    # specific stop for a specific trip on a route.
+    # The time is measured from "noon minus 12h
+    departureSeconds = models.IntegerField()
+    
+    # The stop obj field contains an ID that uniquely 
+    # identifies a stop. Multiple routes may use the same stop
+    stop = models.ForeignKey(Stop)
+    
+    # The stop_sequence field identifies the order of the 
+    # stops for a particular trip.
     stopSequence = models.IntegerField()
     headSign = models.CharField(max_length=50, null=True, blank=True)
-    pickType = models.IntegerField(null=True, blank=True)
+    pickUpType = models.IntegerField(null=True, blank=True)
     dropOffType = models.IntegerField(null=True, blank=True)
     distanceTraveled = models.FloatField(null=True, blank=True)
 

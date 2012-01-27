@@ -1,6 +1,6 @@
 {% extends 'mobilenavbase.html' %}
 {% block content %}
-<div data-role="page" id="details_page" data-title"Stop">
+<div data-role="page" id="page-stop-details" data-title"Stop">
 
 	<div data-role="header" class="page_header">
 		<a data-rel="back" href="#">Back</a>
@@ -8,7 +8,26 @@
 	</div><!-- /header -->
 
 	<div data-role="content" class="page_content">
-		<p>astop asdf asdf</p>
+		<ul data-role="listview" data-inset="true">
+			<li>{{stop.stopName}}</li>
+			<li>Stop # {{stop.stopId}}</li>
+		</ul>
+		<ul data-role="listview" data-inset="true">
+			<li>{{stop.stopName}}</li>
+			<li>Stop ID {{stop.stopId}}</li>
+		</ul> 
+		
+		<ul data-role="listview" data-inset="true">
+			<li>
+				<a href="#">Add to favorites</a>
+			</li>
+			<li>
+				<a href="#">Filter & sort routes</a>
+			</li>
+			<li>
+				<a href="#">See nearby stops</a>
+			</li>
+		</ul>
 	</div><!-- /content -->
 
 	<div data-role="footer" class="page_footer" data-id="footer">
