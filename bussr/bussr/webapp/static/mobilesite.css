@@ -2,3 +2,26 @@
 {
 	/*text-align: center;*/
 }
+
+
+/* Bubble */
+#bubble {
+	text-align: center;
+	border: 1px solid black; 
+	margin-top: 8px; 
+	background-color: #FFFFFF; 
+	padding: 5px;
+	cursor: pointer;
+}
+
+#bubble_routes_served {
+	padding-top:5px;
+}
+
+.bubble_route_id
+{
+	font-weight: bold;
+	text-align:center;
+	padding: 2px;
+}
+/* end Bubble */

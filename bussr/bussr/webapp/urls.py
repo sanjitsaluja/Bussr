@@ -22,4 +22,6 @@ urlpatterns = patterns('',
     url(r'^maps/', mapview.service),
     url(r'^list/([-+]?[0-9]*\.?[0-9]*),([-+]?[0-9]*\.?[0-9]*)/$', listview.service),
     url(r'^stop/([0-9]+)/', stopdetails.service),
+    url(r'^trip/([0-9]+)/', stopdetails.service),
+    url(r'^bubble/([0-9]+)/', stopdetails.serviceBubble)
 )

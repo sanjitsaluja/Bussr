@@ -1,18 +1,59 @@
 {% extends 'base.html' %}
+
 {% block meta %}
 {{ block.super }}
-<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">
+	<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">
 {% endblock %}
+
 {% block head_links %}
 	{{block.super}}
 	<link type="text/css" rel="stylesheet" href="/static/mobilesite.css" />
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.css" />
 {% endblock %}
+
 {% block head_scripts %}
 	{{block.super}}
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
-	<script type="text/javascript" src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
+	<script>
+	$(document).bind("mobileinit", function() {
+		$.mobile.ajaxLinksEnabled = false;
+		$.mobile.ajaxEnabled = false;
+	});
+	
+	/*
+	 $(document).bind("mobileinit", function(){
+            $.extend($.mobile, 
+            	{ 
+                  ajaxEnabled : false,
+                  ajaxLinksEnabled : false,
+                  pushStateEnabled : false
+             	}
+             );
+     	}); 
+     	
+     	$(document).ready(function() {
+  // disable ajax nav
+  $.mobile.ajaxLinksEnabled = false;
+ });
+	
+	$(document).ready(function () {
+	    $('div').live('pagehide', function (event, ui) {
+	        var $this = $(this);
+	        if ($this.attr('ID') !== undefined && $this.attr('data-cache') !== undefined && $this.attr('data-cache') == "never") {
+	            var page = $this.attr('ID');
+	            $(document.getElementById(page)).remove();
+	        }
+	    });
+	});*/
+	
+	</script>
+	<script src="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.js"></script>
+	<script type="text/javascript" src="/static/jquery.cookie.js"></script>
 {% endblock %}
+
 {% block bodycontent %}
-{% block content %} {% endblock %}
+
+{% block content %}
+{% endblock %}
+
 {% endblock %}

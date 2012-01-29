@@ -25,8 +25,10 @@ class TripImporter(object):
         for row in reader:
             trip = Trip()
             trip.tripId = row['trip_id']
+            trip.routeId = row['route_id']
             trip.route = self.routeForRow(row)
             trip.service = self.calendarForRow(row)
+            trip.serviceId = row['service_id']
             trip.headSign = csvValueOrNone(row, 'trip_headsign')
             trip.shortName = csvValueOrNone(row, 'trip_short_name')
             trip.directionId = 'direction_id' in row and row['direction_id'] or None

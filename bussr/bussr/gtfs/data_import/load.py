@@ -15,7 +15,6 @@ def importAgencies():
     importer = AgencyImporter(filename)
     importer.parse()
     agencies = Agency.objects.all()
-    print agencies
     assert len(agencies) == 1
     return agencies[0]
     
@@ -54,11 +53,11 @@ def importTrips():
     importer = TripImporter(ctaFilename)
     importer.parse()
     
-def importStopTimes():
+def importStopTimes(stopIdsToImport = None):
     filePath = os.path.dirname(__file__)
     ctaFilename = os.path.join(filePath, 'cta/stop_times.txt')
     print 'Importing stop times from ', ctaFilename
-    stopImporter = StopTimeImporter(ctaFilename)
+    stopImporter = StopTimeImporter(ctaFilename, stopIdsToImport)
     stopImporter.parse()
 
 def importall():
@@ -66,6 +65,6 @@ def importall():
     importStops()
     importRoutes(agency)
     importCalendar()
-    importShapes()
+    # importShapes()
     importTrips()
-    importStopTimes()
+    # importStopTimes()

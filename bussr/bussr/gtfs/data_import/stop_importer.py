@@ -8,7 +8,7 @@ from django.contrib.gis.geos import Point
 
 class StopImporter(object):
     '''
-    Import stops.txt gtfs file
+    Import stops.txt gtfs file into the Stop table
     '''
 
     def __init__(self, filename):
@@ -37,4 +37,3 @@ class StopImporter(object):
             stop.parentStation = 'parent_station' in row and row['parent_station'] or None
             stop.wheelchairAccessible = 'wheelchair_boarding' in row and row['wheelchair_boarding'] or True
             stop.save()
-    
