@@ -53,11 +53,11 @@ def importTrips():
     importer = TripImporter(ctaFilename)
     importer.parse()
     
-def importStopTimes(stopIdsToImport = None):
+def importStopTimes(stopIdsToImport = None, tripIdsToImport = None):
     filePath = os.path.dirname(__file__)
     ctaFilename = os.path.join(filePath, 'cta/stop_times.txt')
     print 'Importing stop times from ', ctaFilename
-    stopImporter = StopTimeImporter(ctaFilename, stopIdsToImport)
+    stopImporter = StopTimeImporter(ctaFilename, stopIdsToImport, tripIdsToImport)
     stopImporter.parse()
 
 def importall():

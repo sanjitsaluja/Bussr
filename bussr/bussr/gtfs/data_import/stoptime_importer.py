@@ -11,12 +11,13 @@ class StopTimeImporter(object):
     Import stops.txt gtfs file
     '''
 
-    def __init__(self, filename, stopIdsToImport=None):
+    def __init__(self, filename, stopIdsToImport=None, tripIdsToImport=None):
         '''
         Constructor
         '''
         self.filename = filename
         self.stopIdsToImport = stopIdsToImport
+        self.tripIdsToImport = tripIdsToImport
         
         
     def parse(self):
@@ -26,11 +27,12 @@ class StopTimeImporter(object):
         reader = csv.DictReader(open(self.filename, 'r'))
         for row in reader:
             stopId = row['stop_id']
-            if self.stopIdsToImport is None or stopId in self.stopIdsToImport:
+            tripId = row['trip_id']
+            if (self.stopIdsToImport is None or stopId in self.stopIdsToImport) and (self.tripIdsToImport is None or tripId in self.tripIdsToImport):
                 stopTime = StopTime()
-                trip = self.tripForId(row['trip_id'])
+                trip = self.tripForId(tripId)
                 stopTime.trip = trip
-                stopTime.tripId = row['trip_id']
+                stopTime.tripId = tripId
                 stopTime.routeId = trip.routeId
                 stopTime.stop = self.stopForId(row['stop_id'])
                 stopTime.stopId = row['stop_id']

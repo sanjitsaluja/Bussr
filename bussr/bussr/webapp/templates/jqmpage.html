@@ -1,0 +1,38 @@
+{% extends 'mobilenavbase.html' %}
+
+{% block content %}
+<div data-role="page" id="page" data-cache="never">
+	
+	<div data-role="header" 
+		 class="page_header" 
+		 data-position="inline"
+		 id="page_header">
+		{% block page_header %}
+		{% endblock %}
+	</div><!-- /header -->
+
+	<div data-role="content" class="page_content" id="page_content">
+		{% block page_content %}
+		{% endblock %}
+	</div><!-- /content -->
+
+	{% block page_footer %}
+	<!--
+	<div data-role="footer" 
+		class="page_footer" 
+		data-id="footer" 
+		data-position="fixed" 
+		id="page_footer">
+		<div data-role="navbar">
+			<ul>
+				<li><a class="ui-btn-active" href="#">Map</a></li>
+				<li><a href="#">Favorites</a></li>
+				<li><a href="#">Recent</a></li>
+				<li><a href="#">Search</a></li>
+			</ul>
+		</div>
+	</div><!-- /footer -->
+	{% endblock %}
+	
+</div><!-- /page -->
+{% endblock %}

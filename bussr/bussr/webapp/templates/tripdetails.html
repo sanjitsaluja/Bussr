@@ -1,0 +1,29 @@
+{% extends 'jqmpage.html' %}
+
+{% block title %}
+{{routeId}} - {{headSign}}
+{% endblock %}
+
+{% block page_header %}
+	<a data-role="button" href="#" data-icon="arrow-l" data-rel="back">Back</a>
+	<h1>{{routeId}} to {{headSign}}</h1>
+	<!-- <a data-icon="refresh" data-role="button" href="#">Refresh</a> -->
+{% endblock %}
+
+
+{% block page_content %}
+	<ul data-role="listview" data-inset="true">
+		<li>{{routeId}} to {{headSign}}</li>
+		<li>service days - mon, wed, fri</li>
+	</ul>
+	<ul data-role="listview" data-inset="true">
+	{% for stop in stops %}
+		<li>
+			<a href='/stop/{{stop.stopId}}/'>
+				{{stop.stopId}} - 
+				{{stop.stopName}}
+			</a>
+		</li>
+	{% endfor %}
+	</ul> 
+{% endblock %}

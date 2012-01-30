@@ -19,7 +19,7 @@
 	<ul data-role="listview" data-inset="true">
 		{% for time in times %}
 			<li>
-				<a href='/trip/{{time.routeId}}'>
+				<a href='/trip/{{time.tripId}}/stop/{{stop.stopId}}/'>
 					{{time.routeId}} - 
 					{{time.headSign}} - 
 					{{time.displayTimeDelta}}

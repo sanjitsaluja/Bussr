@@ -446,6 +446,9 @@ class Trip(models.Model):
     TODO: Should this be a Foreign key ref?
     '''
     shapeId = models.CharField(max_length=20, null=True, blank=True)
+    
+    def __unicode__(self):
+        return u'%s, %s' % (self.tripId, self.routeId, self.headSign)
 
 
 class StopTime(models.Model):

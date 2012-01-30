@@ -6,6 +6,7 @@ from django.conf.urls.defaults import patterns, include, url
 import mapview
 import listview
 import stopdetails
+import tripdetails
 
 urlpatterns = patterns('',
     # Examples:
@@ -21,7 +22,8 @@ urlpatterns = patterns('',
     url(r'^$', mapview.service),
     url(r'^maps/', mapview.service),
     url(r'^list/([-+]?[0-9]*\.?[0-9]*),([-+]?[0-9]*\.?[0-9]*)/$', listview.service),
-    url(r'^stop/([0-9]+)/', stopdetails.service),
-    url(r'^trip/([0-9]+)/', stopdetails.service),
+    url(r'^stop/([0-9]+)/$', stopdetails.service),
+    url(r'^trip/([0-9]+)/$', tripdetails.service),
+    url(r'^trip/([0-9]+)/stop/([0-9]+)/$', tripdetails.service),
     url(r'^bubble/([0-9]+)/', stopdetails.serviceBubble)
 )

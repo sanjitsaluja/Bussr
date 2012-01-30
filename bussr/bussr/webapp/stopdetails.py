@@ -41,6 +41,7 @@ def service(request,stopIdParam):
             stopTimeOut['headSign'] = time.headSign
             stopTimeOut['displayTime'] = timeStringForSeconds(time.arrivalSeconds)
             stopTimeOut['displayTimeDelta'] = timeDeltaStringForSeconds(time.arrivalSeconds)
+            stopTimeOut['tripId'] = trip.tripId
             stopTimesOut.append(stopTimeOut)
             
     return render_to_response('stopdetails.html',

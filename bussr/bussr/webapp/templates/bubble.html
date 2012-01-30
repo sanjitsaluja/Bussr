@@ -1,0 +1,8 @@
+<div id="bubble" onclick="window.location = '/stop/{{stop.stopId}}/'">
+	<span id="bubble_stop_name">{{stop.stopName}}</span>
+		<div id="bubble_routes_served">
+		{% for routeId in routeIds %}
+			<span class="bubble_route_id">{{routeId}}</span>
+		{% endfor %}		
+	</div>
+</div>
