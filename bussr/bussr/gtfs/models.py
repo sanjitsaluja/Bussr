@@ -363,23 +363,13 @@ class Trip(models.Model):
     '''
     tripId = models.CharField(max_length=20, primary_key=True)
     
-    ''' 
-    Route foreign key
-    '''
-    route = models.ForeignKey(Route)
-    
     '''
     Route id for ease of access
     '''
     routeId = models.CharField(max_length=20)
-    
+        
     '''
-    Service foreign key
-    '''
-    service = models.ForeignKey(Calendar)
-    
-    '''
-    Service id for ease of access
+    Service id in the calendar
     '''
     serviceId = models.CharField(max_length=20)
     
@@ -443,12 +433,19 @@ class Trip(models.Model):
     
     ''' O
     The shape_id field contains an ID that defines a shape for the trip
-    TODO: Should this be a Foreign key ref?
     '''
     shapeId = models.CharField(max_length=20, null=True, blank=True)
     
     def __unicode__(self):
         return u'%s, %s' % (self.tripId, self.routeId, self.headSign)
+    
+    @property
+    def route(self):
+        return Route.objects.get(routeId=self.routeId)
+        
+    @property
+    def service(self):
+        return Calendar.objects.get(serviceId=self.serviceId)
 
 
 class StopTime(models.Model):
@@ -457,12 +454,7 @@ class StopTime(models.Model):
     '''
     
     '''
-    Trip object that identifies the vehicle stop time
-    '''
-    trip = models.ForeignKey(Trip)
-    
-    '''
-    Trip id for ease of access
+    Trip id for ease of access. identifies the vehicle stop times
     '''
     tripId = models.CharField(max_length=20)
     
@@ -525,11 +517,6 @@ class StopTime(models.Model):
     
     # The stop obj field contains an ID that uniquely 
     # identifies a stop. Multiple routes may use the same stop
-    stop = models.ForeignKey(Stop)
-    
-    '''
-    stop id 
-    '''
     stopId = models.CharField(max_length=20)
     
     # The stop_sequence field identifies the order of the 
@@ -557,6 +544,21 @@ class StopTime(models.Model):
     be used to show reverse travel along a route.
     '''
     distanceTraveled = models.FloatField(null=True, blank=True)
+    
+    @property
+    def route(self):
+        return Route.objects.get(routeId=self.routeId)
+        
+    @property
+    def trip(self):
+        return Trip.objects.get(tripId=self.tripId)
+        
+    @property
+    def stop(self):
+        return Stop.objects.get(stopId=self.stopId)
+        
+    def __unicode__(self):
+        return u'%s, %s, %s' % (self.routeId, self.headSign, self.stop.stopName)
 
 
 SIMPLE_TYPES = (int, long, float, bool, dict, basestring, list)

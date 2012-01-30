@@ -5,7 +5,7 @@ Created on Jan 22, 2012
 '''
 
 import csv
-from bussr.gtfs.models import Trip, Route, Calendar
+from bussr.gtfs.models import Trip
 from bussr.gtfs.data_import.gtfsimporterutils import *
 
 class TripImporter(object):
@@ -21,13 +21,13 @@ class TripImporter(object):
         
         
     def parse(self):
+        tripToRouteMapping = {}
         reader = csv.DictReader(open(self.filename, 'r'))
         for row in reader:
             trip = Trip()
             trip.tripId = row['trip_id']
             trip.routeId = row['route_id']
-            trip.route = self.routeForRow(row)
-            trip.service = self.calendarForRow(row)
+            tripToRouteMapping[trip.tripId] = trip.routeId
             trip.serviceId = row['service_id']
             trip.headSign = csvValueOrNone(row, 'trip_headsign')
             trip.shortName = csvValueOrNone(row, 'trip_short_name')
@@ -35,22 +35,8 @@ class TripImporter(object):
             trip.blockId = csvValueOrNone(row, 'block_id')
             trip.shapeId = self.shapeIdForRow(row)
             trip.save()
-    
-    
-    def routeForRow(self, row):
-        routeId = row['route_id']
-        routes = Route.objects.filter(routeId = routeId)
-        assert len(routes) == 1
-        return routes[0]
-    
-    
-    def calendarForRow(self, row):
-        serviceId = row['service_id']
-        services = Calendar.objects.filter(serviceId = serviceId)
-        assert len(services) == 1
-        return services[0]
-    
-    
+        return tripToRouteMapping
+        
     def shapeIdForRow(self, row):
         shapeId = csvValueOrNone(row, 'shape_id')
         return shapeId

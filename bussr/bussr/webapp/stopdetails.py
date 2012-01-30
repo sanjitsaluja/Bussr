@@ -8,10 +8,10 @@ def currentTimeInSecondsSinceDawn():
     now = datetime.now()
     return now.hour * 3600 + now.minute * 60 + now.second
 
-def stopTimes(stop, minutes):
+def stopTimes(stopId, minutes):
     startTime = currentTimeInSecondsSinceDawn()
     endTime = startTime + minutes*60.0
-    stopTimes = StopTime.objects.filter(stop=stop).filter(arrivalSeconds__gte=startTime).filter(arrivalSeconds__lte=endTime).order_by("arrivalSeconds")
+    stopTimes = StopTime.objects.filter(stopId=stopId).filter(arrivalSeconds__gte=startTime).filter(arrivalSeconds__lte=endTime).order_by("arrivalSeconds")
     print endTime, stopTimes
     return stopTimes
 
@@ -28,7 +28,7 @@ def timeDeltaStringForSeconds(seconds):
 def service(request,stopIdParam):
     stopId = int(stopIdParam)
     stop = Stop.objects.get(stopId=stopId)
-    times = stopTimes(stop, 60)
+    times = stopTimes(stopId, 60)
     stopTimesOut = []
     for time in times:
         trip = time.trip
@@ -52,7 +52,7 @@ def service(request,stopIdParam):
     
 def routeIdsForStop(stop):
     setRouteIds = set([])
-    stopTimes = stop.stoptime_set.all()
+    stopTimes = StopTime.objects.filter(stopId=stop.stopId)
     for time in stopTimes:
         setRouteIds.add(time.routeId)
     return setRouteIds

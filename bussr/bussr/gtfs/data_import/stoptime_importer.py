@@ -3,7 +3,7 @@ Created on Jan 21, 2012
 @author: sanjits
 '''
 import csv
-from bussr.gtfs.models import StopTime, Trip, Stop
+from bussr.gtfs.models import StopTime, Trip
 import re
 
 class StopTimeImporter(object):
@@ -11,13 +11,14 @@ class StopTimeImporter(object):
     Import stops.txt gtfs file
     '''
 
-    def __init__(self, filename, stopIdsToImport=None, tripIdsToImport=None):
+    def __init__(self, filename, stopIdsToImport=None, tripIdsToImport=None, tripToRouteMapping=None):
         '''
         Constructor
         '''
         self.filename = filename
         self.stopIdsToImport = stopIdsToImport
         self.tripIdsToImport = tripIdsToImport
+        self.tripToRouteMapping = tripToRouteMapping
         
         
     def parse(self):
@@ -30,11 +31,8 @@ class StopTimeImporter(object):
             tripId = row['trip_id']
             if (self.stopIdsToImport is None or stopId in self.stopIdsToImport) and (self.tripIdsToImport is None or tripId in self.tripIdsToImport):
                 stopTime = StopTime()
-                trip = self.tripForId(tripId)
-                stopTime.trip = trip
                 stopTime.tripId = tripId
-                stopTime.routeId = trip.routeId
-                stopTime.stop = self.stopForId(row['stop_id'])
+                stopTime.routeId = self.routeIdForTripId(tripId)
                 stopTime.stopId = row['stop_id']
                 stopTime.stopSequence = row['stop_sequence']
                 stopTime.arrivalSeconds = self.parseTime(row['arrival_time'])
@@ -48,9 +46,14 @@ class StopTimeImporter(object):
     def tripForId(self, tripId):
         return Trip.objects.get(tripId=tripId)
     
-    def stopForId(self, stopId):
-        return Stop.objects.get(stopId=stopId)
-        
+    def routeIdForTripId(self, tripId):
+        if self.tripToRouteMapping is not None and tripId in self.tripToRouteMapping:
+            return self.tripToRouteMapping[tripId]
+        else:
+            assert False
+            trip = self.tripForId(tripId)
+            return trip.routeId
+            
     def parseTime(self, value):
         parts = re.split(':', value)
         hr = int(parts[0])
