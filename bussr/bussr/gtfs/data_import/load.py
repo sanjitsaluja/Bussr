@@ -2,7 +2,7 @@ import os
 from bussr.gtfs.models import Agency
 from bussr.gtfs.data_import.route_importer import RouteImporter
 from bussr.gtfs.data_import.stop_importer import StopImporter
-from bussr.gtfs.data_import.agency_importer import AgencyImporter 
+from bussr.gtfs.data_import.agency_importer import AgencyImporter
 from bussr.gtfs.data_import.calendar_importer import CalendarImporter
 from bussr.gtfs.data_import.shape_importer import ShapeImporter
 from bussr.gtfs.data_import.trip_importer import TripImporter
@@ -17,14 +17,14 @@ def importAgencies():
     agencies = Agency.objects.all()
     assert len(agencies) == 1
     return agencies[0]
-    
+
 def importStops(stopIdsToImport = None):
     filePath = os.path.dirname(__file__)
     ctaFilename = os.path.join(filePath, 'cta/stops.txt')
     print 'Importing stops from ', ctaFilename
     stopImporter = StopImporter(ctaFilename, stopIdsToImport)
     stopImporter.parse()
-    
+
 def importRoutes(agency):
     filePath = os.path.dirname(__file__)
     ctaFilename = os.path.join(filePath, 'cta/routes.txt')
@@ -38,14 +38,14 @@ def importCalendar():
     print 'Importing calendar from ', ctaFilename
     importer = CalendarImporter(ctaFilename)
     importer.parse()
-    
+
 def importShapes():
     filePath = os.path.dirname(__file__)
     ctaFilename = os.path.join(filePath, 'cta/shapes.txt')
     print 'Importing shapes from ', ctaFilename
     importer = ShapeImporter(ctaFilename)
     importer.parse()
-    
+
 def importTrips():
     filePath = os.path.dirname(__file__)
     ctaFilename = os.path.join(filePath, 'cta/trips.txt')
@@ -53,7 +53,7 @@ def importTrips():
     importer = TripImporter(ctaFilename)
     tripToRouteMapping = importer.parse()
     return tripToRouteMapping
-    
+
 def importStopTimes(stopIdsToImport = None, tripIdsToImport = None, tripToRouteMapping = None):
     filePath = os.path.dirname(__file__)
     ctaFilename = os.path.join(filePath, 'cta/stop_times.txt')
@@ -70,11 +70,11 @@ def importall():
     tripToRouteMapping = importTrips()
     importStopTimes(tripToRouteMapping=tripToRouteMapping)
 
-def devImportNoDeps():    
+def devImportNoDeps():
     agency = importAgencies()
     importRoutes(agency)
     importCalendar()
-    
+
 def devImport():
     stopIdsToImport = [str(i) for i in range(10)]
     importStops(stopIdsToImport)

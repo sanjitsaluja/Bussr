@@ -11,10 +11,8 @@ def stopsForTrip(tripId):
         stops.append(time.stop)
     return stops
 
-def service(request, tripIdParam, stopIdParam=None):
+def service(request, tripId, stopIdParam=None):
     headSign = None
-    
-    tripId = int(tripIdParam)
     trip = Trip.objects.get(tripId=tripId)
     
     if stopIdParam is not None:
