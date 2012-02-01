@@ -7,6 +7,7 @@ import mapview
 import listview
 import stopdetails
 import tripdetails
+import bubble
 
 urlpatterns = patterns('',
     # Examples:
@@ -25,5 +26,5 @@ urlpatterns = patterns('',
     url(r'^stop/([0-9]+)/$', stopdetails.service),
     url(r'^trip/([0-9]+)/$', tripdetails.service),
     url(r'^trip/([0-9]+)/stop/([0-9]+)/$', tripdetails.service),
-    url(r'^bubble/([0-9]+)/', stopdetails.serviceBubble)
+    url(r'^bubble/([0-9]+)/', bubble.service)
 )
