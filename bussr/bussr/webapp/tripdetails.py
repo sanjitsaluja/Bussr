@@ -4,8 +4,8 @@ from bussr.gtfs.models import Stop, StopTime, Calendar, Trip
 from datetime import datetime
 import math
 
-def stopsForTrip(trip):
-    stopTimes = StopTime.objects.filter(trip=trip).order_by('stopSequence')
+def stopsForTrip(tripId):
+    stopTimes = StopTime.objects.filter(tripId=tripId).order_by('stopSequence')
     stops = []
     for time in stopTimes:
         stops.append(time.stop)
@@ -26,13 +26,12 @@ def service(request, tripIdParam, stopIdParam=None):
     if headSign is None:
         headSign = trip.route.routeLongName
     
-    stops = stopsForTrip(trip)
+    stops = stopsForTrip(trip.tripId)
     return render_to_response('tripdetails.html',
                                 {
                                  'routeId': trip.routeId,
                                  'headSign' : headSign,
                                  'stops' : stops,
-                                 
                                 })
     
 def routeIdsForStop(stop):

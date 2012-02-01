@@ -28,22 +28,30 @@ $(document).ready(function() {
 		<li>{{stop.stopName}}</li>
 		<li>Stop # {{stop.stopId}}</li>
 	</ul>
+	
+	{% if times|length > 0 %}
 	<ul data-role="listview" data-inset="true" data-filter="true" data-filter-placeholder="Search upcoming routes...">
-		{% for time in times %}
-			<li>
-				<a href='/trip/{{time.tripId}}/stop/{{stop.stopId}}/'>
-					 <div class="stop_time">
-						<div class="stop_time_route">
-						{{time.routeId}} - {{time.headSign}}
+			{% for time in times %}
+				<li>
+					<a href='/trip/{{time.tripId}}/stop/{{stop.stopId}}/'>
+						 <div class="stop_time">
+							<div class="stop_time_route">
+							{{time.routeId}} - {{time.headSign}}
+							</div>
+							<div class="stop_time_time">
+								{{time.displayTimeDelta}} {{time.timeDifference}}
+							</div>
 						</div>
-						<div class="stop_time_time">
-							{{time.displayTimeDelta}}
-						</div>
-					</div>
-				</a>
-			</li>
-		{% endfor %}
+					</a>
+				</li>
+			{% endfor %}
 	</ul> 
+	{% else %}
+		<ul data-role="listview" data-inset="true">
+			<li> No service scheduled in the next hour</li>
+	</ul> 
+	{% endif %}
+	
 	
 	<!--
 	<ul data-role="listview" data-inset="true">
