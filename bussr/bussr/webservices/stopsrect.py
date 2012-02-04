@@ -24,7 +24,7 @@ def service(request,neLatParam,neLngParam, swLatParam, swLngParam):
 class GetStopsInRectangle(BaseRequestHandler):
     def service(self, request, nelat, nelng, swlat, swlng):
         boundsRect = Polygon.from_bbox((min(nelng, swlng), min(nelat,swlat), max(nelng, swlng), max(nelat, swlat)))
-        stopGeoQuerySet = Stop.objects.filter(point__within=boundsRect)
+        stopGeoQuerySet = Stop.objects.filter(point__within=boundsRect)[:50]
         # jsonOut = serializers.serialize('json', stops)
         jsonOut = json.dumps({'stops' : list(stopGeoQuerySet)}, cls=ModelJSONEncoder)
         return HttpResponse(

@@ -33,7 +33,7 @@ $(document).ready(function() {
 	<ul data-role="listview" data-inset="true" data-filter="true" data-filter-placeholder="Search upcoming routes...">
 			{% for time in times %}
 				<li>
-					<a href='/trip/{{time.tripId}}/stop/{{stop.stopId}}/'>
+					<a href='/agency/{{agencyId}}/trip/{{time.tripId}}/stop/{{stop.stopId}}/'>
 						 <div class="stop_time">
 							<div class="stop_time_route">
 							{{time.routeId}} - {{time.headSign}}

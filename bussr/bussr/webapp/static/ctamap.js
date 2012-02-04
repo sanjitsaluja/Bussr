@@ -86,8 +86,8 @@ var BubbleContentFetcher = function(resultHandler) {
 		ajaxObj : null,
 
 		// get fetch url
-		getStopUrl : function(stopId) {
-			return '/bubble/' + stopId + '/';
+		getStopUrl : function(stop) {
+			return '/agency/' + stop.agencyId + '/bubble/' + stop.stopId + '/';
 		},
 		// abort the pending ajax operation
 		abortAjax : function() {
@@ -95,8 +95,8 @@ var BubbleContentFetcher = function(resultHandler) {
 				this.ajaxObj.abort();
 			}
 		},
-		getBubbleContent : function(stopId) {
-			var url = this.getStopUrl(stopId);
+		getBubbleContent : function(stop) {
+			var url = this.getStopUrl(stop);
 			this.abortAjax();
 
 			this.ajaxObj = $.ajax({
@@ -249,7 +249,7 @@ var earthQuakeMap = {
 		this.map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
 
 		if(bounds) {
-			// this.map.fitBounds(bounds);
+			this.map.fitBounds(bounds);
 		}
 
 		var that = this;
@@ -325,7 +325,7 @@ var earthQuakeMap = {
 		};
 		this.infoWindow = new InfoBox(myOptions);
 		this.infoWindow.open(this.map, marker.marker);
-		this.bubbleContentFetcher.getBubbleContent(marker.stop.stopId);
+		this.bubbleContentFetcher.getBubbleContent(marker.stop);
 	},
 	// Private methods
 	// Abort the pending ajax fetch

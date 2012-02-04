@@ -1,8 +1,9 @@
 from django.shortcuts import render_to_response
-from bussr.gtfs.models import Stop, StopTime
+from bussr.gtfs.models import Stop, StopTime, Agency
 from datetime import datetime
 import math
 from bussr.external.ctarealtime import getPredictionsForStopId
+from django.db.models import Max
 
 def timeInSecondsSinceDawn(date):
     return date.hour * 3600 + date.minute * 60 + date.second
@@ -13,7 +14,7 @@ def currentTimeInSecondsSinceDawn():
     '''
     return timeInSecondsSinceDawn(datetime.now())
 
-def stopTimes(stopId, minutes):
+def stopTimes(agency, stopId, minutes):
     '''
     Get all stop times for the given stopId in the next 'minutes' minutes
     @param stopId: Stop id for which to fetch times for
@@ -22,11 +23,21 @@ def stopTimes(stopId, minutes):
     assert minutes > 0
     startTime = currentTimeInSecondsSinceDawn()
     endTime = startTime + minutes*60
-    stopTimes = StopTime.objects.filter(stopId=stopId).\
+    stopTimes = StopTime.objects.filter(agency=agency).\
+                                 filter(stopId=stopId).\
                                  filter(arrivalSeconds__gte=startTime).\
                                  filter(arrivalSeconds__lte=endTime).\
                                  order_by("arrivalSeconds")
-    return stopTimes
+                                 
+    outStopTimes = []
+    
+    #Filter out all stop times ending at this stop
+    for stopTime in stopTimes:
+        lastStopSequence = StopTime.objects.filter(agency=agency).filter(tripId=stopTime.tripId).aggregate(Max('stopSequence'))['stopSequence__max']
+        if stopTime.stopSequence < lastStopSequence:
+            outStopTimes.append(stopTime)
+        
+    return outStopTimes
 
 def timeStringForSeconds(seconds):
     '''
@@ -78,13 +89,15 @@ def timeDeltaStringForStopTime(stopTime, predictionDate=None):
             
         return (timeDeltaStringForSeconds(timeInSecondsSinceDawn(predictionDate)), diffString)
 
-def service(request, stopId):
+def service(request, agencyId, stopId):
     '''
     service the request to get details for a stop
     '''
-    realTimePredictions = getPredictionsForStopId(stopId)
-    stop = Stop.objects.get(stopId=stopId)
-    times = stopTimes(stopId, 60)
+    #realTimePredictions = getPredictionsForStopId(stopId)
+    realTimePredictions = []
+    agency = Agency.objects.get(id=agencyId)
+    stop = Stop.objects.filter(agency=agency).get(stopId=stopId)
+    times = stopTimes(agency, stopId, 60)
     stopTimesOut = []
     for time in times:
         trip = time.trip
@@ -95,7 +108,7 @@ def service(request, stopId):
             stopTimeOut = {}
             stopTimeOut['routeId'] = route.routeId
             stopTimeOut['routeName'] = route.routeLongName or route.routeShortName or route.routeId
-            stopTimeOut['headSign'] = time.headSign
+            stopTimeOut['headSign'] = time.displayHeadSign()
             (displayDeltaString, diffString) = timeDeltaStringForStopTime(time, predictionDate)
             stopTimeOut['displayTimeDelta'] = displayDeltaString
             stopTimeOut['timeDifference'] = len(diffString)>0 and "(%s)" % diffString or ""
@@ -104,6 +117,7 @@ def service(request, stopId):
             
     return render_to_response('stopdetails.html',
                                 {
+                                 'agencyId' : agencyId,
                                  'stop': stop,
                                  'times': stopTimesOut,
                                 })

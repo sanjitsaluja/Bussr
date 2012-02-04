@@ -23,8 +23,8 @@ urlpatterns = patterns('',
     url(r'^$', mapview.service),
     url(r'^maps/', mapview.service),
     url(r'^list/([-+]?[0-9]*\.?[0-9]*),([-+]?[0-9]*\.?[0-9]*)/$', listview.service),
-    url(r'^stop/([0-9]+)/$', stopdetails.service),
-    url(r'^trip/([a-zA-Z0-9]+)/$', tripdetails.service),
-    url(r'^trip/([a-zA-Z0-9]+)/stop/([0-9]+)/$', tripdetails.service),
-    url(r'^bubble/([0-9]+)/', bubble.service)
+    url(r'^agency/([0-9]+)/stop/([^/]+)/$', stopdetails.service),
+    url(r'^agency/([0-9]+)/trip/([^/]+)/$', tripdetails.service),
+    url(r'^agency/([0-9]+)/trip/([^/]+)/stop/([^/]+)/$', tripdetails.service),
+    url(r'^agency/([0-9]+)/bubble/([^/]+)/', bubble.service)
 )

@@ -19,7 +19,7 @@
 	<ul data-role="listview" data-inset="true">
 	{% for stop in stops %}
 		<li>
-			<a href='/stop/{{stop.stopId}}/'>
+			<a href='/agency/{{agencyId}}/stop/{{stop.stopId}}/'>
 				{{stop.stopId}} - 
 				{{stop.stopName}}
 			</a>
