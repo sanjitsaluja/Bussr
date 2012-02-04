@@ -1,0 +1,12 @@
+route_id, route_short_name, route_long_name, route_desc, agency_id, route_type, route_color, route_text_color, route_url
+BNSF, BNSF, Burlington Northern, , METRA, 2, 41E817, 000000, http://metrarail.com/Sched/bn/bn.shtml
+HC, HC, Heritage Corridor, , METRA, 2, A80004, FFFFFF, http://metrarail.com/Sched/mhc/mhc.shtml
+MD-N, MD-N, Milwaukee North, , METRA, 2, B5640B, FFFFFF, http://metrarail.com/Sched/md_n/md_n.shtml
+MD-W, MD-W, Milwaukee West, , METRA, 2, F1AD0E, 000000, http://metrarail.com/Sched/md_n/md_w.shtml
+ME, ME, Metra Electric, , METRA, 2, F1690E, 000000, http://metrarail.com/Sched/me/me.shtml
+NCS, NCS, North Central Service, , METRA, 2, 9785BC, 000000, http://metrarail.com/Sched/ncs/ncs.shtml
+RI, RI, Rock Island, , METRA, 2, FF0000, 000000, http://metrarail.com/Sched/ri/ri.shtml
+SWS, SWS, Southwest Service, , METRA, 2, 0561FA, 000000, http://metrarail.com/Sched/sws/sws.shtml
+UP-N, UP-N, Union Pacific North, , METRA, 2, 008000, 000000, http://metrarail.com/Sched/cnw_n/cnwn.shtml
+UP-NW, UP-NW, Union Pacific Northwest, , METRA, 2, FFFF00, 000000, http://metrarail.com/Sched/cnw_nw/cnw_nw.shtml
+UP-W, UP-W, Union Pacific West, , METRA, 2, FE8D81, 000000, http://metrarail.com/Sched/cnw_w/cnw_w.shtml

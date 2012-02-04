@@ -1,0 +1,4 @@
+service_id, monday, tuesday, wednesday, thursday, friday, saturday, sunday, start_date, end_date
+S1, 1, 1, 1, 1, 1, 0, 0, 20080604, 20120604
+S2, 0, 0, 0, 0, 0, 1, 0, 20080604, 20120604
+S3, 0, 0, 0, 0, 0, 0, 1, 20080604, 20120604
