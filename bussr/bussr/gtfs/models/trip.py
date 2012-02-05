@@ -54,7 +54,7 @@ class Trip(models.Model):
     override the trip_headsign by specifying values 
     for the the stop_headsign field in stop_times.txt.
     '''
-    headSign = models.CharField(max_length=50, null=True, blank=True)
+    headSign = models.CharField(max_length=100, null=True, blank=True)
     
     ''' O
     The trip_short_name field contains the text that appears 
