@@ -1,0 +1,6 @@
+#!/bin/sh
+echo "Fetching latext CTA" 
+echo "curl -L -o latest.zip http://www.gtfs-data-exchange.com/agency/chicago-transit-authority/latest.zip"
+curl -L -o latest.zip http://www.gtfs-data-exchange.com/agency/chicago-transit-authority/latest.zip
+unzip -o latest.zip
+rm latest.zip

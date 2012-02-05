@@ -85,8 +85,10 @@ class DataLoader:
         self.agencyIdsToImport = agencyIdsToImport
         self.rawDataDir = rawDataDir
         self.agencyImportMapping = [
-                         {'agencyId':'1', 'friendlyName':'Metra', 'dataRelDir': 'metra',    'importer': None},
-                         {'agencyId':'2', 'friendlyName':'CTA',   'dataRelDir': 'cta',      'importer': None},
+                         {'agencyId':'1', 'friendlyName':'Metra', 'dataRelDir': 'metra',                    'importer': None},
+                         {'agencyId':'2', 'friendlyName':'CTA',   'dataRelDir': 'cta',                      'importer': None},
+                         {'agencyId':'3', 'friendlyName':'KCM',   'dataRelDir': 'king-county-metro-transit','importer': None},
+                        
                          ];
         
     def importAgencyMapping(self, mapping):
