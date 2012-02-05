@@ -30,7 +30,10 @@ class AgencyImporter(object):
         agency = None
         for row in reader:
             print 'Parsing agency row', row
-            agency = Agency.objects.get(id=self.agencyPK)
+            try:
+                agency = Agency.objects.get(id=self.agencyPK)
+            except Agency.DoesNotExist:
+                agency = None
             if agency is None:
                 agency = Agency()
                 agency.id = self.agencyPK

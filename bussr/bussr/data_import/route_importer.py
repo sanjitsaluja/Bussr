@@ -25,7 +25,10 @@ class RouteImporter(object):
         routeIdToRouteMapping = {}
         for row in reader:
             routeId = self.csvValueOrNone(row, 'route_id')
-            route = Route.objects.filter(agency=self.agency).get(routeId=routeId)
+            try:
+                route = Route.objects.filter(agency=self.agency).get(routeId=routeId)
+            except Route.DoesNotExist:
+                route = None
             if route is None:
                 route = Route()
             route.routeId       = routeId

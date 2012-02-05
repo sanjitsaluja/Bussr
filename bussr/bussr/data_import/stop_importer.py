@@ -28,7 +28,10 @@ class StopImporter(object):
         for row in reader:
             stopId = row['stop_id']
             if self.stopIdsToImport is None or stopId in self.stopIdsToImport:
-                stop = Stop.objects.filter(agency=self.agency).get(stopId=stopId)
+                try:
+                    stop = Stop.objects.filter(agency=self.agency).get(stopId=stopId)
+                except Stop.DoesNotExist:
+                    stop = None
                 if stop is None:
                     stop = Stop()
                 stop.stopId = stopId

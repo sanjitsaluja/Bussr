@@ -28,7 +28,10 @@ class TripImporter(object):
         tripIdToTripMapping = {}
         for row in reader:
             tripId = row['trip_id']
-            trip = Trip.objects.filter(agency=self.agency).get(tripId=tripId)
+            try:
+                trip = Trip.objects.filter(agency=self.agency).get(tripId=tripId)
+            except Trip.DoesNotExist:
+                trip = None
             if trip is None:
                 trip = Trip()
             trip.agency = self.agency

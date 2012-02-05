@@ -25,7 +25,11 @@ class CalendarImporter(object):
         serviceIdToCalendarMapping = {}
         for row in reader:
             serviceId = row['service_id']
-            calendar = Calendar.objects.filter(agency=self.agency).get(serviceId=serviceId)
+            try:
+                calendar = Calendar.objects.filter(agency=self.agency).get(serviceId=serviceId)
+            except Calendar.DoesNotExist:
+                calendar = None
+                
             if calendar is None:
                 calendar = Calendar()
             calendar.agency = self.agency

@@ -2,4 +2,4 @@
 python bussr/manage.py syncdb --noinput
 python mkadmin.py
 mkdir -p /home/dotcloud/data/media /home/dotcloud/data/static
-python code/bussr/manage.py collectstatic --noinput
+python bussr/manage.py collectstatic --noinput

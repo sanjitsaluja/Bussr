@@ -24,7 +24,10 @@ class ShapeImporter(object):
         reader = csv.DictReader(open(self.filename, 'r'), skipinitialspace=True)
         for row in reader:
             shapeId = row['shape_id']
-            shape = Shape.objects.filter(agency=self.agency).get(shapeId=shapeId)
+            try:
+                shape = Shape.objects.filter(agency=self.agency).get(shapeId=shapeId)
+            except Shape.DoesNotExist:
+                shape = None
             if shape is None:
                 shape = Shape()
             shape.shapeId = shapeId

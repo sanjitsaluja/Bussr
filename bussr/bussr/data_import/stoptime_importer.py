@@ -35,7 +35,10 @@ class StopTimeImporter(object):
             stopSequence = row['stop_sequence']
             
             if (self.stopIdsToImport is None or stopId in self.stopIdsToImport) and (self.tripIdsToImport is None or tripId in self.tripIdsToImport):
-                stopTime = StopTime.objects.filter(agency=self.agency).filter(stopId=stopId).filter(tripId=tripId).get(stopSequence=stopSequence)
+                try:
+                    stopTime = StopTime.objects.filter(agency=self.agency).filter(stopId=stopId).filter(tripId=tripId).get(stopSequence=stopSequence)
+                except StopTime.DoesNotExist:
+                    stopTime = None
                 if stopTime is None:
                     stopTime = StopTime()
                 stopTime.agency = self.agency
