@@ -8,4 +8,5 @@ MobileMap.js
 build
 share
 .Python
-
+*.txt
+*.pdf

@@ -1,1 +1,0 @@
-The following trains were not exported: check export days of operation criteria.

@@ -14,24 +14,35 @@ def currentTimeInSecondsSinceDawn():
     '''
     return timeInSecondsSinceDawn(datetime.now())
 
-def stopTimes(agency, stopId, minutes):
+def stopTimes(agency, stop, minutes):
     '''
     Get all stop times for the given stopId in the next 'minutes' minutes
     @param stopId: Stop id for which to fetch times for
     @param minutes: minutes value
     '''
+    parentStation = stop.parentStation
+    stopIdsToSearch = []
+    if parentStation is not None:
+        childStops = Stop.objects.filter(agency=agency).filter(parentStation=parentStation)
+        stopIdsToSearch = [childStop.stopId for childStop in childStops]
+        print stopIdsToSearch
+        pass
+    else:
+        stopIdsToSearch = [stop.stopId]
+    
     assert minutes > 0
     startTime = currentTimeInSecondsSinceDawn()
     endTime = startTime + minutes*60
     stopTimes = StopTime.objects.filter(agency=agency).\
-                                 filter(stopId=stopId).\
+                                 filter(stopId__in=stopIdsToSearch).\
                                  filter(arrivalSeconds__gte=startTime).\
                                  filter(arrivalSeconds__lte=endTime).\
                                  order_by("arrivalSeconds")
                                  
     outStopTimes = []
     
-    #Filter out all stop times ending at this stop
+    # Filter out all stop times ending at this stop
+    # TODO: Filter out everything stop at the parent stop as well
     for stopTime in stopTimes:
         lastStopSequence = StopTime.objects.filter(agency=agency).filter(tripId=stopTime.tripId).aggregate(Max('stopSequence'))['stopSequence__max']
         if stopTime.stopSequence < lastStopSequence:
@@ -97,7 +108,7 @@ def service(request, agencyId, stopId):
     realTimePredictions = []
     agency = Agency.objects.get(id=agencyId)
     stop = Stop.objects.filter(agency=agency).get(stopId=stopId)
-    times = stopTimes(agency, stopId, 60)
+    times = stopTimes(agency, stop, 60)
     stopTimesOut = []
     for time in times:
         trip = time.trip
