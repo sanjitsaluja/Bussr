@@ -4,22 +4,28 @@ Created on Jan 21, 2012
 '''
 import csv
 from bussr.gtfs.models import Route
+from importer_base import CSVImporterBase
 
-class RouteImporter(object):
+class RouteImporter(CSVImporterBase):
     '''
-    Import routes.txt gtfs file
+    Import routes.txt gtfs file.
     '''
 
-    def __init__(self, filename, agency):
+    def __init__(self, filename, agency, onlyNew):
         '''
-        Constructor
+        Constructor.
+        @param filename: file name to import (full path to routes.txt)
+        @param agency: associated agency
+        @param onlyNew: Only import new entries
         '''
+        super(RouteImporter, self).__init__()
         self.filename = filename
         self.agency = agency
+        self.onlyNew = onlyNew
         
     def parse(self):
         '''
-        Parse the routes.txt gtfs file
+        Parse file
         '''
         reader = csv.DictReader(open(self.filename, 'r'), skipinitialspace=True)
         routeIdToRouteMapping = {}
@@ -27,15 +33,21 @@ class RouteImporter(object):
             routeId = self.csvValueOrNone(row, 'route_id')
             try:
                 route = Route.objects.filter(agency=self.agency).get(routeId=routeId)
+                if self.onlyNew:
+                    continue
             except Route.DoesNotExist:
                 route = None
+            
             if route is None:
                 route = Route()
+                
+            if self.verboseParse:
+                print 'Parsing route row:', row
+            
             route.routeId       = routeId
             route.agency        = self.agency
             route.routeShortName= self.csvValueOrNone(row, 'route_short_name')
             if route.routeShortName is None:
-                print route.routeId
                 route.routeShortName = "%s" % route.routeId
             route.routeLongName = self.csvValueOrNone(row, 'route_long_name')
             route.routeDesc     = self.csvValueOrNone(row, 'route_desc')

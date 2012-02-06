@@ -3,18 +3,20 @@ Created on Jan 21, 2012
 @author: sanjits
 '''
 import csv
-from bussr.gtfs.models import StopTime, Trip
+from bussr.gtfs.models import StopTime, Trip, Stop, Route
 import re
+from importer_base import CSVImporterBase
 
-class StopTimeImporter(object):
+class StopTimeImporter(CSVImporterBase):
     '''
     Import stops.txt gtfs file
     '''
 
-    def __init__(self, filename, agency, tripIdToTripMapping, stopIdToStopMapping, routeIdToRouteMapping, stopIdsToImport=None, tripIdsToImport=None):
+    def __init__(self, filename, agency, tripIdToTripMapping, stopIdToStopMapping, routeIdToRouteMapping, onlyNew, stopIdsToImport=None, tripIdsToImport=None):
         '''
         Constructor
         '''
+        super(StopTimeImporter, self).__init__()
         self.filename = filename
         self.stopIdsToImport = stopIdsToImport
         self.tripIdsToImport = tripIdsToImport
@@ -22,6 +24,7 @@ class StopTimeImporter(object):
         self.tripIdToTripMapping = tripIdToTripMapping
         self.stopIdToStopMapping = stopIdToStopMapping
         self.routeIdToRouteMapping = routeIdToRouteMapping
+        self.onlyNew = onlyNew
         
         
     def parse(self):
@@ -30,6 +33,7 @@ class StopTimeImporter(object):
         '''
         reader = csv.DictReader(open(self.filename, 'r'), skipinitialspace=True)
         for row in reader:
+
             stopId = row['stop_id']
             tripId = row['trip_id']
             stopSequence = row['stop_sequence']
@@ -37,17 +41,29 @@ class StopTimeImporter(object):
             if (self.stopIdsToImport is None or stopId in self.stopIdsToImport) and (self.tripIdsToImport is None or tripId in self.tripIdsToImport):
                 try:
                     stopTime = StopTime.objects.filter(agency=self.agency).filter(stopId=stopId).filter(tripId=tripId).get(stopSequence=stopSequence)
+                    if self.onlyNew:
+                        continue
                 except StopTime.DoesNotExist:
                     stopTime = None
                 if stopTime is None:
                     stopTime = StopTime()
+
+                if self.verboseParse:
+                    print 'Parsing stoptime row:', row
+
                 stopTime.agency = self.agency
                 stopTime.tripId = tripId
-                stopTime.trip = self.tripIdToTripMapping[tripId]
+                stopTime.trip = tripId in self.tripIdToTripMapping and self.tripIdToTripMapping[tripId] or None
+                if stopTime.trip is None:
+                    stopTime.trip = Trip.objects.filter(agency=self.agency).get(tripId=tripId)
                 stopTime.routeId = stopTime.trip.routeId
-                stopTime.route = self.routeIdToRouteMapping[stopTime.routeId]
+                stopTime.route = stopTime.routeId in self.routeIdToRouteMapping and self.routeIdToRouteMapping[stopTime.routeId] or None
+                if stopTime.route is None:
+                    stopTime.route = Route.objects.filter(agency=self.agency).get(routeId=stopTime.routeId)
                 stopTime.stopId = stopId
-                stopTime.stop = self.stopIdToStopMapping[stopId]
+                stopTime.stop = stopId in self.stopIdToStopMapping and self.stopIdToStopMapping[stopId] or None
+                if stopTime.stop is None:
+                    stopTime.stop = Stop.objects.filter(agency=self.agency).get(stopId=stopId)
                 stopTime.stopSequence = stopSequence
                 stopTime.arrivalSeconds = self.parseTime(row['arrival_time'])
                 stopTime.departureSeconds = self.parseTime(row['departure_time'])

@@ -2,7 +2,6 @@ from django.shortcuts import render_to_response
 from bussr.gtfs.models import Stop, StopTime, Agency
 from datetime import datetime
 import math
-from bussr.external.ctarealtime import getPredictionsForStopId
 from django.db.models import Max
 
 def timeInSecondsSinceDawn(date):

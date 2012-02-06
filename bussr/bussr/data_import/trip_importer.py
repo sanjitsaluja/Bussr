@@ -5,41 +5,55 @@ Created on Jan 22, 2012
 '''
 
 import csv
-from bussr.gtfs.models import Trip
+from bussr.gtfs.models import Trip, Route, Calendar
 from gtfsimporterutils import csvValueOrNone
+from importer_base import CSVImporterBase
 
-class TripImporter(object):
+class TripImporter(CSVImporterBase):
     '''
     classdocs
     '''
 
-    def __init__(self, filename, agency, routeIdToRouteMapping, serviceIdToCalendarMapping):
+    def __init__(self, filename, agency, routeIdToRouteMapping, serviceIdToCalendarMapping, onlyNew):
         '''
         Constructor
         '''
+        super(TripImporter, self).__init__()
         self.filename = filename
         self.agency = agency
         self.routeIdToRouteMapping = routeIdToRouteMapping
         self.serviceIdToCalendarMapping = serviceIdToCalendarMapping
+        self.onlyNew = onlyNew
         
         
     def parse(self):
         reader = csv.DictReader(open(self.filename, 'r'), skipinitialspace=True)
         tripIdToTripMapping = {}
         for row in reader:
+
             tripId = row['trip_id']
             try:
                 trip = Trip.objects.filter(agency=self.agency).get(tripId=tripId)
+                if self.onlyNew:
+                    continue
             except Trip.DoesNotExist:
                 trip = None
             if trip is None:
                 trip = Trip()
+
+            if self.verboseParse:
+                print 'Parsing trip row:', row
+            
             trip.agency = self.agency
             trip.tripId = tripId
             trip.routeId = row['route_id']
-            trip.route = self.routeIdToRouteMapping[trip.routeId]
+            trip.route = trip.routeId in self.routeIdToRouteMapping and self.routeIdToRouteMapping[trip.routeId] or None
+            if trip.route is None:
+                trip.route = Route.objects.filter(agency=self.agency).get(routeId=trip.routeId)
             trip.serviceId = row['service_id']
-            trip.service = self.serviceIdToCalendarMapping[row['service_id']]
+            trip.service = row['service_id'] in self.serviceIdToCalendarMapping and self.serviceIdToCalendarMapping[row['service_id']] or None
+            if trip.service is None:
+                trip.service = Calendar.objects.filter(agency=self.agency).get(serviceId=row['service_id'])
             trip.headSign = csvValueOrNone(row, 'trip_headsign')
             trip.shortName = csvValueOrNone(row, 'trip_short_name')
             trip.directionId = 'direction_id' in row and row['direction_id'] or None

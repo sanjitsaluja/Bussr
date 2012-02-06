@@ -15,9 +15,10 @@ from stoptime_importer import StopTimeImporter
 
 class GTFSImporter:
     
-    def __init__(self, dataDir, agencyPK):
+    def __init__(self, dataDir, agencyPK, onlyNew):
         self.dataDir = dataDir
         self.routeIdToRouteMapping = None
+        self.onlyNew = onlyNew
         self.agency = self.importAgencies(agencyPK=agencyPK)
         
     def importAgencies(self, agencyPK):
@@ -31,21 +32,21 @@ class GTFSImporter:
     def importStops(self, agency, stopIdsToImport = None):
         ctaFilename = os.path.join(self.dataDir, 'stops.txt')
         print 'Importing stops from ', ctaFilename
-        stopImporter = StopImporter(filename=ctaFilename, agency=agency, stopIdsToImport=stopIdsToImport)
+        stopImporter = StopImporter(filename=ctaFilename, agency=agency, onlyNew=self.onlyNew, stopIdsToImport=stopIdsToImport)
         stopIdToStopMapping = stopImporter.parse()
         return stopIdToStopMapping
     
     def importRoutes(self, agency):
         ctaFilename = os.path.join(self.dataDir, 'routes.txt')
         print 'Importing routes from ', ctaFilename
-        importer = RouteImporter(filename=ctaFilename, agency=agency)
+        importer = RouteImporter(filename=ctaFilename, agency=agency, onlyNew=self.onlyNew)
         routeIdToRouteMapping = importer.parse()
         return routeIdToRouteMapping
     
     def importCalendar(self, agency):
         ctaFilename = os.path.join(self.dataDir, 'calendar.txt')
         print 'Importing calendar from ', ctaFilename
-        importer = CalendarImporter(filename=ctaFilename, agency=agency)
+        importer = CalendarImporter(filename=ctaFilename, agency=agency, onlyNew=self.onlyNew)
         serviceIdToCalendarMapping = importer.parse()
         return serviceIdToCalendarMapping
     
@@ -59,14 +60,14 @@ class GTFSImporter:
     def importTrips(self, agency, routeIdToRouteMapping, serviceIdToCalendarMapping):
         ctaFilename = os.path.join(self.dataDir, 'trips.txt')
         print 'Importing trips from ', ctaFilename
-        importer = TripImporter(filename=ctaFilename, agency=agency, routeIdToRouteMapping=routeIdToRouteMapping, serviceIdToCalendarMapping=serviceIdToCalendarMapping)
+        importer = TripImporter(filename=ctaFilename, agency=agency, routeIdToRouteMapping=routeIdToRouteMapping, serviceIdToCalendarMapping=serviceIdToCalendarMapping, onlyNew=self.onlyNew)
         tripIdToTripMapping = importer.parse()
         return tripIdToTripMapping
     
     def importStopTimes(self, agency, tripIdToTripMapping, stopIdToStopMapping, routeIdToRouteMapping, stopIdsToImport = None, tripIdsToImport = None, tripToRouteMapping = None):
         ctaFilename = os.path.join(self.dataDir, 'stop_times.txt')
         print 'Importing stop times from ', ctaFilename
-        stopImporter = StopTimeImporter(ctaFilename, agency=agency, tripIdToTripMapping=tripIdToTripMapping, stopIdToStopMapping=stopIdToStopMapping, routeIdToRouteMapping=routeIdToRouteMapping, stopIdsToImport=stopIdsToImport, tripIdsToImport=tripIdsToImport)
+        stopImporter = StopTimeImporter(ctaFilename, agency=agency, tripIdToTripMapping=tripIdToTripMapping, stopIdToStopMapping=stopIdToStopMapping, routeIdToRouteMapping=routeIdToRouteMapping, onlyNew=self.onlyNew, stopIdsToImport=stopIdsToImport, tripIdsToImport=tripIdsToImport)
         stopImporter.parse()
     
     def importall(self):
@@ -81,9 +82,10 @@ class GTFSImporter:
     
 
 class DataLoader:
-    def __init__(self, rawDataDir, agencyIdsToImport=None):
+    def __init__(self, rawDataDir, onlyNew, agencyIdsToImport=None):
         self.agencyIdsToImport = agencyIdsToImport
         self.rawDataDir = rawDataDir
+        self.onlyNew = onlyNew
         self.agencyImportMapping = [
                          {'agencyId':'1', 'friendlyName':'Metra', 'dataRelDir': 'metra',                    'importer': None},
                          {'agencyId':'2', 'friendlyName':'CTA',   'dataRelDir': 'cta',                      'importer': None},
@@ -94,7 +96,7 @@ class DataLoader:
     def importAgencyMapping(self, mapping):
         dataDir = os.path.join(self.rawDataDir, mapping['dataRelDir'])
         print 'importAgencyMapping dataDir', dataDir
-        importer = GTFSImporter(dataDir=dataDir, agencyPK=mapping['agencyId'])
+        importer = GTFSImporter(dataDir=dataDir, agencyPK=mapping['agencyId'], onlyNew=self.onlyNew)
         importer.importall()
     
     
@@ -117,6 +119,6 @@ if __name__=='__main__':
         if len(sys.argv) > 2:
             agencyIdsToImport = [sys.argv[2]]
             print 'Import agency ids:', agencyIdsToImport
-        dataLoader = DataLoader(rawDataDir, agencyIdsToImport)
+        dataLoader = DataLoader(rawDataDir, onlyNew=(len(sys.argv)==4), agencyIdsToImport=agencyIdsToImport)
         dataLoader.importAllAgencies()
         

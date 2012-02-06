@@ -1,6 +1,7 @@
 import urllib
 from cElementTree import XMLParser
 from datetime import datetime 
+from prediction import RealtimePredictorBase
 
 basePredictionsUrl = 'http://www.ctabustracker.com/bustime/api/v1/getpredictions?key=XNJJY6RMwcBiS9RCeGXGzNBQj&stpid=%s&top=20'
 
@@ -27,6 +28,12 @@ def getPredictionsForStopId(stopId):
         pass
     
     return routePredictionTimes
-        
+
+
+class CTARealtimePredictor(RealtimePredictorBase):
+    def getPredictionsForStopId(self, stopId):
+        return RealtimePredictorBase.getPredictionsForStopId(self, stopId)
+    
+    
 if __name__=='__main__':
     print getPredictionsForStopId('70')

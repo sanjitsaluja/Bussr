@@ -137,7 +137,6 @@ INSTALLED_APPS = (
     'bussr.webapp',
     'bussr.webservices',
     'bussr.gtfs',
-    'bussr.external',
 )
 
 

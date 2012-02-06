@@ -5,19 +5,22 @@ Created on Jan 21, 2012
 import csv
 from bussr.gtfs.models import Stop
 from django.contrib.gis.geos import Point
+from importer_base import CSVImporterBase
 
-class StopImporter(object):
+class StopImporter(CSVImporterBase):
     '''
     Import stops.txt gtfs file into the Stop table
     '''
 
-    def __init__(self, filename, agency, stopIdsToImport=None):
+    def __init__(self, filename, agency, onlyNew, stopIdsToImport=None):
         '''
         Constructor
         '''
+        super(StopImporter, self).__init__()
         self.filename = filename
         self.stopIdsToImport = stopIdsToImport
         self.agency = agency
+        self.onlyNew = onlyNew
         
     def parse(self):
         '''
@@ -30,10 +33,16 @@ class StopImporter(object):
             if self.stopIdsToImport is None or stopId in self.stopIdsToImport:
                 try:
                     stop = Stop.objects.filter(agency=self.agency).get(stopId=stopId)
+                    if self.onlyNew:
+                        continue
                 except Stop.DoesNotExist:
                     stop = None
                 if stop is None:
                     stop = Stop()
+
+                if self.verboseParse:
+                    print 'Parsing stop row:', row
+
                 stop.stopId = stopId
                 stop.stopCode = 'stop_code' in row and row['stop_code'] or None
                 stop.stopName = row['stop_name']
