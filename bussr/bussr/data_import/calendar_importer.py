@@ -14,15 +14,15 @@ class CalendarImporter(CSVImporterBase):
     Import the calendar from calendar.txt.
     '''
 
-    def __init__(self, filename, agency, onlyNew):
+    def __init__(self, filename, source, onlyNew):
         '''
         @param filename: path to the file to import
-        @param agency: agency model object. The agency that this service belongs to
+        @param source: source model object. The source that this service belongs to
         @param onlyNew: only import new entries not already in the database
         '''
         super(CalendarImporter, self).__init__()
         self.filename = filename
-        self.agency = agency
+        self.source = source
         self.onlyNew = onlyNew
         
     def parse(self):
@@ -39,7 +39,7 @@ class CalendarImporter(CSVImporterBase):
             
             # Get existing calendar object otherwise create new one
             try:
-                calendar = Calendar.objects.filter(agency=self.agency).get(serviceId=serviceId)
+                calendar = Calendar.objects.filter(source=self.source).get(serviceId=serviceId)
                 if self.onlyNew:
                     continue
             except Calendar.DoesNotExist:
@@ -51,7 +51,7 @@ class CalendarImporter(CSVImporterBase):
             if self.verboseParse:
                 print 'Parsing service row:', row
                 
-            calendar.agency = self.agency
+            calendar.source = self.source
             calendar.serviceId = serviceId
             calendar.monday = self.csvBoolean(row, 'monday')
             calendar.tuesday = self.csvBoolean(row, 'tuesday')

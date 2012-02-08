@@ -2,17 +2,20 @@ from django.contrib.gis.db import models
 from route import Route
 from stop import Stop
 from trip import Trip
-from agency import Agency
+from agency import Source
 
 class StopTime(models.Model):
-    class Meta:
-        app_label = 'gtfs'
-        unique_together = (('agency', 'tripId', 'stopId', 'stopSequence'))
-    
     '''
     Model object representing stop_times.txt
     '''
-    agency = models.ForeignKey(Agency)
+    class Meta:
+        app_label = 'gtfs'
+        unique_together = (('source', 'tripId', 'stopId', 'stopSequence'))
+    
+    '''
+    Source of the StopTime
+    '''
+    source = models.ForeignKey(Source)
     
     '''
     Trip id for ease of access. identifies the vehicle stop times
@@ -113,7 +116,7 @@ class StopTime(models.Model):
     distanceTraveled = models.FloatField(null=True, blank=True)
         
     def __unicode__(self):
-        return u'%s: %s, %s, %s' % (self.agency, self.routeId, self.headSign, self.stop.stopName)
+        return u'%s: %s, %s, %s' % (self.source, self.routeId, self.headSign, self.stop.stopName)
     
     
     def displayHeadSign(self):

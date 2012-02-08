@@ -3,7 +3,7 @@ Created on Jan 21, 2012
 @author: sanjits
 '''
 import csv
-from bussr.gtfs.models import Route
+from bussr.gtfs.models import Route, Agency
 from importer_base import CSVImporterBase
 
 class RouteImporter(CSVImporterBase):
@@ -11,7 +11,7 @@ class RouteImporter(CSVImporterBase):
     Import routes.txt gtfs file.
     '''
 
-    def __init__(self, filename, agency, onlyNew):
+    def __init__(self, filename, source, onlyNew):
         '''
         Constructor.
         @param filename: file name to import (full path to routes.txt)
@@ -20,7 +20,7 @@ class RouteImporter(CSVImporterBase):
         '''
         super(RouteImporter, self).__init__()
         self.filename = filename
-        self.agency = agency
+        self.source = source
         self.onlyNew = onlyNew
         
     def parse(self):
@@ -32,7 +32,7 @@ class RouteImporter(CSVImporterBase):
         for row in reader:
             routeId = self.csvValueOrNone(row, 'route_id')
             try:
-                route = Route.objects.filter(agency=self.agency).get(routeId=routeId)
+                route = Route.objects.filter(source=self.source).get(routeId=routeId)
                 if self.onlyNew:
                     continue
             except Route.DoesNotExist:
@@ -44,8 +44,10 @@ class RouteImporter(CSVImporterBase):
             if self.verboseParse:
                 print 'Parsing route row:', row
             
+            route.source        = self.source
             route.routeId       = routeId
-            route.agency        = self.agency
+            route.agencyId      = self.csvValueOrNone(row, 'agency_id')
+            route.agency        = Agency.objects.filter(source=self.source).get(agencyId=route.agencyId)
             route.routeShortName= self.csvValueOrNone(row, 'route_short_name')
             if route.routeShortName is None:
                 route.routeShortName = "%s" % route.routeId

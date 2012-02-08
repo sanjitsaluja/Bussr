@@ -1,16 +1,16 @@
 from django.contrib.gis.db import models
-from agency import Agency
+from source import Source
 
 class Shape(models.Model):
     class Meta:
         app_label = 'gtfs'
-        unique_together = (('agency', 'shapeId'))
+        unique_together = (('source', 'shapeId'))
     
     '''
     Model object represeting a Shape (shapes.txt)
     '''
-    agency = models.ForeignKey(Agency)
-    shapeId = models.CharField(max_length=20)
+    source = models.ForeignKey(Source)
+    shapeId = models.CharField(max_length=64)
     lat = models.FloatField()
     lng = models.FloatField()
     point = models.PointField()

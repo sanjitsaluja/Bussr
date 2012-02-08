@@ -1,3 +1,4 @@
+from source import Source
 from agency import Agency
 from stop import Stop
 from route import Route
@@ -7,4 +8,4 @@ from trip import Trip
 from stoptime import StopTime
 from utils import ModelJSONEncoder
 
-__all__ = ['Agency', 'Stop', 'Route', 'Calendar', 'Trip', 'StopTime', 'Shape', 'ModelJSONEncoder']
+__all__ = ['Source', 'Agency', 'Stop', 'Route', 'Calendar', 'Trip', 'StopTime', 'Shape', 'ModelJSONEncoder']

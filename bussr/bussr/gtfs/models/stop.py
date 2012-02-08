@@ -1,23 +1,26 @@
 from django.contrib.gis.db import models
-from agency import Agency
+from source import Source
 
 class Stop(models.Model):
+    '''
+    Model object representing a Stop (stops.txt)
+    '''
     class Meta:
         app_label = 'gtfs'
         
         # Agency and stopId are a natural composite key
-        unique_together = (('agency', 'stopId'))
+        unique_together = (('source', 'stopId'))
     
     '''
-    Model object representing a Stop (stops.txt)
+    Source of the stop
     '''
-    agency = models.ForeignKey(Agency)
+    source = models.ForeignKey(Source)
     
     ''' R
     The stop_id field contains an ID that uniquely identifies a stop or 
     station. Multiple routes may use the same stop
     '''
-    stopId = models.CharField(max_length=20)
+    stopId = models.CharField(max_length=64)
     
     ''' 0
     The stop_code field contains short text or a number that uniquely 
@@ -92,4 +95,4 @@ class Stop(models.Model):
     objects = models.GeoManager()
 
     def __unicode__(self):
-        return u'%s, %s, %s' % (self.agency, self.stopId, self.stopName)
+        return u'%s, %s, %s' % (self.source, self.stopId, self.stopName)

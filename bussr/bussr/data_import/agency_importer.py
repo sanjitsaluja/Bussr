@@ -16,7 +16,7 @@ class AgencyImporter(CSVImporterBase):
     file.
     '''
 
-    def __init__(self, filename, agencyPK):
+    def __init__(self, filename, source):
         '''
         Constructor.
         @param filename: file name to import (full path to agency.txt)
@@ -24,7 +24,7 @@ class AgencyImporter(CSVImporterBase):
         '''
         super(AgencyImporter, self).__init__()
         self.filename = filename
-        self.agencyPK = agencyPK
+        self.source = source
         
     def parse(self):
         '''
@@ -33,26 +33,22 @@ class AgencyImporter(CSVImporterBase):
         '''
         reader = csv.DictReader(open(self.filename, 'r'), skipinitialspace=True)
         
-        # Importer assumes we only have 1 entry
-        assert len([row for row in reader]) == 1
-        
         agency = None
         for row in reader:
             
             if self.verboseParse:
                 print 'Parsing agency row:', row
+                
+            agencyId = csvValueOrNone(row, 'agency_id')
             
             # Retrieve existing agency if only exists otherwise, create a new one
             try:
-                agency = Agency.objects.get(id=self.agencyPK)
+                agency = Agency.objects.filter(source=self.source).get(agencyId=agencyId)
             except Agency.DoesNotExist:
-                agency = None
-            
-            if agency is None:
                 agency = Agency()
-                agency.id = self.agencyPK
             
-            agency.agencyId = csvValueOrNone(row, 'agency_id')
+            agency.source = self.source
+            agency.agencyId = agencyId
             agency.agencyName = row['agency_name']
             agency.agencyUrl= row['agency_url']
             agency.agencyTimezone = row['agency_timezone']

@@ -10,6 +10,8 @@ class CSVImporterBase(object):
     '''
 
     def __init__(self):
+        '''
+        '''
         self.verboseParse = True
         #self.verboseParse = (os.environ['VERBOSE_CSV_PARSE'] == 1)
         print 'Verbose import', self.verboseParse

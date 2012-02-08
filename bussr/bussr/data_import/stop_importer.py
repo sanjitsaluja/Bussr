@@ -12,14 +12,14 @@ class StopImporter(CSVImporterBase):
     Import stops.txt gtfs file into the Stop table
     '''
 
-    def __init__(self, filename, agency, onlyNew, stopIdsToImport=None):
+    def __init__(self, filename, source, onlyNew, stopIdsToImport=None):
         '''
         Constructor
         '''
         super(StopImporter, self).__init__()
         self.filename = filename
         self.stopIdsToImport = stopIdsToImport
-        self.agency = agency
+        self.source = source
         self.onlyNew = onlyNew
         
     def parse(self):
@@ -32,7 +32,7 @@ class StopImporter(CSVImporterBase):
             stopId = row['stop_id']
             if self.stopIdsToImport is None or stopId in self.stopIdsToImport:
                 try:
-                    stop = Stop.objects.filter(agency=self.agency).get(stopId=stopId)
+                    stop = Stop.objects.filter(source=self.source).get(stopId=stopId)
                     if self.onlyNew:
                         continue
                 except Stop.DoesNotExist:
@@ -42,7 +42,8 @@ class StopImporter(CSVImporterBase):
 
                 if self.verboseParse:
                     print 'Parsing stop row:', row
-
+                
+                stop.source = self.source
                 stop.stopId = stopId
                 stop.stopCode = 'stop_code' in row and row['stop_code'] or None
                 stop.stopName = row['stop_name']
@@ -55,7 +56,6 @@ class StopImporter(CSVImporterBase):
                 stop.locationType = 'location_type' in row and int(row['location_type']) or 0
                 stop.parentStation = 'parent_station' in row and row['parent_station'] or None
                 stop.wheelchairAccessible = 'wheelchair_boarding' in row and row['wheelchair_boarding'] or True
-                stop.agency = self.agency
                 stop.save()
                 stopIdToStopMapping[stopId] = stop
         return stopIdToStopMapping

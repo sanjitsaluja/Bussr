@@ -14,13 +14,13 @@ class TripImporter(CSVImporterBase):
     classdocs
     '''
 
-    def __init__(self, filename, agency, routeIdToRouteMapping, serviceIdToCalendarMapping, onlyNew):
+    def __init__(self, filename, source, routeIdToRouteMapping, serviceIdToCalendarMapping, onlyNew):
         '''
         Constructor
         '''
         super(TripImporter, self).__init__()
         self.filename = filename
-        self.agency = agency
+        self.source = source
         self.routeIdToRouteMapping = routeIdToRouteMapping
         self.serviceIdToCalendarMapping = serviceIdToCalendarMapping
         self.onlyNew = onlyNew
@@ -33,7 +33,7 @@ class TripImporter(CSVImporterBase):
 
             tripId = row['trip_id']
             try:
-                trip = Trip.objects.filter(agency=self.agency).get(tripId=tripId)
+                trip = Trip.objects.filter(source=self.source).get(tripId=tripId)
                 if self.onlyNew:
                     continue
             except Trip.DoesNotExist:
@@ -44,16 +44,12 @@ class TripImporter(CSVImporterBase):
             if self.verboseParse:
                 print 'Parsing trip row:', row
             
-            trip.agency = self.agency
+            trip.source = self.source
             trip.tripId = tripId
             trip.routeId = row['route_id']
-            trip.route = trip.routeId in self.routeIdToRouteMapping and self.routeIdToRouteMapping[trip.routeId] or None
-            if trip.route is None:
-                trip.route = Route.objects.filter(agency=self.agency).get(routeId=trip.routeId)
+            trip.route = trip.routeId in self.routeIdToRouteMapping and self.routeIdToRouteMapping[trip.routeId] or Route.objects.filter(source=self.source).get(routeId=trip.routeId)
             trip.serviceId = row['service_id']
-            trip.service = row['service_id'] in self.serviceIdToCalendarMapping and self.serviceIdToCalendarMapping[row['service_id']] or None
-            if trip.service is None:
-                trip.service = Calendar.objects.filter(agency=self.agency).get(serviceId=row['service_id'])
+            trip.service = row['service_id'] in self.serviceIdToCalendarMapping and self.serviceIdToCalendarMapping[row['service_id']] or Calendar.objects.filter(source=self.source).get(serviceId=row['service_id'])
             trip.headSign = csvValueOrNone(row, 'trip_headsign')
             trip.shortName = csvValueOrNone(row, 'trip_short_name')
             trip.directionId = 'direction_id' in row and row['direction_id'] or None

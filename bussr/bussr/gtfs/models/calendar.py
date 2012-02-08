@@ -1,26 +1,28 @@
 from django.contrib.gis.db import models
 from datetime import datetime
-from agency import Agency
+from source import Source
 
 class Calendar(models.Model):
-    class Meta:
-        app_label = 'gtfs'
-        
-        # Agency and stopId are a natural composite key
-        unique_together = (('agency', 'serviceId'))
-    
     '''
     Model object representing a service entry (calendar.txt)
     '''
-    
-    agency = models.ForeignKey(Agency)
+    class Meta:
+        app_label = 'gtfs'
+        
+        # source and stopId are a natural composite key
+        unique_together = (('source', 'serviceId'))
+        
+    '''
+    Data source for this calendar
+    '''
+    source = models.ForeignKey(Source)
     
     ''' R
     The service_id contains an ID that uniquely identifies a 
     set of dates when service is available for one or 
     more routes.
     '''
-    serviceId = models.CharField(max_length=20)
+    serviceId = models.CharField(max_length=64)
     
     ''' R
     The monday field contains a binary value that indicates 

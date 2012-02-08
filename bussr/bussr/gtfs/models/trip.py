@@ -1,7 +1,7 @@
 from django.contrib.gis.db import models
 from route import Route
 from calendar import Calendar
-from agency import Agency
+from agency import Source
 
 DIRECTIONID = (
     (0, 'DIR-0'),
@@ -9,26 +9,28 @@ DIRECTIONID = (
 )
 
 class Trip(models.Model):
-    class Meta:
-        app_label = 'gtfs'
-        unique_together = (('agency', 'tripId'))
-    
     '''
     Model object representing a Trip (trips.txt)
     '''
-        
-    agency = models.ForeignKey(Agency)
+    class Meta:
+        app_label = 'gtfs'
+        unique_together = (('source', 'tripId'))
+    
+    '''
+    Source of the trip
+    '''
+    source = models.ForeignKey(Source)
     
     ''' R
     The trip_id field contains an ID that identifies a trip. 
     The trip_id is dataset unique.
     '''
-    tripId = models.CharField(max_length=20)
+    tripId = models.CharField(max_length=64)
     
     '''
     Route id for ease of access
     '''
-    routeId = models.CharField(max_length=20)
+    routeId = models.CharField(max_length=64)
     
     '''
     Route for this trip
@@ -38,7 +40,7 @@ class Trip(models.Model):
     '''
     Service id
     '''
-    serviceId = models.CharField(max_length=20)
+    serviceId = models.CharField(max_length=64)
     
     '''
     Service id in the calendar
@@ -54,7 +56,7 @@ class Trip(models.Model):
     override the trip_headsign by specifying values 
     for the the stop_headsign field in stop_times.txt.
     '''
-    headSign = models.CharField(max_length=100, null=True, blank=True)
+    headSign = models.CharField(max_length=256, null=True, blank=True)
     
     ''' O
     The trip_short_name field contains the text that appears 
@@ -67,7 +69,7 @@ class Trip(models.Model):
     identify a trip within a service day; it should not be 
     used for destination names or limited/express designations.
     '''
-    shortName = models.CharField(max_length=50, null=True, blank=True)
+    shortName = models.CharField(max_length=256, null=True, blank=True)
     
     ''' O
     The direction_id field contains a binary value that 
@@ -101,13 +103,13 @@ class Trip(models.Model):
     in the vehicle. The block_id must be referenced by 
     two or more trips in trips.txt.
     '''
-    blockId = models.CharField(max_length=20, null=True, blank=True)
+    blockId = models.CharField(max_length=64, null=True, blank=True)
     
     ''' O
     The shape_id field contains an ID that defines a shape for the trip
     TODO: Make this a Foreign Key
     '''
-    shapeId = models.CharField(max_length=20, null=True, blank=True)
+    shapeId = models.CharField(max_length=64, null=True, blank=True)
     
     def __unicode__(self):
         return u'%s, %s, %s' % (self.tripId, self.routeId, self.headSign)

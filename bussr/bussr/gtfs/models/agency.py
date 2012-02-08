@@ -1,12 +1,18 @@
 from django.contrib.gis.db import models
+from source import Source
 
 class Agency(models.Model):
-    class Meta:
-        app_label = 'gtfs'
-        
     '''
     Model object representing an Agency (agency.txt)
     '''
+    class Meta:
+        app_label = 'gtfs'
+        unique_together = (('source', 'agencyId'))
+            
+    '''
+    Source of the Agency
+    '''
+    source = models.ForeignKey(Source)
     
     ''' Optional
     The agency_id field is an ID that uniquely identifies a transit agency. 
@@ -14,13 +20,13 @@ class Agency(models.Model):
     is dataset unique. This field is optional for transit feeds that only contain 
     data for a single agency.
     '''
-    agencyId = models.CharField(max_length=20, null=True, blank=True)
+    agencyId = models.CharField(max_length=64, null=True, blank=True)
     
     ''' Required
     The agency_name field contains the full name of the transit agency. 
     Google Maps will display this name.
     '''
-    agencyName = models.CharField(max_length=100, unique=True)
+    agencyName = models.CharField(max_length=256, unique=True)
     
     ''' Required
     The agency_url field contains the URL of the transit agency
@@ -35,7 +41,7 @@ class Agency(models.Model):
      values. If multiple agencies are specified in the feed, each must 
      have the same agency_timezone.
      '''
-    agencyTimezone = models.CharField(max_length=50)
+    agencyTimezone = models.CharField(max_length=64)
     
     ''' Optional
     The agency_lang field contains a two-letter ISO 639-1 code for the 
@@ -56,7 +62,7 @@ class Agency(models.Model):
     Dialable text (for example, TriMet's "503-238-RIDE") is permitted, 
     but the field must not contain any other descriptive text.
      '''
-    agencyPhone = models.CharField(max_length=20, null=True, blank=True)
+    agencyPhone = models.CharField(max_length=32, null=True, blank=True)
     
     ''' O
     The agency_fare_url specifies the URL of a web page that allows a 
@@ -65,4 +71,4 @@ class Agency(models.Model):
     agencyFareUrl = models.URLField(null=True, blank=True)
 
     def __unicode__(self):
-        return self.agencyName
+        return '%s %s' % (self.source, self.agencyName)
