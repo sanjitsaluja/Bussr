@@ -9,7 +9,12 @@ class Stop(models.Model):
         app_label = 'gtfs'
         
         # Agency and stopId are a natural composite key
-        unique_together = (('source', 'stopId'))
+        unique_together = (('source', 'stopId'), ('sourceId', 'stopId'))
+    
+    '''
+    source id
+    '''
+    sourceId = models.CharField(max_length=64)
     
     '''
     Source of the stop

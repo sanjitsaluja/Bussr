@@ -43,6 +43,7 @@ class StopImporter(CSVImporterBase):
                 if self.verboseParse:
                     print 'Parsing stop row:', row
                 
+                stop.sourceId = self.source.id
                 stop.source = self.source
                 stop.stopId = stopId
                 stop.stopCode = 'stop_code' in row and row['stop_code'] or None
