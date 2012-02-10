@@ -2,10 +2,10 @@
 Created on Jan 21, 2012
 @author: sanjits
 '''
-import csv
 from bussr.gtfs.models import StopTime, Trip, Stop, Route
-import re
 from importer_base import CSVImporterBase
+import csv
+import re
 
 class StopTimeImporter(CSVImporterBase):
     '''
@@ -26,6 +26,11 @@ class StopTimeImporter(CSVImporterBase):
         self.routeIdToRouteMapping = routeIdToRouteMapping
         self.onlyNew = onlyNew
         
+    def shapeDistForRow(self, row):
+        try:
+            return 'shape_dist_traveled' in row and float(row['shape_dist_traveled']) or None
+        except ValueError:
+            return None
         
     def parse(self):
         '''
@@ -62,7 +67,7 @@ class StopTimeImporter(CSVImporterBase):
                 stopTime.headSign = 'stop_headsign' in row and row['stop_headsign'] or None
                 stopTime.pickUpType = 'pickup_type' in row and row['pickup_type'] or None
                 stopTime.dropOffType = 'dropoff_type' in row and row['dropoff_type'] or None
-                stopTime.distanceTraveled = 'shape_dist_traveled' in row and float(row['shape_dist_traveled']) or None
+                stopTime.distanceTraveled = self.shapeDistForRow(row)
                 stopTime.save()
         
             

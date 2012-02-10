@@ -22,6 +22,12 @@ class StopImporter(CSVImporterBase):
         self.source = source
         self.onlyNew = onlyNew
         
+    def locationTypeForRow(self, row):
+        try:
+            return 'location_type' in row and int(row['location_type']) or 0
+        except ValueError:
+            return 0
+        
     def parse(self):
         '''
         Parse the stops.txt gtfs file
@@ -54,7 +60,7 @@ class StopImporter(CSVImporterBase):
                 stop.point = Point(y=stop.lat, x=stop.lng)
                 stop.zoneId = 'zone_id' in row and row['zone_id'] or None
                 stop.stopUrl = 'stop_url' in row and row['stop_url'] or None
-                stop.locationType = 'location_type' in row and int(row['location_type']) or 0
+                stop.locationType = self.locationTypeForRow(row)
                 stop.parentStation = 'parent_station' in row and row['parent_station'] or None
                 stop.wheelchairAccessible = 'wheelchair_boarding' in row and row['wheelchair_boarding'] or True
                 stop.save()
