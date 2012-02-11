@@ -1,3 +1,4 @@
+import json
 import sys
 import os
 sys.path.append("..")
@@ -85,11 +86,9 @@ class DataLoader:
         self.sourceIdsToImport = sourceIdsToImport
         self.rawDataDir = rawDataDir
         self.onlyNew = onlyNew
-        self.sourceMapping = [
-{'id':'1', 'codeName':'METRA',    'dataDir': 'metra',                     'importUrl': 'http://www.gtfs-data-exchange.com/agency/metra/latest.zip'                        },
-{'id':'2', 'codeName':'CTA',      'dataDir': 'cta',                       'importUrl': 'http://www.gtfs-data-exchange.com/agency/chicago-transit-authority/latest.zip'    },
-{'id':'3', 'codeName':'KCM',      'dataDir': 'king-county-metro-transit', 'importUrl': 'http://www.gtfs-data-exchange.com/agency/king-county-metro-transit/latest.zip'    },    
-        ];
+        filePath = os.path.dirname(__file__)
+        sourcesFilePath = os.path.join(filePath, 'sources.json')
+        self.sourceMapping = json.load(open(sourcesFilePath))['sources']
         
     def importSource(self, mapping):
         sourceImporter = SourceImporter(mapping)

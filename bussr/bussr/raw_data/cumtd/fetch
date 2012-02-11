@@ -1,0 +1,5 @@
+#!/bin/sh
+echo "Fetching latest CUMTD" 
+curl -L -o latest.zip http://www.gtfs-data-exchange.com/agency/champaign-urbana-mass-transit-district/latest.zip
+unzip -o latest.zip
+rm latest.zip
