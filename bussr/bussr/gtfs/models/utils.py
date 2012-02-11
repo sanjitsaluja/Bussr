@@ -6,7 +6,7 @@ class ModelJSONEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, Stop):
             return {
-                'agencyId': obj.sourceId,
+                'sourceId': obj.sourceId,
                 'stopId' : obj.stopId,
                 'stopName' : obj.stopName,
                 'lat' : obj.lat,

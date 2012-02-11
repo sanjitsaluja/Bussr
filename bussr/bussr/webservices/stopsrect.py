@@ -1,13 +1,7 @@
-# django
 from django.http import HttpResponse
 from django.contrib.gis.geos import Polygon
-from django.core import serializers
-
-# non django
 import logging
 import json
-
-# bussr
 from BaseRequestHandler import BaseRequestHandler
 from bussr.gtfs.models import Stop, ModelJSONEncoder
 
@@ -25,8 +19,8 @@ class GetStopsInRectangle(BaseRequestHandler):
     def service(self, request, nelat, nelng, swlat, swlng):
         boundsRect = Polygon.from_bbox((min(nelng, swlng), min(nelat,swlat), max(nelng, swlng), max(nelat, swlat)))
         stopGeoQuerySet = Stop.objects.filter(point__within=boundsRect)[:50]
-        # jsonOut = serializers.serialize('json', stops)
         jsonOut = json.dumps({'stops' : list(stopGeoQuerySet)}, cls=ModelJSONEncoder)
+        print 'Area', boundsRect.area
         return HttpResponse(
             jsonOut,
             content_type = 'application/javascript; charset=utf8'

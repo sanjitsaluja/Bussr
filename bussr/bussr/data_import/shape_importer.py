@@ -14,13 +14,13 @@ class ShapeImporter(CSVImporterBase):
     classdocs
     '''
 
-    def __init__(self, filename, agency, onlyNew):
+    def __init__(self, filename, source, onlyNew):
         '''
         Constructor
         '''
         super(ShapeImporter, self).__init__()
         self.filename = filename
-        self.agency = agency
+        self.source = source
         self.onlyNew = onlyNew
         
     def parse(self):

@@ -49,12 +49,11 @@ class GTFSImporter:
         serviceIdToCalendarMapping = importer.parse()
         return serviceIdToCalendarMapping
     
-    #def importShapes():
-    #    filePath = os.path.dirname(__file__)
-    #    ctaFilename = os.path.join(filePath, 'cta/shapes.txt')
-    #    print 'Importing shapes from ', ctaFilename
-    #    importer = ShapeImporter(ctaFilename)
-    #    importer.parse()
+    def importShapes(self):
+        ctaFilename = os.path.join(self.dataDir, 'shapes.txt')
+        print 'Importing trips from ', ctaFilename
+        importer = ShapeImporter(ctaFilename, source=self.source)
+        importer.parse()
     
     def importTrips(self, routeIdToRouteMapping, serviceIdToCalendarMapping):
         ctaFilename = os.path.join(self.dataDir, 'trips.txt')
@@ -73,7 +72,7 @@ class GTFSImporter:
         self.importAgencies()
         self.routeIdToRouteMapping = self.importRoutes()
         self.serviceIdToCalendarMapping = self.importCalendar()
-#        # importShapes()
+        self.importShapes()
         self.tripIdToTripMapping = self.importTrips(self.routeIdToRouteMapping, self.serviceIdToCalendarMapping)
         self.serviceIdToCalendarMapping = None
 #        

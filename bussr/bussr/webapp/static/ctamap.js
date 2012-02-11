@@ -87,7 +87,7 @@ var BubbleContentFetcher = function(resultHandler) {
 
 		// get fetch url
 		getStopUrl : function(stop) {
-			return '/agency/' + stop.agencyId + '/bubble/' + stop.stopId + '/';
+			return '/s/' + stop.sourceId + '/bubble/' + stop.stopId + '/';
 		},
 		// abort the pending ajax operation
 		abortAjax : function() {
