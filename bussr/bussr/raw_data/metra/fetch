@@ -1,5 +1,0 @@
-#!/bin/sh
-echo "Fetching latest Metra" 
-curl -L -o latest.zip http://www.gtfs-data-exchange.com/agency/metra/latest.zip 
-unzip -o latest.zip
-rm latest.zip

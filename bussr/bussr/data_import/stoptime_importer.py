@@ -2,7 +2,7 @@
 Created on Jan 21, 2012
 @author: sanjits
 '''
-from bussr.gtfs.models import StopTime, Trip, Stop, Route
+from gtfs.models import StopTime, Trip, Stop, Route
 from importer_base import CSVImporterBase
 import csv
 import re
@@ -12,7 +12,7 @@ class StopTimeImporter(CSVImporterBase):
     Import stops.txt gtfs file
     '''
 
-    def __init__(self, filename, source, tripIdToTripMapping, stopIdToStopMapping, routeIdToRouteMapping, onlyNew, stopIdsToImport=None, tripIdsToImport=None):
+    def __init__(self, filename, source, tripIdToTripMapping, stopIdToStopMapping, routeIdToRouteMapping, onlyNew, stopIdsToImport, tripIdsToImport, cleanExistingData, logger):
         '''
         Constructor
         '''
@@ -25,6 +25,8 @@ class StopTimeImporter(CSVImporterBase):
         self.stopIdToStopMapping = stopIdToStopMapping
         self.routeIdToRouteMapping = routeIdToRouteMapping
         self.onlyNew = onlyNew
+        self.cleanExistingData=cleanExistingData
+        self.logger=logger
         
     def shapeDistForRow(self, row):
         try:
@@ -36,6 +38,11 @@ class StopTimeImporter(CSVImporterBase):
         '''
         Parse the stoptimes.txt gtfs file
         '''
+        if self.cleanExistingData:
+            toDel = Route.objects.filter(source=self.source)
+            self.logger.info('Cleaning existing StopTimes %s', toDel)
+            toDel.delete()
+        
         reader = csv.DictReader(open(self.filename, 'r'), skipinitialspace=True)
         for row in reader:
 
@@ -52,7 +59,7 @@ class StopTimeImporter(CSVImporterBase):
                     stopTime = StopTime()
 
                 if self.verboseParse:
-                    print 'Parsing stoptime row:', row
+                    self.logger.debug('Parsing stoptime row: %s', row)
 
                 stopTime.source = self.source
                 stopTime.tripId = tripId

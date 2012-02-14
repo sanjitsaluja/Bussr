@@ -1,3 +1,4 @@
+import getopt
 import json
 import sys
 import os
@@ -5,118 +6,107 @@ sys.path.append("..")
 from django.core.management import setup_environ
 from bussr import settings
 setup_environ(settings)
-from bussr.gtfs.models import Agency
-from route_importer import RouteImporter
-from stop_importer import StopImporter
-from agency_importer import AgencyImporter
-from calendar_importer import CalendarImporter
-from shape_importer import ShapeImporter
-from trip_importer import TripImporter
-from stoptime_importer import StopTimeImporter
-from source_importer import SourceImporter
-
-class GTFSImporter:
-    
-    def __init__(self, dataDir, onlyNew, source):
-        self.dataDir = dataDir
-        self.routeIdToRouteMapping = None
-        self.onlyNew = onlyNew
-        self.source = source
-        
-    def importAgencies(self):
-        filename = os.path.join(self.dataDir, 'agency.txt')
-        print 'Importing agencies from ', filename
-        importer = AgencyImporter(filename=filename, source=self.source)
-        importer.parse()
-    
-    def importStops(self, stopIdsToImport = None):
-        ctaFilename = os.path.join(self.dataDir, 'stops.txt')
-        print 'Importing stops from ', ctaFilename
-        stopImporter = StopImporter(filename=ctaFilename, source=self.source, onlyNew=self.onlyNew, stopIdsToImport=stopIdsToImport)
-        stopIdToStopMapping = stopImporter.parse()
-        return stopIdToStopMapping
-    
-    def importRoutes(self):
-        ctaFilename = os.path.join(self.dataDir, 'routes.txt')
-        print 'Importing routes from ', ctaFilename
-        importer = RouteImporter(filename=ctaFilename, source=self.source, onlyNew=self.onlyNew)
-        routeIdToRouteMapping = importer.parse()
-        return routeIdToRouteMapping
-    
-    def importCalendar(self):
-        ctaFilename = os.path.join(self.dataDir, 'calendar.txt')
-        print 'Importing calendar from ', ctaFilename
-        importer = CalendarImporter(filename=ctaFilename, source=self.source, onlyNew=self.onlyNew)
-        serviceIdToCalendarMapping = importer.parse()
-        return serviceIdToCalendarMapping
-    
-    def importShapes(self):
-        ctaFilename = os.path.join(self.dataDir, 'shapes.txt')
-        print 'Importing trips from ', ctaFilename
-        importer = ShapeImporter(ctaFilename, source=self.source)
-        importer.parse()
-    
-    def importTrips(self, routeIdToRouteMapping, serviceIdToCalendarMapping):
-        ctaFilename = os.path.join(self.dataDir, 'trips.txt')
-        print 'Importing trips from ', ctaFilename
-        importer = TripImporter(filename=ctaFilename, source=self.source, routeIdToRouteMapping=routeIdToRouteMapping, serviceIdToCalendarMapping=serviceIdToCalendarMapping, onlyNew=self.onlyNew)
-        tripIdToTripMapping = importer.parse()
-        return tripIdToTripMapping
-    
-    def importStopTimes(self, tripIdToTripMapping, stopIdToStopMapping, routeIdToRouteMapping, stopIdsToImport = None, tripIdsToImport = None, tripToRouteMapping = None):
-        ctaFilename = os.path.join(self.dataDir, 'stop_times.txt')
-        print 'Importing stop times from ', ctaFilename
-        stopImporter = StopTimeImporter(ctaFilename, source=self.source, tripIdToTripMapping=tripIdToTripMapping, stopIdToStopMapping=stopIdToStopMapping, routeIdToRouteMapping=routeIdToRouteMapping, onlyNew=self.onlyNew, stopIdsToImport=stopIdsToImport, tripIdsToImport=tripIdsToImport)
-        stopImporter.parse()
-    
-    def importall(self):
-        self.importAgencies()
-        self.routeIdToRouteMapping = self.importRoutes()
-        self.serviceIdToCalendarMapping = self.importCalendar()
-        self.importShapes()
-        self.tripIdToTripMapping = self.importTrips(self.routeIdToRouteMapping, self.serviceIdToCalendarMapping)
-        self.serviceIdToCalendarMapping = None
-#        
-        self.stopIdToStopMapping = self.importStops()
-        self.importStopTimes(self.tripIdToTripMapping, self.stopIdToStopMapping, self.routeIdToRouteMapping, stopIdsToImport = None, tripIdsToImport = None, tripToRouteMapping = None)
-    
+from source_importer import SourceImporter    
+from gtfsimporter import GTFSImporter
+from subprocess import call
+from tempfile import mkdtemp
+import logging
 
 class DataLoader:
-    def __init__(self, rawDataDir, onlyNew, sourceIdsToImport=None):
+    '''
+    @summary: Object to fetch gtfs data and import all its contents
+    '''
+    def __init__(self, onlyNew=False, sourceIdsToImport=None, cleanExistingData=False, logger=None):
+        '''
+        @param onlyNew: Import only new data, entries that dont existing in model database
+        @param sourceIdsToImport: List of source ids to import (see sources.json)
+        @param cleanExistingData: Clean existing data for this source
+        @param logger: logger
+        '''
         self.sourceIdsToImport = sourceIdsToImport
-        self.rawDataDir = rawDataDir
         self.onlyNew = onlyNew
-        filePath = os.path.dirname(__file__)
+        self.cleanExistingData = cleanExistingData
+        self.logger = logger
+        if logger is None:
+            self.logger = logging.getLogger(__name__)
+        filePath = os.path.abspath(os.path.dirname(__file__))
         sourcesFilePath = os.path.join(filePath, 'sources.json')
         self.sourceMapping = json.load(open(sourcesFilePath))['sources']
+        assert not (onlyNew and cleanExistingData)
         
     def importSource(self, mapping):
+        '''
+        @param mapping: mapping from sources.json to import 
+        Import all data for the given source mapping
+        '''
+        #Import the source
         sourceImporter = SourceImporter(mapping)
         source = sourceImporter.parse()
-        dataDir = os.path.join(self.rawDataDir, mapping['dataDir'])
-        importer = GTFSImporter(dataDir=dataDir, onlyNew=self.onlyNew, source=source)
+        
+        #Fetch newest gtfs data
+        fetchCommand = os.path.join(os.path.dirname(__file__), 'fetch')
+        tempDir = mkdtemp()
+        call(['sh', fetchCommand, tempDir, mapping['importUrl']])
+        
+        #Parse gtfs data
+        importer = GTFSImporter(dataDir=tempDir, onlyNew=self.onlyNew, source=source, cleanExistingData=self.cleanExistingData, logger=self.logger)
         importer.importall()
     
-    
-    def importAllSources(self):
+    def performImport(self):
+        '''
+        @return: None
+        Import data from all specified sources
+        '''
         for mapping in self.sourceMapping:
             if self.sourceIdsToImport is None or mapping['id'] in self.sourceIdsToImport:
-                print 'Importing source mapping', mapping
                 self.importSource(mapping)
                 
                 
+def usage():
+    print '''
+usage: %s 
+    Options and arguments:
+    -h, --help : print this help
+    -o, --onlyNew : only import new data
+    -c, --clean : clean existing data
+    -s, --source : source id to import
+    ''' % sys.argv[0]
+    
+def processCmdArgs():
+    '''
+    @return: (success, sources to import)
+    '''
+    if len(sys.argv) < 2:
+        return (True, None, False, False)
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], 'hs:oc', ['help', 'source=', 'onlyNew', 'clean'])
+    except getopt.GetoptError, err:
+        print str(err)
+        usage()
+    
+    sourceIdsToImport = None
+    onlyNew = False
+    cleanExistingData = False
+    for o, a in opts:
+        if o in ('-h', '--help'):
+            usage()
+            return (False, None, None, None)
+        elif o in ('-s', '--source'):
+            sourceIdsToImport = [a]
+        elif o in ('-o', '--onlyNew'):
+            onlyNew = True
+        elif o in ('-c', '--clean'):
+            cleanExistingData = True
+        else:
+            assert False, 'unhandled reportOption'
+            
+    return (True, sourceIdsToImport, onlyNew, cleanExistingData)
 
 if __name__=='__main__':
-    if len(sys.argv) < 2:
-        print 'ERROR - Specify the raw data directory containing the folder(s) containing the raw gtfs data'
-    else:
-        rawDataDir = os.path.abspath(sys.argv[1])
-        print 'Import gtfs data from', rawDataDir
-        
-        sourceIdsToImport = None
-        if len(sys.argv) > 2:
-            sourceIdsToImport = [sys.argv[2]]
-            print 'Import agency ids:', sourceIdsToImport
-        dataLoader = DataLoader(rawDataDir, onlyNew=(len(sys.argv)==4), sourceIdsToImport=sourceIdsToImport)
-        dataLoader.importAllSources()
-        
+    (success, sourceIdsToImport, onlyNew, cleanExistingData) = processCmdArgs()
+    print 'sourceIdsToImport', sourceIdsToImport
+    print 'onlyNew', onlyNew 
+    print 'cleanExistingData', cleanExistingData
+    if success:
+        dataLoader = DataLoader(onlyNew=onlyNew, sourceIdsToImport=sourceIdsToImport, cleanExistingData=cleanExistingData)
+        dataLoader.performImport()

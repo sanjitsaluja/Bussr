@@ -2,3 +2,7 @@ www:
   type: python
 db:
   type: postgis
+broker:
+  type: rabbitmq
+workers:
+  type: python-worker

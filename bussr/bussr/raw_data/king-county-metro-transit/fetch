@@ -1,5 +1,0 @@
-#!/bin/sh
-echo "Fetching latest King County" 
-curl -L -o latest.zip http://www.gtfs-data-exchange.com/agency/king-county-metro-transit/latest.zip
-unzip -o latest.zip
-rm latest.zip

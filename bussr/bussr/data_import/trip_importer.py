@@ -5,7 +5,7 @@ Created on Jan 22, 2012
 '''
 
 import csv
-from bussr.gtfs.models import Trip, Route, Calendar
+from gtfs.models import Trip, Route, Calendar
 from gtfsimporterutils import csvValueOrNone
 from importer_base import CSVImporterBase
 
@@ -14,9 +14,14 @@ class TripImporter(CSVImporterBase):
     classdocs
     '''
 
-    def __init__(self, filename, source, routeIdToRouteMapping, serviceIdToCalendarMapping, onlyNew):
+    def __init__(self, filename, source, routeIdToRouteMapping, serviceIdToCalendarMapping, onlyNew, cleanExistingData, logger):
         '''
-        Constructor
+        Constructor.
+        @param filename: file name to import (full path to routes.txt)
+        @param source: associated source
+        @param onlyNew: Only import new entries
+        @param cleanExistingData: Clean existing data for this source
+        @param logger: logger
         '''
         super(TripImporter, self).__init__()
         self.filename = filename
@@ -24,9 +29,15 @@ class TripImporter(CSVImporterBase):
         self.routeIdToRouteMapping = routeIdToRouteMapping
         self.serviceIdToCalendarMapping = serviceIdToCalendarMapping
         self.onlyNew = onlyNew
-        
+        self.cleanExistingData = cleanExistingData
+        self.logger = logger
         
     def parse(self):
+        if self.cleanExistingData:
+            tripsToDelete = Trip.objects.filter(source=self.source)
+            self.logger.info('Cleaning existing Trips %s', tripsToDelete)
+            tripsToDelete.delete()
+        
         reader = csv.DictReader(open(self.filename, 'r'), skipinitialspace=True)
         tripIdToTripMapping = {}
         for row in reader:
@@ -42,7 +53,7 @@ class TripImporter(CSVImporterBase):
                 trip = Trip()
 
             if self.verboseParse:
-                print 'Parsing trip row:', row
+                self.logger.info('Parsing trip row: %s', row)
             
             trip.source = self.source
             trip.tripId = tripId

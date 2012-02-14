@@ -5,7 +5,7 @@ Created on Jan 22, 2012
 '''
 
 import csv
-from bussr.gtfs.models import Shape
+from gtfs.models import Shape
 from django.contrib.gis.geos import Point
 from importer_base import CSVImporterBase
 
@@ -14,7 +14,7 @@ class ShapeImporter(CSVImporterBase):
     classdocs
     '''
 
-    def __init__(self, filename, source, onlyNew):
+    def __init__(self, filename, source, onlyNew, cleanExistingData, logger):
         '''
         Constructor
         '''
@@ -22,22 +22,28 @@ class ShapeImporter(CSVImporterBase):
         self.filename = filename
         self.source = source
         self.onlyNew = onlyNew
+        self.cleanExistingData = cleanExistingData
+        self.logger = logger
         
     def parse(self):
+        if self.cleanExistingData:
+            toDel = Shape.objects.filter(source=self.source)
+            self.logger.info('Cleaning existing Shape %s', toDel)
+            toDel.delete()
+        
         reader = csv.DictReader(open(self.filename, 'r'), skipinitialspace=True)
         for row in reader:                
             shapeId = row['shape_id']
             try:
-                shape = Shape.objects.filter(agency=self.agency).get(shapeId=shapeId)
+                shape = Shape.objects.filter(source=self.source).get(shapeId=shapeId)
                 if self.onlyNew:
                     continue
             except Shape.DoesNotExist:
-                shape = None
-            if shape is None:
                 shape = Shape()
+                shape.source = self.source
 
             if self.verboseParse:
-                print 'Parsing shape row:', row
+                self.logger.debug('Parsing shape row: %s', row)
 
             shape.shapeId = shapeId
             shape.lat = float(row['shape_pt_lat'])

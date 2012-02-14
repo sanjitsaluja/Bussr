@@ -34,7 +34,7 @@ class Route(models.Model):
     '''
     agency id
     '''
-    agencyId = models.CharField(max_length=64)
+    agencyId = models.CharField(max_length=64, null=True, blank=True)
 
     '''
     Agency object foreign key

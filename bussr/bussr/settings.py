@@ -1,19 +1,35 @@
 # Django settings for bussr project.
+import os
+import sys
+PROJECT_ROOT = os.path.dirname(__file__)
+sys.path.insert(0, PROJECT_ROOT)
 
+import djcelery
 import json
 env = {}
 try:
     with open('/home/dotcloud/environment.json') as f:
         env = json.load(f)
         env['DOTCLOUD_DB_SQL_PORT'] = int(env['DOTCLOUD_DB_SQL_PORT'])
+        env['MEDIA_ROOT'] = '/home/dotcloud/data/media/'
+        env['STATIC_ROOT'] = '/home/dotcloud/data/static/'
+        DEBUG = False
 except IOError:
+    DEBUG = True
+    env['MEDIA_ROOT'] = ''
+    env['STATIC_ROOT'] = ''
+    #DB
     env['DOTCLOUD_DB_SQL_LOGIN'] = ''
     env['DOTCLOUD_DB_SQL_PASSWORD'] = ''
     env['DOTCLOUD_DB_SQL_HOST'] = ''
     env['DOTCLOUD_DB_SQL_PORT'] = ''
+    # Celery
+    env['DOTCLOUD_BROKER_AMQP_HOST'] = "127.0.0.1"
+    env['DOTCLOUD_BROKER_AMQP_PORT'] = "5672"
+    env['DOTCLOUD_BROKER_AMQP_LOGIN'] = "guest"
+    env['DOTCLOUD_BROKER_AMQP_PASSWORD'] = "guest"
 
 
-DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -58,7 +74,7 @@ USE_L10N = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = '/home/dotcloud/data/media/'
+MEDIA_ROOT = env['MEDIA_ROOT']
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -69,7 +85,7 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = '/home/dotcloud/data/static/'
+STATIC_ROOT = env['STATIC_ROOT']
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -122,6 +138,7 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    'djcelery',
     'django_evolution',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -129,14 +146,12 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Uncomment the next line to enable the admin:
     'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
     'django.contrib.gis',
-    'bussr.webapp',
-    'bussr.webservices',
-    'bussr.gtfs',
+    'webapp',
+    'webservices',
+    'gtfs',
 )
 
 
@@ -160,5 +175,24 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
+    }
+}
+
+# Configure Celery using the RabbitMQ credentials found in the DotCloud
+# environment.
+djcelery.setup_loader()
+BROKER_HOST = env['DOTCLOUD_BROKER_AMQP_HOST']
+BROKER_PORT = int(env['DOTCLOUD_BROKER_AMQP_PORT'])
+BROKER_USER = env['DOTCLOUD_BROKER_AMQP_LOGIN']
+BROKER_PASSWORD = env['DOTCLOUD_BROKER_AMQP_PASSWORD']
+BROKER_VHOST = '/'
+
+# A very simple queue, just to illustrate the principle of routing.
+CELERY_DEFAULT_QUEUE = 'default'
+CELERY_QUEUES = {
+    'default': {
+        'exchange': 'default',
+        'exchange_type': 'topic',
+        'binding_key': 'tasks.#'
     }
 }

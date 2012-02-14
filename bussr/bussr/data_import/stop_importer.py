@@ -3,7 +3,7 @@ Created on Jan 21, 2012
 @author: sanjits
 '''
 import csv
-from bussr.gtfs.models import Stop
+from gtfs.models import Stop
 from django.contrib.gis.geos import Point
 from importer_base import CSVImporterBase
 
@@ -12,7 +12,7 @@ class StopImporter(CSVImporterBase):
     Import stops.txt gtfs file into the Stop table
     '''
 
-    def __init__(self, filename, source, onlyNew, stopIdsToImport=None):
+    def __init__(self, filename, source, onlyNew, stopIdsToImport, cleanExistingData, logger):
         '''
         Constructor
         '''
@@ -21,6 +21,9 @@ class StopImporter(CSVImporterBase):
         self.stopIdsToImport = stopIdsToImport
         self.source = source
         self.onlyNew = onlyNew
+        self.cleanExistingData=cleanExistingData
+        self.logger=logger
+        
         
     def locationTypeForRow(self, row):
         try:
@@ -32,6 +35,11 @@ class StopImporter(CSVImporterBase):
         '''
         Parse the stops.txt gtfs file
         '''
+        if self.cleanExistingData:
+            toDel = Stop.objects.filter(source=self.source)
+            self.logger.info('Cleaning existing stops %s', toDel)
+            toDel.delete()
+        
         reader = csv.DictReader(open(self.filename, 'r'), skipinitialspace=True)
         stopIdToStopMapping = {}
         for row in reader:
@@ -47,7 +55,7 @@ class StopImporter(CSVImporterBase):
                     stop = Stop()
 
                 if self.verboseParse:
-                    print 'Parsing stop row:', row
+                    self.logger.debug('Parsing stop row: %s', row)
                 
                 stop.sourceId = self.source.id
                 stop.source = self.source

@@ -6,7 +6,7 @@ Created on Jan 22, 2012
 
 import csv
 import datetime
-from bussr.gtfs.models import Calendar
+from gtfs.models import Calendar
 from importer_base import CSVImporterBase
 
 class CalendarImporter(CSVImporterBase):
@@ -14,7 +14,7 @@ class CalendarImporter(CSVImporterBase):
     Import the calendar from calendar.txt.
     '''
 
-    def __init__(self, filename, source, onlyNew):
+    def __init__(self, filename, source, onlyNew, cleanExistingData, logger):
         '''
         @param filename: path to the file to import
         @param source: source model object. The source that this service belongs to
@@ -24,11 +24,18 @@ class CalendarImporter(CSVImporterBase):
         self.filename = filename
         self.source = source
         self.onlyNew = onlyNew
+        self.cleanExistingData = cleanExistingData
+        self.logger = logger
         
     def parse(self):
         '''
         Parse the input file
         '''
+        if self.cleanExistingData:
+            toDelete = Calendar.objects.filter(source=self.source)
+            self.logger.info('Cleaning existing Calendars %s', toDelete)
+            toDelete.delete()
+        
         reader = csv.DictReader(open(self.filename, 'r'), skipinitialspace=True)
         
         # output is a serviceId->service object mapping
@@ -49,7 +56,7 @@ class CalendarImporter(CSVImporterBase):
                 calendar = Calendar()
                 
             if self.verboseParse:
-                print 'Parsing service row:', row
+                self.logger.debug('Parsing service row: %s', row)
                 
             calendar.source = self.source
             calendar.serviceId = serviceId

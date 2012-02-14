@@ -1,0 +1,5 @@
+#!/bin/sh
+echo Fetching $2 to $1
+curl -L -o $1/latest.zip $2
+unzip -o $1/latest.zip -d $1
+rm $1/latest.zip

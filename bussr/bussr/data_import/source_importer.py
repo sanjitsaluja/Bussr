@@ -4,7 +4,7 @@ Created on Jan 22, 2012
 @author: sanjits
 '''
 
-from bussr.gtfs.models import Source
+from gtfs.models import Source
 from gtfsimporterutils import csvValueOrNone
 from importer_base import CSVImporterBase
 

@@ -1,3 +1,4 @@
 import json
 f = open('sources.json')
-print json.load(f)['sources']
+print json.loads('{ "sources":[{"hi":"0"},] }')
+f.close()
