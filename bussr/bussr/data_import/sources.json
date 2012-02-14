@@ -1,9 +1,0 @@
-{	
-"sources" : [
-	{"id":"1", "codeName":"METRA",    "dataDir": "metra",                     "importUrl": "http://www.gtfs-data-exchange.com/agency/metra/latest.zip"                        				},
-	{"id":"2", "codeName":"CTA",      "dataDir": "cta",                       "importUrl": "http://www.gtfs-data-exchange.com/agency/chicago-transit-authority/latest.zip"    				},
-	{"id":"3", "codeName":"KCM",      "dataDir": "king-county-metro-transit", "importUrl": "http://www.gtfs-data-exchange.com/agency/king-county-metro-transit/latest.zip"    			   	},
-	{"id":"4", "codeName":"CUMTD",    "dataDir": "cumtd", 					  "importUrl": "http://www.gtfs-data-exchange.com/agency/champaign-urbana-mass-transit-district/latest.zip"    	}
-]
-}
-

@@ -4,7 +4,7 @@ from source import Source
 class Shape(models.Model):
     class Meta:
         app_label = 'gtfs'
-        unique_together = (('source', 'shapeId'))
+        unique_together = (('source', 'shapeId', 'sequence'))
     
     '''
     Model object represeting a Shape (shapes.txt)

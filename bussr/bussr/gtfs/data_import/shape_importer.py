@@ -32,10 +32,12 @@ class ShapeImporter(CSVImporterBase):
             toDel.delete()
         
         reader = csv.DictReader(open(self.filename, 'r'), skipinitialspace=True)
-        for row in reader:                
+        
+        for row in reader: 
+            sequence = int(row['shape_pt_sequence'])               
             shapeId = row['shape_id']
             try:
-                shape = Shape.objects.filter(source=self.source).get(shapeId=shapeId)
+                shape = Shape.objects.filter(source=self.source).filter(shapeId=shapeId).get(sequence=sequence)
                 if self.onlyNew:
                     continue
             except Shape.DoesNotExist:
@@ -49,6 +51,6 @@ class ShapeImporter(CSVImporterBase):
             shape.lat = float(row['shape_pt_lat'])
             shape.lng = float(row['shape_pt_lon'])
             shape.point = Point(y=shape.lat, x=shape.lng)
-            shape.sequence = int(row['shape_pt_sequence'])
+            shape.sequence = sequence
             shape.distanceTraveled = 'shape_dist_travelled' in row and float(row['shape_dist_travelled']) or None
             shape.save()

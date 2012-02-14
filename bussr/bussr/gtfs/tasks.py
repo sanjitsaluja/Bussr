@@ -1,8 +1,12 @@
 from celery.decorators import task
 from data_import.load import DataLoader
+import os
+import json
 
 @task()
 def add(x, y):
+    logger = add.get_logger()
+    logger.info('hello')
     return x + y
 
 
@@ -17,11 +21,17 @@ def gtfsImportSourceId(sourceId, onlyNew, cleanExistingData):
 
 @task(ignore_result=True)
 def gtfsImportDev():
-    gtfsImportSourceId('1', onlyNew=True, cleanExistingData=False).apply_async() #Metra
-    gtfsImportSourceId('4', onlyNew=True, cleanExistingData=False).apply_async() #CUMTD
+    # gtfsImportSourceId.apply_async(args=['1', True, False]) #CUMTD
+    gtfsImportSourceId.apply_async(args=['4', True, False]) #Metra
+    
 
 @task(ignore_result=True)
 def gtfsimportall():
+    filePath = os.path.abspath(os.path.dirname(__file__))
+    sourcesFilePath = os.path.join(filePath, 'data_import/sources.json')
+    sourceMappings = json.load(open(sourcesFilePath))['sources']
+    for mapping in sourceMappings:
+        print mapping
     pass
 
-
+    

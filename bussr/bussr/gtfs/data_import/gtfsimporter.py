@@ -69,6 +69,7 @@ class GTFSImporter:
         self.serviceIdToCalendarMapping = self.importCalendar()
         self.tripIdToTripMapping = self.importTrips(self.routeIdToRouteMapping, self.serviceIdToCalendarMapping)
         self.serviceIdToCalendarMapping = None
-        self.importShapes()
+        # self.importShapes()
         self.stopIdToStopMapping = self.importStops()
         self.importStopTimes(self.tripIdToTripMapping, self.stopIdToStopMapping, self.routeIdToRouteMapping, stopIdsToImport = None, tripIdsToImport = None, tripToRouteMapping = None)
+        return
