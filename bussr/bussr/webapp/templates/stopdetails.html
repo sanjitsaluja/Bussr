@@ -33,7 +33,7 @@ $(document).ready(function() {
 	<ul data-role="listview" data-inset="true" data-filter="true" data-filter-placeholder="Search upcoming routes...">
 			{% for time in times %}
 				<li>
-					<a href='/agency/{{agencyId}}/trip/{{time.tripId}}/stop/{{stop.stopId}}/'>
+					<a href='/s/{{sourceId}}/trip/{{time.tripId}}/stop/{{stop.stopId}}/'>
 						 <div class="stop_time">
 							<div class="stop_time_route">
 							{{time.routeId}} - {{time.headSign}}
@@ -51,6 +51,14 @@ $(document).ready(function() {
 			<li> No service scheduled in the next hour</li>
 	</ul> 
 	{% endif %}
+	
+	<ul data-role="listview" data-inset="true" id="stop-aux-details">
+		<li id="stop-map-li" style="background:url('http://maps.google.com/maps/api/staticmap?center={{stop.lat}},{{stop.lng}}&size=256x256&maptype=roadmap&sensor=false&markers=color:blue|{{stop.lat}},{{stop.lng}}') no-repeat center center;">
+		</li>
+		<li>
+			<a href="">See nearby stops</a>
+		</li>
+	</ul>
 	
 	
 	<!--

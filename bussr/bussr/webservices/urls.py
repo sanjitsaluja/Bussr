@@ -5,6 +5,7 @@ from django.conf.urls.defaults import patterns, include, url
 # admin.autodiscover()
 import stops
 import stopsrect
+import stopdetails
 
 urlpatterns = patterns('',
     # Examples:
@@ -21,4 +22,6 @@ urlpatterns = patterns('',
     url(r'^stops/([-+]?[0-9]*\.?[0-9]*),([-+]?[0-9]*\.?[0-9]*)/$', stops.service),
     
     url(r'^stopsrect/([-+]?[0-9]*\.?[0-9]*),([-+]?[0-9]*\.?[0-9]*)/([-+]?[0-9]*\.?[0-9]*),([-+]?[0-9]*\.?[0-9]*)/$', stopsrect.service),
+    
+    url(r'^s/([0-9]+)/stopdetails/([^/]+)/', stopdetails.service)
 )

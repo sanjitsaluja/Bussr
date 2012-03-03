@@ -53,7 +53,7 @@ class TripImporter(CSVImporterBase):
                 trip = Trip()
 
             if self.verboseParse:
-                self.logger.info('Parsing trip row: %s', row)
+                self.logger.debug('Parsing trip row: %s', row)
             
             trip.source = self.source
             trip.tripId = tripId

@@ -20,20 +20,20 @@ class StopTime(models.Model):
     '''
     Trip id for ease of access. identifies the vehicle stop times
     '''
-    tripId = models.CharField(max_length=20)
+    tripId = models.CharField(max_length=64)
     trip = models.ForeignKey(Trip)
     
     '''
     Route id for ease of access
     '''
-    routeId = models.CharField(max_length=20)
+    routeId = models.CharField(max_length=64)
     route = models.ForeignKey(Route)
     
     '''
     The stop obj field contains an ID that uniquely 
     identifies a stop. Multiple routes may use the same stop
     '''
-    stopId = models.CharField(max_length=20)
+    stopId = models.CharField(max_length=64)
     stop = models.ForeignKey(Stop)
     
     '''

@@ -25,3 +25,20 @@
 	padding: 2px;
 }
 /* end Bubble */
+
+/* stop details page */
+#stopmap {
+	margin-left: 10%;
+	width: 256px;
+	height: 256px;
+}
+
+#stop-aux-details .ui-li-thumb, .ui-listview .ui-li-icon {
+	max-height:256px;
+	max-width:256px;
+}
+
+#stop-map-li {
+	height:260px;
+}
+/* end stop details page */

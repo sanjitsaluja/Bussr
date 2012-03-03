@@ -38,6 +38,6 @@ class SourceImporter(CSVImporterBase):
         
         source.dataDir = self.sourceDict['dataDir']
         source.importUrl = self.sourceDict['importUrl']
-        source.codeName = self.sourceDict['codeName']
+        source.codeName = self.sourceDict['dataDir']
         source.save()
         return source

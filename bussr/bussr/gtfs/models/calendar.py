@@ -44,27 +44,33 @@ class Calendar(models.Model):
         '''
         weekday = datetime.now().isoweekday()
         serviceDays = []
-        if weekday is 1:
+        if self.monday:
             serviceDays.append(u'mon')
-        elif weekday is 2:
+        if self.tuesday:
             serviceDays.append(u'tue')
-        elif weekday is 3:
+        if self.wednesday:
             serviceDays.append(u'wed')
-        elif weekday is 4:
+        if self.thursday:
             serviceDays.append(u'thu')
-        elif weekday is 5:
+        if self.friday:
             serviceDays.append(u'fri')
-        elif weekday is 6:
+        if self.saturday:
             serviceDays.append(u'sat')
-        else:
+        if self.sunday:
             serviceDays.append(u'sun')
-        return u','.join(serviceDays)
+        return "%s, %s" % (self.serviceId, u','.join(serviceDays))
     
     def today(self):
         '''
         bool if the service is on today or false otherwise
         '''
+        
+        #Degenerate input
+        if not self.monday and not self.tuesday and not self.wednesday and not self.thursday and not self.friday and not self.saturday and not self.sunday:
+            return True
+        
         weekday = datetime.now().isoweekday()
+        print weekday, self.tuesday
         if weekday is 1:
             return self.monday
         elif weekday is 2:

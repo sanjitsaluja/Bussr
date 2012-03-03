@@ -23,6 +23,7 @@ def gtfsImportSourceId(sourceId, onlyNew, cleanExistingData):
 def gtfsImportDev():
     # gtfsImportSourceId.apply_async(args=['1', True, False]) #CUMTD
     gtfsImportSourceId.apply_async(args=['4', True, False]) #Metra
+    gtfsImportSourceId.apply_async(args=['3', True, False]) #Seattle
     
 
 @task(ignore_result=True)

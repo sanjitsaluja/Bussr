@@ -14,3 +14,10 @@ def keyValueOrNone(dict, key):
     @param key: 
     '''
     return key in dict and dict[key] or None
+
+
+def cleanGTFSId(strId):
+    '''
+    @param strId: id string to remove the slashes from
+    '''
+    return strId.replace('/', '-')

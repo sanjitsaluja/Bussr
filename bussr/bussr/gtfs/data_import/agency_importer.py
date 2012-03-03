@@ -6,7 +6,7 @@ Created on Jan 22, 2012
 
 import csv
 from gtfs.models import Agency
-from gtfsimporterutils import csvValueOrNone
+from gtfsimporterutils import csvValueOrNone, cleanGTFSId
 from importer_base import CSVImporterBase
 
 class AgencyImporter(CSVImporterBase):

@@ -1,5 +1,5 @@
 from django.shortcuts import render_to_response
-from bussr.gtfs.models import Stop, StopTime, Agency
+from bussr.gtfs.models import Stop, StopTime, Agency, Source
 from datetime import datetime
 import math
 from django.db.models import Max
@@ -13,7 +13,7 @@ def currentTimeInSecondsSinceDawn():
     '''
     return timeInSecondsSinceDawn(datetime.now())
 
-def stopTimes(agency, stop, minutes):
+def stopTimes(source, stop, minutes):
     '''
     Get all stop times for the given stopId in the next 'minutes' minutes
     @param stopId: Stop id for which to fetch times for
@@ -22,7 +22,7 @@ def stopTimes(agency, stop, minutes):
     parentStation = stop.parentStation
     stopIdsToSearch = []
     if parentStation is not None:
-        childStops = Stop.objects.filter(agency=agency).filter(parentStation=parentStation)
+        childStops = Stop.objects.filter(source=source).filter(parentStation=parentStation)
         stopIdsToSearch = [childStop.stopId for childStop in childStops]
         print stopIdsToSearch
         pass
@@ -32,18 +32,19 @@ def stopTimes(agency, stop, minutes):
     assert minutes > 0
     startTime = currentTimeInSecondsSinceDawn()
     endTime = startTime + minutes*60
-    stopTimes = StopTime.objects.filter(agency=agency).\
+    stopTimes = StopTime.objects.filter(source=source).\
                                  filter(stopId__in=stopIdsToSearch).\
                                  filter(arrivalSeconds__gte=startTime).\
                                  filter(arrivalSeconds__lte=endTime).\
                                  order_by("arrivalSeconds")
+    print startTime, endTime, stopTimes.count()
                                  
     outStopTimes = []
     
     # Filter out all stop times ending at this stop
     # TODO: Filter out everything stop at the parent stop as well
     for stopTime in stopTimes:
-        lastStopSequence = StopTime.objects.filter(agency=agency).filter(tripId=stopTime.tripId).aggregate(Max('stopSequence'))['stopSequence__max']
+        lastStopSequence = StopTime.objects.filter(source=source).filter(tripId=stopTime.tripId).aggregate(Max('stopSequence'))['stopSequence__max']
         if stopTime.stopSequence < lastStopSequence:
             outStopTimes.append(stopTime)
         
@@ -99,20 +100,21 @@ def timeDeltaStringForStopTime(stopTime, predictionDate=None):
             
         return (timeDeltaStringForSeconds(timeInSecondsSinceDawn(predictionDate)), diffString)
 
-def service(request, agencyId, stopId):
+def service(request, sourceId, stopId):
     '''
     service the request to get details for a stop
     '''
     #realTimePredictions = getPredictionsForStopId(stopId)
     realTimePredictions = []
-    agency = Agency.objects.get(id=agencyId)
-    stop = Stop.objects.filter(agency=agency).get(stopId=stopId)
-    times = stopTimes(agency, stop, 60)
+    source = Source.objects.get(id=sourceId)
+    stop = Stop.objects.filter(source=source).get(stopId=stopId)
+    times = stopTimes(source, stop, 60)
     stopTimesOut = []
     for time in times:
         trip = time.trip
         route = trip.route
         service = trip.service
+        print time.tripId
         if service.today():
             predictionDate = dequeueNextPredictionForRoute(realTimePredictions, route.routeId, time.headSign)
             stopTimeOut = {}
@@ -127,7 +129,7 @@ def service(request, agencyId, stopId):
             
     return render_to_response('stopdetails.html',
                                 {
-                                 'agencyId' : agencyId,
+                                 'sourceId' : sourceId,
                                  'stop': stop,
                                  'times': stopTimesOut,
                                 })
