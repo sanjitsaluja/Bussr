@@ -14,50 +14,35 @@ class CalendarImporter(CSVImporterBase):
     Import the calendar from calendar.txt.
     '''
 
-    def __init__(self, filename, source, onlyNew, cleanExistingData, logger):
+    def __init__(self, filename, source, logger):
         '''
         @param filename: path to the file to import
         @param source: source model object. The source that this service belongs to
-        @param onlyNew: only import new entries not already in the database
+        @param cleanExistingData: bool - Clean existing data for this source
+        @param logger: logger
         '''
         super(CalendarImporter, self).__init__()
         self.filename = filename
         self.source = source
-        self.onlyNew = onlyNew
-        self.cleanExistingData = cleanExistingData
         self.logger = logger
         
     def parse(self):
         '''
-        Parse the input file
+        Parse the input file. 
+        @return: serviceId->object mapping
         '''
-        if self.cleanExistingData:
-            toDelete = Calendar.objects.filter(source=self.source)
-            self.logger.info('Cleaning existing Calendars %s', toDelete)
-            toDelete.delete()
+        toDelete = Calendar.objects.filter(source=self.source)
+        self.logger.debug('Cleaning existing Calendars %s', toDelete)
+        toDelete.delete()
         
         reader = csv.DictReader(open(self.filename, 'r'), skipinitialspace=True)
-        
         # output is a serviceId->service object mapping
         serviceIdToCalendarMapping = {}
         
         for row in reader:            
-            serviceId = row['service_id']
-            
-            # Get existing calendar object otherwise create new one
-            try:
-                calendar = Calendar.objects.filter(source=self.source).get(serviceId=serviceId)
-                if self.onlyNew:
-                    continue
-            except Calendar.DoesNotExist:
-                calendar = None
-            
-            if calendar is None:
-                calendar = Calendar()
-                
-            if self.verboseParse:
-                self.logger.debug('Parsing service row: %s', row)
-                
+            serviceId = row['service_id']            
+            calendar = Calendar()
+            self.logger.info('Parsing service row: %s', row)
             calendar.source = self.source
             calendar.serviceId = serviceId
             calendar.monday = self.csvBoolean(row, 'monday')
@@ -71,7 +56,6 @@ class CalendarImporter(CSVImporterBase):
             calendar.endDate = self.csvDate(row, 'end_date')
             calendar.save()
             serviceIdToCalendarMapping[calendar.serviceId] = calendar
-        
         return serviceIdToCalendarMapping
             
     def csvBoolean(self, csvRow, colName):

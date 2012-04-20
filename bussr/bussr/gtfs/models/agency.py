@@ -10,7 +10,7 @@ class Agency(models.Model):
         unique_together = (('source', 'agencyId'))
             
     '''
-    Source of the Agency
+    Source of the Agency.
     '''
     source = models.ForeignKey(Source)
     
@@ -20,13 +20,13 @@ class Agency(models.Model):
     is dataset unique. This field is optional for transit feeds that only contain 
     data for a single agency.
     '''
-    agencyId = models.CharField(max_length=64, null=True, blank=True)
+    agencyId = models.CharField(max_length=128, null=True, blank=True)
     
     ''' Required
     The agency_name field contains the full name of the transit agency. 
     Google Maps will display this name.
     '''
-    agencyName = models.CharField(max_length=256, unique=True)
+    agencyName = models.CharField(max_length=1024, unique=True)
     
     ''' Required
     The agency_url field contains the URL of the transit agency

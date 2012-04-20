@@ -29,12 +29,12 @@ class Route(models.Model):
     The route_id field contains an ID that uniquely identifies a route.
     The route_id is dataset unique.
     '''
-    routeId = models.CharField(max_length=64)
+    routeId = models.CharField(max_length=128)
 
     '''
     agency id
     '''
-    agencyId = models.CharField(max_length=64, null=True, blank=True)
+    agencyId = models.CharField(max_length=128, null=True, blank=True)
 
     '''
     Agency object foreign key
@@ -50,7 +50,7 @@ class Route(models.Model):
     please specify a route_long_name and use an empty string
     as the value for this field.
     '''
-    routeShortName = models.CharField(max_length=64, blank=True)
+    routeShortName = models.CharField(max_length=256, blank=True)
 
     ''' R
     The route_long_name contains the full name of a route.
@@ -60,7 +60,7 @@ class Route(models.Model):
     long name, please specify a route_short_name and
     use an empty string as the value for this field.
     '''
-    routeLongName = models.CharField(max_length=256, blank=True, null=True)
+    routeLongName = models.CharField(max_length=1024, blank=True, null=True)
 
     ''' O
     The route_desc field contains a description of a route.
@@ -73,7 +73,7 @@ class Route(models.Model):
     Boulevard (trains typically alternate between
     Lefferts Blvd and Far Rockaway)."
     '''
-    routeDesc = models.CharField(max_length=512, blank=True, null=True)
+    routeDesc = models.CharField(max_length=1024, blank=True, null=True)
 
     ''' R
     The route_type field describes the type of transportation

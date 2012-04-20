@@ -14,7 +14,7 @@ class Stop(models.Model):
     '''
     source id
     '''
-    sourceId = models.CharField(max_length=64)
+    sourceId = models.CharField(max_length=128)
     
     '''
     Source of the stop
@@ -25,7 +25,7 @@ class Stop(models.Model):
     The stop_id field contains an ID that uniquely identifies a stop or 
     station. Multiple routes may use the same stop
     '''
-    stopId = models.CharField(max_length=64)
+    stopId = models.CharField(max_length=128)
     
     ''' 0
     The stop_code field contains short text or a number that uniquely 
@@ -37,21 +37,21 @@ class Stop(models.Model):
     displayed to passengers. For internal codes, use stop_id. 
     This field should be left blank for stops without a code.
     '''
-    stopCode = models.CharField(max_length=20, blank=True, null=True)
+    stopCode = models.CharField(max_length=128, blank=True, null=True)
     
     ''' R
     The stop_name field contains the name of a stop or station. 
     Please use a name that people will understand in the local 
     and tourist vernacular.
     '''
-    stopName = models.CharField(max_length=100)
+    stopName = models.CharField(max_length=1024)
     
     ''' 0
     The stop_desc field contains a description of a stop. Please 
     provide useful, quality information. Do not simply duplicate 
     the name of the stop.
     '''
-    stopDesc = models.CharField(max_length=100, blank=True, null=True)
+    stopDesc = models.CharField(max_length=1024, blank=True, null=True)
     
     ''' WGS 84 stop latitude '''
     lat = models.FloatField()
@@ -68,7 +68,7 @@ class Stop(models.Model):
     fare_rules.txt. If this stop ID represents a station, 
     the zone ID is ignored.
     '''
-    zoneId = models.CharField(max_length=20, blank=True, null=True)
+    zoneId = models.CharField(max_length=128, blank=True, null=True)
     
     ''' O
     The stop_url field contains the URL of a web page about a particular stop. 
@@ -91,7 +91,7 @@ class Stop(models.Model):
     '''
     See gtfs spec
     '''
-    parentStation = models.CharField(max_length=20, blank=True, null=True)
+    parentStation = models.CharField(max_length=128, blank=True, null=True)
     
     ''' Is stop wheel chair accessible '''
     wheelchairAccessible = models.BooleanField(blank=True)

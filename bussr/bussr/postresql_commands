@@ -16,3 +16,6 @@ sudo su postgres -c '/usr/local/pgsql/bin/pg_ctl -D /usr/local/pgsql/data restar
 
 \d+ gtfs_route
 ALTER TABLE gtfs_route ALTER "routeLongName" DROP NOT NULL;
+
+// install post gis
+sudo apt-get install postgresql-9.1-postgis

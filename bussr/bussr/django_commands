@@ -7,3 +7,5 @@ python manage.py dumpdata <your_app> > temp_data.json
 python manage.py reset <your_app>
 python manage.py loaddata temp_data.json
 If your changes break your old schema this won't work - in which case tools like south or django evolution are great.
+
+sudo apt-get install rabbitmq-server

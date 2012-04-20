@@ -1,0 +1,15 @@
+#!/bin/sh
+
+GTFS_ZIP_URL=$2
+UNPACK_DIR=$1
+
+echo Fetching ${GTFS_ZIP_URL} to ${UNPACK_DIR}
+
+# Fetch file
+curl -L -o ${UNPACK_DIR}/latest.zip ${GTFS_ZIP_URL}
+
+# Unzip
+unzip -o ${UNPACK_DIR}/latest.zip -d $1
+
+# Remove temp file
+rm ${UNPACK_DIR}/latest.zip

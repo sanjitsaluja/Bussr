@@ -22,7 +22,7 @@ class Calendar(models.Model):
     set of dates when service is available for one or 
     more routes.
     '''
-    serviceId = models.CharField(max_length=64)
+    serviceId = models.CharField(max_length=128)
     
     ''' R
     The monday field contains a binary value that indicates 
@@ -42,7 +42,6 @@ class Calendar(models.Model):
         '''
         Return unicode description of this object
         '''
-        weekday = datetime.now().isoweekday()
         serviceDays = []
         if self.monday:
             serviceDays.append(u'mon')

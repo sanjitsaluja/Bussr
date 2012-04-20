@@ -20,20 +20,20 @@ class StopTime(models.Model):
     '''
     Trip id for ease of access. identifies the vehicle stop times
     '''
-    tripId = models.CharField(max_length=64)
+    tripId = models.CharField(max_length=128)
     trip = models.ForeignKey(Trip)
     
     '''
     Route id for ease of access
     '''
-    routeId = models.CharField(max_length=64)
+    routeId = models.CharField(max_length=128)
     route = models.ForeignKey(Route)
     
     '''
     The stop obj field contains an ID that uniquely 
     identifies a stop. Multiple routes may use the same stop
     '''
-    stopId = models.CharField(max_length=64)
+    stopId = models.CharField(max_length=128)
     stop = models.ForeignKey(Stop)
     
     '''
@@ -92,7 +92,7 @@ class StopTime(models.Model):
     # The stop_sequence field identifies the order of the 
     # stops for a particular trip.
     stopSequence = models.IntegerField()
-    headSign = models.CharField(max_length=50, null=True, blank=True)
+    headSign = models.CharField(max_length=256, null=True, blank=True)
     pickUpType = models.IntegerField(null=True, blank=True)
     dropOffType = models.IntegerField(null=True, blank=True)
     

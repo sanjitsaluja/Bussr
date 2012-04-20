@@ -25,12 +25,12 @@ class Trip(models.Model):
     The trip_id field contains an ID that identifies a trip. 
     The trip_id is dataset unique.
     '''
-    tripId = models.CharField(max_length=64)
+    tripId = models.CharField(max_length=128)
     
     '''
     Route id for ease of access
     '''
-    routeId = models.CharField(max_length=64)
+    routeId = models.CharField(max_length=128)
     
     '''
     Route for this trip
@@ -40,7 +40,7 @@ class Trip(models.Model):
     '''
     Service id
     '''
-    serviceId = models.CharField(max_length=64)
+    serviceId = models.CharField(max_length=128)
     
     '''
     Service id in the calendar
@@ -103,13 +103,13 @@ class Trip(models.Model):
     in the vehicle. The block_id must be referenced by 
     two or more trips in trips.txt.
     '''
-    blockId = models.CharField(max_length=64, null=True, blank=True)
+    blockId = models.CharField(max_length=128, null=True, blank=True)
     
     ''' O
     The shape_id field contains an ID that defines a shape for the trip
     TODO: Make this a Foreign Key
     '''
-    shapeId = models.CharField(max_length=64, null=True, blank=True)
+    shapeId = models.CharField(max_length=128, null=True, blank=True)
     
     def __unicode__(self):
         return u'%s, %s, %s' % (self.tripId, self.routeId, self.headSign)

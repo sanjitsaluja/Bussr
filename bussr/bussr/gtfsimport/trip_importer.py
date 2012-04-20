@@ -14,13 +14,11 @@ class TripImporter(CSVImporterBase):
     classdocs
     '''
 
-    def __init__(self, filename, source, routeIdToRouteMapping, serviceIdToCalendarMapping, onlyNew, cleanExistingData, logger):
+    def __init__(self, filename, source, routeIdToRouteMapping, serviceIdToCalendarMapping, logger):
         '''
         Constructor.
         @param filename: file name to import (full path to routes.txt)
         @param source: associated source
-        @param onlyNew: Only import new entries
-        @param cleanExistingData: Clean existing data for this source
         @param logger: logger
         '''
         super(TripImporter, self).__init__()
@@ -28,33 +26,19 @@ class TripImporter(CSVImporterBase):
         self.source = source
         self.routeIdToRouteMapping = routeIdToRouteMapping
         self.serviceIdToCalendarMapping = serviceIdToCalendarMapping
-        self.onlyNew = onlyNew
-        self.cleanExistingData = cleanExistingData
         self.logger = logger
         
     def parse(self):
-        if self.cleanExistingData:
-            tripsToDelete = Trip.objects.filter(source=self.source)
-            self.logger.info('Cleaning existing Trips %s', tripsToDelete)
-            tripsToDelete.delete()
+        tripsToDelete = Trip.objects.filter(source=self.source)
+        self.logger.info('Cleaning existing Trips %s', tripsToDelete)
+        tripsToDelete.delete()
         
         reader = csv.DictReader(open(self.filename, 'r'), skipinitialspace=True)
         tripIdToTripMapping = {}
         for row in reader:
-
             tripId = row['trip_id']
-            try:
-                trip = Trip.objects.filter(source=self.source).get(tripId=tripId)
-                if self.onlyNew:
-                    continue
-            except Trip.DoesNotExist:
-                trip = None
-            if trip is None:
-                trip = Trip()
-
-            if self.verboseParse:
-                self.logger.debug('Parsing trip row: %s', row)
-            
+            trip = Trip()
+            self.logger.info('Parsing trip row: %s', row)
             trip.source = self.source
             trip.tripId = tripId
             trip.routeId = row['route_id']

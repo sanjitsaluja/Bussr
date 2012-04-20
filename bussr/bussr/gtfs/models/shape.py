@@ -10,7 +10,7 @@ class Shape(models.Model):
     Model object represeting a Shape (shapes.txt)
     '''
     source = models.ForeignKey(Source)
-    shapeId = models.CharField(max_length=64)
+    shapeId = models.CharField(max_length=128)
     lat = models.FloatField()
     lng = models.FloatField()
     point = models.PointField()
