@@ -21,11 +21,16 @@ class Route(models.Model):
         unique_together = (('source', 'routeId'))
 
     '''
-    Source
+    source id
+    '''
+    sourceId = models.CharField(max_length=128)
+    
+    '''
+    Source of the stop
     '''
     source = models.ForeignKey(Source)
 
-    ''' R
+    '''
     The route_id field contains an ID that uniquely identifies a route.
     The route_id is dataset unique.
     '''
@@ -50,7 +55,7 @@ class Route(models.Model):
     please specify a route_long_name and use an empty string
     as the value for this field.
     '''
-    routeShortName = models.CharField(max_length=256, blank=True)
+    routeShortName = models.CharField(max_length=256, blank=True, null=True)
 
     ''' R
     The route_long_name contains the full name of a route.
@@ -93,7 +98,7 @@ class Route(models.Model):
     '''
     routeColor = models.CharField(max_length=16, blank=True, null=True)
 
-    ''' O
+    '''
     The route_text_color field can be used to
     specify a legible color to use
     for text drawn against a background of route_color

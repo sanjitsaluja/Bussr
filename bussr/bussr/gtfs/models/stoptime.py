@@ -13,7 +13,12 @@ class StopTime(models.Model):
         unique_together = (('source', 'tripId', 'stopId', 'stopSequence'))
     
     '''
-    Source of the StopTime
+    source id
+    '''
+    sourceId = models.CharField(max_length=128)
+    
+    '''
+    Source of the stop
     '''
     source = models.ForeignKey(Source)
     
@@ -113,7 +118,7 @@ class StopTime(models.Model):
     increase along with stop_sequence: they cannot 
     be used to show reverse travel along a route.
     '''
-    distanceTraveled = models.FloatField(null=True, blank=True)
+    shapeDistanceTraveled = models.FloatField(null=True, blank=True)
         
     def __unicode__(self):
         return u'%s: %s, %s, %s' % (self.source, self.routeId, self.headSign, self.stop.stopName)

@@ -27,7 +27,7 @@ class Stop(models.Model):
     '''
     stopId = models.CharField(max_length=128)
     
-    ''' 0
+    '''
     The stop_code field contains short text or a number that uniquely 
     identifies the stop for passengers. Stop codes are often used in 
     phone-based transit information systems or printed on stop signage 
@@ -39,14 +39,14 @@ class Stop(models.Model):
     '''
     stopCode = models.CharField(max_length=128, blank=True, null=True)
     
-    ''' R
+    '''
     The stop_name field contains the name of a stop or station. 
     Please use a name that people will understand in the local 
     and tourist vernacular.
     '''
     stopName = models.CharField(max_length=1024)
     
-    ''' 0
+    '''
     The stop_desc field contains a description of a stop. Please 
     provide useful, quality information. Do not simply duplicate 
     the name of the stop.
@@ -86,7 +86,7 @@ class Stop(models.Model):
     0 A location where passengers board or disembark from a transit vehicle.
     1 Station. A physical structure or area that contains one or more stop.
     '''
-    locationType = models.IntegerField()
+    locationType = models.IntegerField(null=True)
     
     '''
     See gtfs spec
@@ -94,7 +94,13 @@ class Stop(models.Model):
     parentStation = models.CharField(max_length=128, blank=True, null=True)
     
     ''' Is stop wheel chair accessible '''
-    wheelchairAccessible = models.BooleanField(blank=True)
+    wheelchairAccessible = models.BooleanField(blank=True, null=True)
+    
+    '''
+    The stop_timezone field contains the timezone in which this stop or station is located. 
+    '''
+    stopTimeZone = models.CharField(max_length=64, blank=True, null=True)
+
     
     ''' geo manager for geodjango '''
     objects = models.GeoManager()

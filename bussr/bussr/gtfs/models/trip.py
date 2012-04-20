@@ -17,7 +17,12 @@ class Trip(models.Model):
         unique_together = (('source', 'tripId'))
     
     '''
-    Source of the trip
+    source id
+    '''
+    sourceId = models.CharField(max_length=128)
+    
+    '''
+    Source of the stop
     '''
     source = models.ForeignKey(Source)
     
@@ -107,7 +112,6 @@ class Trip(models.Model):
     
     ''' O
     The shape_id field contains an ID that defines a shape for the trip
-    TODO: Make this a Foreign Key
     '''
     shapeId = models.CharField(max_length=128, null=True, blank=True)
     

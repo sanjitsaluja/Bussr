@@ -7,40 +7,45 @@ class Agency(models.Model):
     '''
     class Meta:
         app_label = 'gtfs'
-        unique_together = (('source', 'agencyId'))
-            
+        unique_together = (('source', 'agencyId'), ('sourceId', 'agencyId'))
+
     '''
-    Source of the Agency.
+    source id
+    '''
+    sourceId = models.CharField(max_length=128)
+
+    '''
+    Import source of the Agency.
     '''
     source = models.ForeignKey(Source)
-    
-    ''' Optional
+
+    '''
     The agency_id field is an ID that uniquely identifies a transit agency. 
     A transit feed may represent data from more than one agency. The agency_id 
     is dataset unique. This field is optional for transit feeds that only contain 
     data for a single agency.
     '''
     agencyId = models.CharField(max_length=128, null=True, blank=True)
-    
-    ''' Required
+
+    '''
     The agency_name field contains the full name of the transit agency. 
     Google Maps will display this name.
     '''
     agencyName = models.CharField(max_length=1024, unique=True)
     
-    ''' Required
+    '''
     The agency_url field contains the URL of the transit agency
     '''
     agencyUrl = models.URLField()
     
-    ''' Required
+    '''
     The agency_timezone field contains the timezone where the transit 
     agency is located. Timezone names never contain the space character
-     but may contain an underscore. Please refer to 
-     http://en.wikipedia.org/wiki/List_of_tz_zones for a list of valid 
-     values. If multiple agencies are specified in the feed, each must 
-     have the same agency_timezone.
-     '''
+    but may contain an underscore. Please refer to 
+    http://en.wikipedia.org/wiki/List_of_tz_zones for a list of valid 
+    values. If multiple agencies are specified in the feed, each must 
+    have the same agency_timezone.
+    '''
     agencyTimezone = models.CharField(max_length=64)
     
     ''' Optional

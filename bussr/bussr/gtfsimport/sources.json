@@ -1,8 +1,7 @@
 {
     "sources" : [
         {
-        "id":"01-01",
-        "dataDir": "champaign-urbana-mass-transit-district",
+        "id": "01-01",
         "importUrl": "http://www.gtfs-data-exchange.com/agency/champaign-urbana-mass-transit-district/latest.zip",
         "codeName" : "champaign-urbana-mass-transit-district"
         }

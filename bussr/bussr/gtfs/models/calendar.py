@@ -13,11 +13,16 @@ class Calendar(models.Model):
         unique_together = (('source', 'serviceId'))
         
     '''
-    Data source for this calendar
+    source id
+    '''
+    sourceId = models.CharField(max_length=128)
+    
+    '''
+    Source of the stop
     '''
     source = models.ForeignKey(Source)
     
-    ''' R
+    '''
     The service_id contains an ID that uniquely identifies a 
     set of dates when service is available for one or 
     more routes.
